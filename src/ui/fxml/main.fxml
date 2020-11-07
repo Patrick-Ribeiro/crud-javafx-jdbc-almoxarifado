@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutY="47.0" prefHeight="720.0" prefWidth="180.0" style="-fx-background-color: #FAFAFA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
+            <children>
+                <Pane prefHeight="72.0" prefWidth="180.0" />
+                <Button fx:id="buttonDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Dashboard" textAlignment="RIGHT">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+               <graphic>
+                  <FontAwesomeIconView />
+               </graphic>
+                </Button>
+            <Button fx:id="buttonOrders11" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Produtos">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView />
+               </graphic>
+            </Button>
+                <Button fx:id="buttonOrders" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Pedidos">
+                    <opaqueInsets>
+                        <Insets />
+                    </opaqueInsets>
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+               <graphic>
+                  <FontAwesomeIconView />
+               </graphic>
+                </Button>
+            <Button fx:id="buttonOrders1" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Usuários">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <font>
+                  <Font size="13.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView />
+               </graphic>
+            </Button>
+            </children>
+        </VBox>
+        <HBox alignment="TOP_RIGHT" layoutX="20.0" layoutY="20.0" minHeight="-Infinity" prefHeight="30.0" spacing="5.0" style="-fx-background-color: #F0F0F0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Button fx:id="buttonMinimize" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="button-minimize">
+                    <HBox.margin>
+                        <Insets top="3.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="buttonMaximize" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="button-maximize">
+                    <HBox.margin>
+                        <Insets top="3.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="buttonClose" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="20.0" prefWidth="20.0" styleClass="button-close">
+                    <HBox.margin>
+                        <Insets right="3.0" top="3.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+        <ScrollPane fx:id="mainScrollPane" layoutX="181.0" layoutY="108.0" style="-fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="181.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+            <content>
+                <VBox prefHeight="615.0" prefWidth="1095.0" style="-fx-background-color: #FFFFFF;" />
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>
