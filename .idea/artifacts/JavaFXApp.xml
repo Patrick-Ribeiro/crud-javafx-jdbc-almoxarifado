@@ -8,7 +8,7 @@
     </properties>
     <root id="root">
       <element id="archive" name="JavaFXApp.jar">
-        <element id="module-output" name="crud-javafx-jdbc-almoxarifado" />
+        <element id="module-output" name="crud almoxarifado" />
       </element>
     </root>
   </artifact>

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/crud-javafx-jdbc-almoxarifado.iml" filepath="$PROJECT_DIR$/crud-javafx-jdbc-almoxarifado.iml" />
+      <module fileurl="file://$PROJECT_DIR$/crud almoxarifado.iml" filepath="$PROJECT_DIR$/crud almoxarifado.iml" />
     </modules>
   </component>
 </project>
