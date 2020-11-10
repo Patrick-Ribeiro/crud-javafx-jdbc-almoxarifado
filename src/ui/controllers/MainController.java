@@ -48,7 +48,9 @@ public class MainController extends AbstractMainController {
 
     @FXML
     public void onButtonUsersAction(Event event) {
-
+        loadScreen(getClass().getResource("/ui/fxml/userList.fxml"), (UserListController controller) -> {
+            controller.updateTable();
+        });
     }
 
     @FXML

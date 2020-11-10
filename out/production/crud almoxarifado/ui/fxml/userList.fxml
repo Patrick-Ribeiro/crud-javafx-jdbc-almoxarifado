@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1050.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.UserListController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1095.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.UserListController">
     <children>
         <HBox prefHeight="47.0" prefWidth="1050.0" spacing="5.0">
             <children>
@@ -19,7 +19,7 @@
                 </TextField>
                 <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchAction" prefHeight="35.0" prefWidth="35.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Ir">
                     <HBox.margin>
-                        <Insets right="330.0" />
+                        <Insets right="375.0" />
                     </HBox.margin>
                 </Button>
                 <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#onButtonDeleteAction" prefHeight="35.0" prefWidth="100.0" styleClass="button-attention" stylesheets="@../css/styles.css" text="Excluir" />
@@ -35,8 +35,8 @@
                 <TableColumn fx:id="tableColumnUserName" editable="false" minWidth="6.0" prefWidth="251.0" resizable="false" text="Nome" />
                 <TableColumn fx:id="tableColumnUserEmail" editable="false" minWidth="6.0" prefWidth="258.0" resizable="false" text="Email" />
                 <TableColumn fx:id="tableColumnUserTelephone" editable="false" minWidth="6.0" prefWidth="172.0" resizable="false" text="Telefone" />
-                <TableColumn fx:id="tableColumnUserGroup" editable="false" minWidth="6.0" prefWidth="162.0" resizable="false" text="Grupo" />
-                <TableColumn fx:id="tableColumnUserActive" editable="false" minWidth="6.0" resizable="false" text="Ativo" />
+                <TableColumn fx:id="tableColumnUserGroup" editable="false" minWidth="6.0" prefWidth="189.0" resizable="false" text="Grupo" />
+                <TableColumn fx:id="tableColumnUserActive" editable="false" minWidth="6.0" prefWidth="95.0" resizable="false" text="Ativo" />
             </columns>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" />
