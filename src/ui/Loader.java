@@ -24,6 +24,7 @@ public class Loader extends Application {
             primaryStage.initStyle(StageStyle.UNDECORATED);
             primaryStage.setTitle("Almoxarifado");
             primaryStage.setScene(mainScene);
+            primaryStage.setResizable(true);
             primaryStage.show();
         } catch (IOException ex) {
             System.out.println("ERRO " + ex.getMessage()); //Implementar gerenciamento de logs

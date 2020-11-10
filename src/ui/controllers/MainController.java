@@ -4,6 +4,7 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.HBox;
 import ui.controllers.abstracts.AbstractMainController;
 import ui.util.StageUtilities;
 
@@ -12,6 +13,8 @@ import java.util.ResourceBundle;
 
 public class MainController extends AbstractMainController {
 
+    @FXML
+    HBox hboxTitle;
     @FXML
     Button buttonClose;
     @FXML
@@ -29,7 +32,7 @@ public class MainController extends AbstractMainController {
 
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public synchronized void initialize(URL location, ResourceBundle resources) {
 
     }
 
@@ -46,6 +49,11 @@ public class MainController extends AbstractMainController {
     @FXML
     public void onButtonUsersAction(Event event) {
 
+    }
+
+    @FXML
+    public void onHBoxTitleMouseMoved(Event event) {
+        StageUtilities.makeStageDragable(hboxTitle);
     }
 
     @Override

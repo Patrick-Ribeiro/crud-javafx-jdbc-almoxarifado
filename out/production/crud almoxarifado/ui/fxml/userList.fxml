@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1050.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.UserListController">
+    <children>
+        <HBox prefHeight="47.0" prefWidth="1050.0" spacing="5.0">
+            <children>
+                <TextField fx:id="textFieldSearch" onKeyPressed="#onTextFieldSearchKeyPressed" prefHeight="35.0" prefWidth="332.0" promptText="Pesquisa">
+                    <HBox.margin>
+                        <Insets left="15.0" />
+                    </HBox.margin>
+                </TextField>
+                <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchAction" prefHeight="35.0" prefWidth="35.0" stylesheets="@../css/styles.css" text="Ir">
+                    <HBox.margin>
+                        <Insets right="330.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#onButtonDeleteAction" prefHeight="35.0" prefWidth="100.0" stylesheets="@../css/styles.css" text="Excluir" />
+                <Button fx:id="buttonEdit" mnemonicParsing="false" onAction="#onButtonEditAction" prefHeight="35.0" prefWidth="100.0" stylesheets="@../css/styles.css" text="Editar" />
+                <Button fx:id="buttonNew" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="35.0" prefWidth="100.0" stylesheets="@../css/styles.css" text="Incluir" />
+            </children>
+            <padding>
+                <Insets top="5.0" />
+            </padding></HBox>
+        <TableView fx:id="tableViewUsers" prefHeight="557.0" prefWidth="1050.0">
+            <columns>
+                <TableColumn fx:id="tableColumnUserCode" prefWidth="75.0" text="Código" />
+                <TableColumn fx:id="tableColumnUserName" editable="false" minWidth="6.0" prefWidth="271.0" resizable="false" text="Nome" />
+                <TableColumn fx:id="tableColumnUserEmail" editable="false" minWidth="6.0" prefWidth="258.0" resizable="false" text="Email" />
+                <TableColumn fx:id="tableColumnUserTelephone" editable="false" minWidth="6.0" prefWidth="172.0" resizable="false" text="Telefone" />
+                <TableColumn fx:id="tableColumnUserGroup" editable="false" minWidth="6.0" prefWidth="162.0" resizable="false" text="Grupo" />
+                <TableColumn fx:id="tableColumnUserActive" editable="false" minWidth="6.0" resizable="false" text="Ativo" />
+            </columns>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" />
+            </VBox.margin>
+        </TableView>
+    </children>
+</VBox>
