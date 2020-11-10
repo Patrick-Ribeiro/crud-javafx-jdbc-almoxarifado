@@ -1,0 +1,112 @@
+.mainFxmlClass {
+    -fx-background-color: #ffffff;
+}
+
+.button-highlight {
+    -fx-background-color: #0C5EE8;
+    -fx-text-fill:  #FFFFFF;
+    -fx-background-radius: 5;
+}
+
+.button-highlight:hover {
+    -fx-text-fill:  #023564;
+}
+
+.button-classic {
+    -fx-background-color: #B2DFFF;
+    -fx-text-fill:  #0C5EE8;
+    -fx-background-radius: 8;
+    -fx-border-color: #0C5EE8;
+    -fx-border-radius: 5;
+}
+
+.button-classic:hover {
+    -fx-background-color: #C7EAFF;
+}
+
+.button-attention {
+    -fx-background-color: #FFB2AB;
+    -fx-text-fill:  #D60000;
+    -fx-background-radius: 8;
+    -fx-border-color: #D60000;
+    -fx-border-radius: 5;
+}
+.button-attention:hover {
+    -fx-background-color: #FFBEB8;
+}
+
+.button-close {
+    -fx-background-color: #ef4836;
+    -fx-background-radius: 20;
+}
+
+.button-minimize {
+    -fx-background-color: #00d374;
+    -fx-background-radius: 20;
+}
+
+.button-maximize {
+    -fx-background-color: #0C5EE8;
+    -fx-background-radius: 20;
+}
+
+.button-menu {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.button-menu:hover {
+    -fx-background-color: #B2DFFF;
+    -fx-text-fill:  #0C5EE8;
+}
+
+.textField-search {
+    -fx-background-color: #F0F0F0;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+}
+
+.table-view{
+    -fx-background-color: transparent;
+    -fx-border-width: 1;
+    -fx-border-color: #F0F0F0;
+
+}
+
+.table-view:focused{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header-background{
+    -fx-background-color:  #F0F0F0;
+}
+
+.table-view .column-header-background .label{
+    -fx-background-color: transparent;
+    -fx-text-fill: #515151;
+    -fx-font-size: 14px;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-width: 10px;
+    -fx-border-color: transparent;
+}
+
+.table-view .table-cell{
+    -fx-text-fill: black;
+}
+
+.table-row-cell{
+    -fx-background-color: -fx-table-cell-border-color, #ffffff;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #B2DFFF;
+    -fx-text-fill:  #0C5EE8;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em;
+}
+

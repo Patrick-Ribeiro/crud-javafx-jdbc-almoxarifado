@@ -10,12 +10,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.MainController">
+<AnchorPane prefHeight="720.0" prefWidth="1280.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.MainController">
     <children>
         <VBox alignment="TOP_CENTER" layoutY="47.0" prefHeight="720.0" prefWidth="180.0" style="-fx-background-color: #FAFAFA;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="30.0">
             <children>
                 <Pane prefHeight="72.0" prefWidth="180.0" />
-                <Button fx:id="buttonDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonDashboardAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Dashboard" textAlignment="RIGHT">
+                <Button fx:id="buttonDashboard" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonDashboardAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Dashboard" textAlignment="RIGHT">
                     <font>
                         <Font size="13.0" />
                     </font>
@@ -23,7 +23,7 @@
                   <FontAwesomeIconView />
                </graphic>
                 </Button>
-            <Button fx:id="buttonProducts" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Produtos">
+            <Button fx:id="buttonProducts" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Produtos">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -34,7 +34,7 @@
                   <FontAwesomeIconView />
                </graphic>
             </Button>
-                <Button fx:id="buttonOrders" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonOrdersAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Pedidos">
+                <Button fx:id="buttonOrders" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonOrdersAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Pedidos">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
@@ -45,7 +45,7 @@
                   <FontAwesomeIconView />
                </graphic>
                 </Button>
-            <Button fx:id="buttonUsers" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonUsersAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" text="Usuários">
+            <Button fx:id="buttonUsers" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonUsersAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Usuários">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
@@ -60,17 +60,17 @@
         </VBox>
         <HBox fx:id="hboxTitle" alignment="TOP_RIGHT" layoutX="20.0" layoutY="20.0" minHeight="-Infinity" onMouseMoved="#onHBoxTitleMouseMoved" prefHeight="30.0" spacing="5.0" style="-fx-background-color: #F0F0F0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
-                <Button fx:id="buttonMinimize" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonMinimizeAction" prefHeight="20.0" prefWidth="20.0" styleClass="button-minimize">
+                <Button fx:id="buttonMinimize" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonMinimizeAction" prefHeight="20.0" prefWidth="20.0" styleClass="button-minimize" stylesheets="@../css/styles.css">
                     <HBox.margin>
                         <Insets top="3.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="buttonMaximize" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonMaximizeAction" prefHeight="20.0" prefWidth="20.0" styleClass="button-maximize">
+                <Button fx:id="buttonMaximize" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonMaximizeAction" prefHeight="20.0" prefWidth="20.0" styleClass="button-maximize" stylesheets="@../css/styles.css">
                     <HBox.margin>
                         <Insets top="3.0" />
                     </HBox.margin>
                 </Button>
-                <Button fx:id="buttonClose" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonCloseAction" prefHeight="20.0" prefWidth="20.0" styleClass="button-close">
+                <Button fx:id="buttonClose" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonCloseAction" prefHeight="20.0" prefWidth="20.0" styleClass="button-close" stylesheets="@../css/styles.css">
                     <HBox.margin>
                         <Insets right="3.0" top="3.0" />
                     </HBox.margin>
