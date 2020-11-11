@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.controllers.abstracts.AbstractEntityFormController;
+import util.Logs;
 
 import java.io.IOException;
 import java.net.URL;
@@ -32,8 +33,6 @@ public class WindowLoader extends Application {
             primaryStage.show();
         } catch (IOException ex) {
             System.out.println("ERRO " + ex.getMessage()); //Implementar gerenciamento de logs
-        } catch (IllegalStateException ex) {
-            System.out.println("ERRO no arquivo FXML " + locationMainFXMl); //Implementar gerenciamento de logs
         }
     }
 
@@ -54,9 +53,8 @@ public class WindowLoader extends Application {
             WindowLoader.getMainScene().getRoot().setEffect(new GaussianBlur());
             dialogStage.showAndWait();
         } catch (IOException ex) {
-            ex.printStackTrace(); //implementar gerenciamento de logs
-        } catch (IllegalStateException ex) {
-            System.out.println("ERRO no arquivo FXML " + fxmlLocation); //Implementar gerenciamento de logs
+            ex.printStackTrace();
+            Logs.error(ex);
         }
     }
 

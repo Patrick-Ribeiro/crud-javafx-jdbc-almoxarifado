@@ -1,19 +1,15 @@
 package model.entities;
 
-public class UserGroup {
+public class ProductCategory {
 
     private Integer id;
     private String description;
 
-    public UserGroup() {
+    public ProductCategory() {
     }
 
-    public UserGroup(Integer id, String description) {
+    public ProductCategory(Integer id, String description) {
         this.id = id;
-        this.description = description;
-    }
-
-    public UserGroup(String description) {
         this.description = description;
     }
 
@@ -35,6 +31,8 @@ public class UserGroup {
 
     @Override
     public String toString() {
-        return description;
+        return "ProductCategory{" +
+                "description='" + description + '\'' +
+                '}';
     }
 }

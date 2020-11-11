@@ -26,7 +26,7 @@
           <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="TOP" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="TOP" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
             <JFXTextField fx:id="textFieldUserCode" focusColor="#0c5ee8" labelFloat="true" promptText="Código ERP" styleClass="textfield" stylesheets="@../css/styles.css">
@@ -65,7 +65,7 @@
                   <Insets top="2.0" />
                </padding>
             </Label>
-            <CheckBox fx:id="checkBoxActive" mnemonicParsing="false" styleClass="checkbox" stylesheets="@../css/styles.css" text="Ativo" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <CheckBox fx:id="checkBoxActive" alignment="CENTER" mnemonicParsing="false" styleClass="checkbox" stylesheets="@../css/styles.css" text="Ativo" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <font>
                   <Font size="14.0" />
                </font>

@@ -79,7 +79,9 @@
 .checkbox > .box {
     -fx-background-color: white;
     -fx-background-radius: 3px;
-    -fx-border-color: transparent;
+    -fx-border-color: #4d4d4d;
+    -fx-border-width: 2px;
+    -fx-border-radius: 3px;
 }
 
 .checkbox:selected .mark {

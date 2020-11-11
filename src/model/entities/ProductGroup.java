@@ -1,20 +1,18 @@
 package model.entities;
 
-public class UserGroup {
+public class ProductGroup {
 
     private Integer id;
     private String description;
+    private Expense expense;
 
-    public UserGroup() {
+    public ProductGroup() {
     }
 
-    public UserGroup(Integer id, String description) {
+    public ProductGroup(Integer id, String description, Expense expense) {
         this.id = id;
         this.description = description;
-    }
-
-    public UserGroup(String description) {
-        this.description = description;
+        this.expense = expense;
     }
 
     public Integer getId() {
@@ -31,6 +29,14 @@ public class UserGroup {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Expense getExpense() {
+        return expense;
+    }
+
+    public void setExpense(Expense expense) {
+        this.expense = expense;
     }
 
     @Override

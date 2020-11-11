@@ -1,5 +1,6 @@
 package ui.controllers;
 
+import javafx.collections.FXCollections;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.entities.User;
 import model.entities.UserGroup;
@@ -33,19 +35,19 @@ public class UserListController implements Initializable {
     @FXML
     TextField textFieldSearch;
     @FXML
-    TableView<?> tableViewUsers;
+    TableView<User> tableViewUsers;
     @FXML
-    TableColumn<?, Integer> tableColumnUserCode;
+    TableColumn<User, Integer> tableColumnUserCode;
     @FXML
-    TableColumn<?, String> tableColumnUserName;
+    TableColumn<User, String> tableColumnUserName;
     @FXML
-    TableColumn<?, String> tableColumnUserEmail;
+    TableColumn<User, String> tableColumnUserEmail;
     @FXML
-    TableColumn<?, String> tableColumnUserTelephone;
+    TableColumn<User, String> tableColumnUserTelephone;
     @FXML
-    TableColumn<?, ?> tableColumnUserGroup;
+    TableColumn<User, UserGroup> tableColumnUserGroup;
     @FXML
-    TableColumn<?, Boolean> tableColumnUserActive;
+    TableColumn<User, Boolean> tableColumnUserActive;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -90,6 +92,14 @@ public class UserListController implements Initializable {
             throw new IllegalStateException("UserPersistence é nulo");
         }
         List<User> userList = userPersistence.findAll();
+        tableColumnUserCode.setCellValueFactory(new PropertyValueFactory("code"));
+        tableColumnUserName.setCellValueFactory(new PropertyValueFactory("name"));
+        tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        tableColumnUserTelephone.setCellValueFactory(new PropertyValueFactory("telephone"));
+        tableColumnUserGroup.setCellValueFactory(new PropertyValueFactory("group"));
+        tableColumnUserActive.setCellValueFactory(new PropertyValueFactory("active"));
+        tableViewUsers.setItems(FXCollections.observableArrayList(userList));
+        tableViewUsers.getSelectionModel().select(0);
     }
 
 

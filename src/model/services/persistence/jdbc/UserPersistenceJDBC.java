@@ -1,12 +1,14 @@
 package model.services.persistence.jdbc;
 
 import model.entities.User;
+import model.entities.UserGroup;
 import model.services.persistence.exceptions.PersistenceException;
 import model.services.persistence.abstracts.UserPersistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import util.Logs;
@@ -53,7 +55,12 @@ public class UserPersistenceJDBC implements UserPersistence {
 
     @Override
     public List<User> findAll() {
-        return null;
+        List<User> users = new ArrayList<>();
+        UserGroup userGroup = new UserGroup("Almoxarife");
+        users.add(new User(123, "User1", userGroup, true));
+        users.add(new User(321, "User2", userGroup, true));
+        users.add(new User(456, "User3", userGroup, true));
+        return users;
     }
 
     @Override
