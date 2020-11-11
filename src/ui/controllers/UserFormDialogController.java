@@ -10,7 +10,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import model.entities.User;
-import ui.Loader;
+import ui.WindowLoader;
 import ui.controllers.abstracts.AbstractEntityFormController;
 import ui.util.Constraints;
 import ui.util.StageUtilities;
@@ -50,7 +50,7 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
     @FXML
     void onButtonCancelAction(ActionEvent event) {
         StageUtilities.currentStage(event).close();
-        Loader.getMainScene().getRoot().setEffect(null);
+        WindowLoader.getMainScene().getRoot().setEffect(null);
     }
 
     @FXML
@@ -65,7 +65,7 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
     @FXML
     void onButtonCloseAction(ActionEvent event) {
         StageUtilities.currentStage(event).close();
-        Loader.getMainScene().getRoot().setEffect(null);
+        WindowLoader.getMainScene().getRoot().setEffect(null);
     }
 
     @Override
