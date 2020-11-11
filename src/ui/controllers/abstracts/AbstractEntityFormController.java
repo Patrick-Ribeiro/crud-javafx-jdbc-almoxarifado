@@ -4,7 +4,7 @@ import javafx.fxml.Initializable;
 
 public abstract class AbstractEntityFormController<T> implements Initializable {
 
-    private T entity;
+    protected T entity;
 
     public void setEntity(T entity) {
         this.entity = entity;

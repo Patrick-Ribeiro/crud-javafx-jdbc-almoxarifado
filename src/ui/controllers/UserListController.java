@@ -9,6 +9,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.entities.User;
+import model.entities.UserGroup;
 import ui.WindowLoader;
 import ui.util.StageUtilities;
 
@@ -74,7 +75,10 @@ public class UserListController implements Initializable {
         dialogStage.setTitle("Formulário de usuário");
         URL fxmlLocation = getClass().getResource("/ui/fxml/userFormDialog.fxml");
 
-        WindowLoader.createEntityFormDialog(new User(), fxmlLocation, parentStage, dialogStage);
+        User user = new User(1234, "User test", new UserGroup(), true);
+        user.setTelephone("(62)9.9999-9999");
+        user.setEmail("user@user.com");
+        WindowLoader.createEntityFormDialog(user, fxmlLocation, parentStage, dialogStage);
     }
 
     public void updateTable() {

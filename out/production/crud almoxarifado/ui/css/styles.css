@@ -60,6 +60,10 @@
     -fx-text-fill:  #0C5EE8;
 }
 
+.textfield {
+    -fx-accent: #0C5EE8;
+}
+
 .textField-search {
     -fx-background-color: #F0F0F0;
     -fx-background-radius: 5;
@@ -69,6 +73,22 @@
 .combobox {
     -fx-text-size: 14px;
     -fx-font-size: 14px;
+    -fx-accent: #0C5EE8;
+}
+
+.checkbox > .box {
+    -fx-background-color: white;
+    -fx-background-radius: 3px;
+    -fx-border-color: transparent;
+}
+
+.checkbox:selected .mark {
+    -fx-background-color: #0C5EE8;
+}
+
+.checkbox:selected .box {
+    -fx-background-color: #B2DFFF;
+    -fx-border-color:transparent;
 }
 
 .table-view{

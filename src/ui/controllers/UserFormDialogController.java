@@ -10,10 +10,12 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import model.entities.User;
+import model.entities.UserGroup;
 import ui.WindowLoader;
 import ui.controllers.abstracts.AbstractEntityFormController;
 import ui.util.Constraints;
 import ui.util.StageUtilities;
+import ui.util.Util;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -31,9 +33,11 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
     @FXML
     private JFXTextField textFieldEmail;
     @FXML
+    private JFXTextField textFieldTelephone;
+    @FXML
     private Label labelErrorName;
     @FXML
-    private JFXComboBox<?> comboBoxGroup;
+    private JFXComboBox<UserGroup> comboBoxGroup;
     @FXML
     private Label labelErrorUserGroup;
     @FXML
@@ -71,7 +75,6 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeNodes();
-
     }
 
     private void initializeNodes() {
@@ -83,11 +86,29 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
 
     @Override
     public void updateFormData() {
-
+        if (entity == null) {
+            throw new IllegalStateException("Usuário está nulo");
+        }
+        textFieldUserCode.setText(String.valueOf(entity.getCode()));
+        textFieldName.setText(entity.getName());
+        textFieldEmail.setText(entity.getEmail());
+        textFieldTelephone.setText(entity.getTelephone());
+        comboBoxGroup.getSelectionModel().select(entity.getGroup());
+        checkBoxActive.setSelected(entity.isActive());
     }
 
     @Override
     public User getFormData() {
-        return null;
+        Integer code = Util.tryParseToInt(textFieldUserCode.getText());
+        String name = textFieldName.getText();
+        String email = textFieldEmail.getText();
+        String telephone = textFieldTelephone.getText();
+        UserGroup userGroup = comboBoxGroup.getSelectionModel().getSelectedItem();
+        Boolean active = checkBoxActive.isSelected();
+
+        User user = new User(code, name, userGroup, active);
+        user.setEmail(email);
+        user.setTelephone(telephone);
+        return user;
     }
 }

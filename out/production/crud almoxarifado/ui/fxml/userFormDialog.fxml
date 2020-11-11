@@ -29,7 +29,7 @@
             <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <JFXTextField fx:id="textFieldUserCode" focusColor="#0c5ee8" labelFloat="true" promptText="Código ERP">
+            <JFXTextField fx:id="textFieldUserCode" focusColor="#0c5ee8" labelFloat="true" promptText="Código ERP" styleClass="textfield" stylesheets="@../css/styles.css">
                <font>
                   <Font size="14.0" />
                </font>
@@ -39,17 +39,17 @@
                   <Insets top="2.0" />
                </padding>
             </Label>
-            <JFXTextField fx:id="textFieldName" focusColor="#0c5ee8" labelFloat="true" promptText="Nome" GridPane.rowIndex="2">
+            <JFXTextField fx:id="textFieldName" focusColor="#0c5ee8" labelFloat="true" promptText="Nome" styleClass="textfield" stylesheets="@../css/styles.css" GridPane.rowIndex="2">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXTextField>
-            <JFXTextField focusColor="#0c5ee8" labelFloat="true" prefHeight="30.0" prefWidth="245.0" promptText="Telefone" GridPane.columnIndex="2">
+            <JFXTextField fx:id="textFieldTelephone" focusColor="#0c5ee8" labelFloat="true" prefHeight="30.0" prefWidth="245.0" promptText="Telefone" styleClass="textfield" stylesheets="@../css/styles.css" GridPane.columnIndex="2">
                <font>
                   <Font size="14.0" />
                </font>
             </JFXTextField>
-            <JFXTextField fx:id="textFieldEmail" focusColor="#0c5ee8" labelFloat="true" promptText="Email" GridPane.rowIndex="4">
+            <JFXTextField fx:id="textFieldEmail" focusColor="#0c5ee8" labelFloat="true" promptText="Email" styleClass="textfield" stylesheets="@../css/styles.css" GridPane.rowIndex="4">
                <font>
                   <Font size="14.0" />
                </font>
@@ -65,7 +65,7 @@
                   <Insets top="2.0" />
                </padding>
             </Label>
-            <CheckBox fx:id="checkBoxActive" mnemonicParsing="false" text="Ativo" GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <CheckBox fx:id="checkBoxActive" mnemonicParsing="false" styleClass="checkbox" stylesheets="@../css/styles.css" text="Ativo" GridPane.columnIndex="2" GridPane.rowIndex="4">
                <font>
                   <Font size="14.0" />
                </font>
