@@ -10,13 +10,17 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import model.entities.User;
 import model.entities.UserGroup;
+import model.services.persistence.abstracts.UserPersistence;
 import ui.WindowLoader;
 import ui.util.StageUtilities;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserListController implements Initializable {
+
+    UserPersistence userPersistence;
 
     @FXML
     Button buttonNew;
@@ -48,24 +52,24 @@ public class UserListController implements Initializable {
 
     }
 
+    public void setUserPersistence(UserPersistence userPersistence) {
+        this.userPersistence = userPersistence;
+    }
+
     @FXML
     public void onTextFieldSearchKeyPressed(Event event) {
-
     }
 
     @FXML
     public void onButtonSearchAction(Event event) {
-
     }
 
     @FXML
     public void onButtonDeleteAction(Event event) {
-
     }
 
     @FXML
     public void onButtonEditAction(Event event) {
-
     }
 
     @FXML
@@ -82,6 +86,10 @@ public class UserListController implements Initializable {
     }
 
     public void updateTable() {
+        if (userPersistence == null) {
+            throw new IllegalStateException("UserPersistence é nulo");
+        }
+        List<User> userList = userPersistence.findAll();
     }
 
 
