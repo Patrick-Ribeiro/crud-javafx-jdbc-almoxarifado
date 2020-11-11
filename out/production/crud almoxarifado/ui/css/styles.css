@@ -66,6 +66,11 @@
     -fx-border-radius: 5;
 }
 
+.combobox {
+    -fx-text-size: 14px;
+    -fx-font-size: 14px;
+}
+
 .table-view{
     -fx-background-color: transparent;
     -fx-border-width: 1;
