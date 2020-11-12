@@ -1,6 +1,7 @@
 package ui.controllers;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -12,7 +13,8 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.entities.User;
 import model.entities.UserGroup;
-import model.services.persistence.abstracts.UserPersistence;
+import model.services.persistence.abstracts.UserPersistenceService;
+import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.util.StageUtilities;
 
@@ -22,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class UserListController implements Initializable {
 
-    UserPersistence userPersistence;
+    UserPersistenceService userPersistenceService;
 
     @FXML
     Button buttonNew;
@@ -32,6 +34,8 @@ public class UserListController implements Initializable {
     Button buttonDelete;
     @FXML
     Button buttonSearch;
+    @FXML
+    Button buttonUserGroups;
     @FXML
     TextField textFieldSearch;
     @FXML
@@ -54,8 +58,8 @@ public class UserListController implements Initializable {
 
     }
 
-    public void setUserPersistence(UserPersistence userPersistence) {
-        this.userPersistence = userPersistence;
+    public void setUserPersistence(UserPersistenceService userPersistenceService) {
+        this.userPersistenceService = userPersistenceService;
     }
 
     @FXML
@@ -75,6 +79,17 @@ public class UserListController implements Initializable {
     }
 
     @FXML
+    public void onButtonUserGroupsAction(ActionEvent event) {
+        URL fxmlLocation = getClass().getResource("/ui/fxml/userGroupList.fxml");
+        Stage currentStage = StageUtilities.currentStage(event);
+        WindowLoader.createPopupScreen(fxmlLocation, currentStage,
+                new Stage(), (UserGroupListController controller) -> {
+                    controller.setUserGroupPersistence(new UserGroupPersistenceServiceJDBC());
+                    controller.updateList();
+                });
+    }
+
+    @FXML
     public void onButtonNewAction(Event event) {
         Stage parentStage = StageUtilities.currentStage(event);
         Stage dialogStage = new Stage();
@@ -88,10 +103,10 @@ public class UserListController implements Initializable {
     }
 
     public void updateTable() {
-        if (userPersistence == null) {
-            throw new IllegalStateException("UserPersistence é nulo");
+        if (userPersistenceService == null) {
+            throw new IllegalStateException("UserPersistenceService é nulo");
         }
-        List<User> userList = userPersistence.findAll();
+        List<User> userList = userPersistenceService.findAll();
         tableColumnUserCode.setCellValueFactory(new PropertyValueFactory("code"));
         tableColumnUserName.setCellValueFactory(new PropertyValueFactory("name"));
         tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory("email"));

@@ -5,7 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
-import model.services.persistence.jdbc.UserPersistenceJDBC;
+import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.controllers.abstracts.AbstractMainController;
 import ui.util.StageUtilities;
 
@@ -50,7 +50,7 @@ public class MainController extends AbstractMainController {
     @FXML
     public void onButtonUsersAction(Event event) {
         loadScreen(getClass().getResource("/ui/fxml/userList.fxml"), (UserListController controller) -> {
-            controller.setUserPersistence(new UserPersistenceJDBC());
+            controller.setUserPersistence(new UserPersistenceServiceJDBC());
             controller.updateTable();
         });
     }

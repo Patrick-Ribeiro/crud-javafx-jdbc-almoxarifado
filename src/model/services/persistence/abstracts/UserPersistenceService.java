@@ -5,7 +5,7 @@ import model.services.persistence.exceptions.PersistenceException;
 
 import java.util.List;
 
-public interface UserPersistence {
+public interface UserPersistenceService {
 
     /**
      * Inclui um novo usuário na base de dados.

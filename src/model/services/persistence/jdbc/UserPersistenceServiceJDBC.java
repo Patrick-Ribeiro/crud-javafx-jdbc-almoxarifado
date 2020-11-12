@@ -2,8 +2,8 @@ package model.services.persistence.jdbc;
 
 import model.entities.User;
 import model.entities.UserGroup;
+import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.exceptions.PersistenceException;
-import model.services.persistence.abstracts.UserPersistence;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.util.List;
 
 import util.Logs;
 
-public class UserPersistenceJDBC implements UserPersistence {
+public class UserPersistenceServiceJDBC implements UserPersistenceService {
 
     @Override
     public void insert(User user) {

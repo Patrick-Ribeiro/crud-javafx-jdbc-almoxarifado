@@ -9,6 +9,6 @@ public class Logs {
     }
 
     public static void error(Exception exception) {
-
+        System.err.println("ERROR -> " +exception.getClass().getSimpleName() +": "+ exception.getMessage());
     }
 }

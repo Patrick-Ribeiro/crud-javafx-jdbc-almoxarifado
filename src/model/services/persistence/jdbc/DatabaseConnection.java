@@ -35,17 +35,25 @@ public class DatabaseConnection {
         }
     }
 
-    public static void closeConnection(Connection connection, PreparedStatement preparedStatement) throws SQLException {
+    public static void closeConnection(Connection connection, PreparedStatement preparedStatement) {
         closeConnection(connection);
         if (preparedStatement != null) {
-            preparedStatement.close();
+            try {
+                preparedStatement.close();
+            } catch (SQLException ex) {
+                throw new DatabaseConnectionException(ex.getMessage());
+            }
         }
     }
 
-    public static void closeConnection(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) throws SQLException {
+    public static void closeConnection(Connection connection, PreparedStatement preparedStatement, ResultSet resultSet) {
         closeConnection(connection, preparedStatement);
         if (resultSet != null) {
-            resultSet.close();
+            try {
+                resultSet.close();
+            } catch (SQLException ex) {
+                throw new DatabaseConnectionException(ex.getMessage());
+            }
         }
     }
 

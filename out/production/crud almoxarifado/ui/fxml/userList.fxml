@@ -20,12 +20,17 @@
                 </TextField>
                 <Button fx:id="buttonSearch" mnemonicParsing="false" onAction="#onButtonSearchAction" prefHeight="35.0" prefWidth="35.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Ir">
                     <HBox.margin>
-                        <Insets right="375.0" />
+                        <Insets />
                     </HBox.margin>
                <font>
                   <Font size="12.0" />
                </font>
                 </Button>
+            <Button fx:id="buttonUserGroups" mnemonicParsing="false" onAction="#onButtonUserGroupsAction" prefHeight="35.0" prefWidth="66.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos">
+               <HBox.margin>
+                  <Insets right="300.0" />
+               </HBox.margin>
+            </Button>
                 <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#onButtonDeleteAction" prefHeight="35.0" prefWidth="100.0" styleClass="button-attention" stylesheets="@../css/styles.css" text="Excluir">
                <font>
                   <Font size="12.0" />
