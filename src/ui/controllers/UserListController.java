@@ -14,6 +14,7 @@ import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
+import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.util.StageUtilities;
 
@@ -82,6 +83,17 @@ public class UserListController implements Initializable {
 
     @FXML
     public void onButtonEditAction(Event event) {
+        Stage parentStage = StageUtilities.currentStage(event);
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Formulário de usuário");
+        URL fxmlLocation = getClass().getResource("/ui/fxml/userFormDialog.fxml");
+        User user = tableViewUsers.getSelectionModel().getSelectedItem();
+        WindowLoader.createPopupScreen(fxmlLocation, parentStage,
+                dialogStage, (UserFormDialogController controller) -> {
+                    controller.setUser(user);
+                    controller.setUserPersistenceService(new UserPersistenceServiceJDBC());
+                    controller.updateFormData();
+                });
     }
 
     @FXML
@@ -101,7 +113,12 @@ public class UserListController implements Initializable {
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Formulário de usuário");
         URL fxmlLocation = getClass().getResource("/ui/fxml/userFormDialog.fxml");
-        WindowLoader.createEntityFormDialog(new User(), fxmlLocation, parentStage, dialogStage);
+        WindowLoader.createPopupScreen(fxmlLocation, parentStage,
+                dialogStage, (UserFormDialogController controller) -> {
+                    controller.setUser(new User());
+                    controller.setUserPersistenceService(new UserPersistenceServiceJDBC());
+                    controller.updateFormData();
+                });
     }
 
     public void updateTable() {

@@ -7,12 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import ui.controllers.abstracts.AbstractEntityFormController;
 import util.Logs;
 
 import java.io.IOException;
@@ -37,32 +34,6 @@ public class WindowLoader extends Application {
             primaryStage.show();
         } catch (IOException ex) {
             System.out.println("ERRO " + ex.getMessage()); //Implementar gerenciamento de logs
-        }
-    }
-
-    public static synchronized void createEntityFormDialog(Object entity, URL fxmlLocation, Stage parentStage, Stage dialogStage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(fxmlLocation);
-            Pane pane = loader.load();
-
-            AbstractEntityFormController<Object> controller = loader.getController();
-            controller.setEntity(entity);
-            controller.updateFormData();
-
-            dialogStage.setScene(new Scene(pane));
-            dialogStage.setResizable(false);
-            dialogStage.initOwner(parentStage);
-            dialogStage.initStyle(StageStyle.UNDECORATED);
-            dialogStage.initModality(Modality.WINDOW_MODAL);
-
-            ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
-            colorAdjust.setInput(new GaussianBlur());
-            WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
-
-            dialogStage.showAndWait();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Logs.error(ex);
         }
     }
 

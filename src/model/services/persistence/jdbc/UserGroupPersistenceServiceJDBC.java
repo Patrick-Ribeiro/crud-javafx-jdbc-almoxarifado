@@ -33,7 +33,16 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
 
     @Override
     public void delete(int id) {
+        String sql = "DELETE FROM user_groups WHERE id = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
+            preparedStmt.setInt(1, id);
+            preparedStmt.executeUpdate();
+
+            DatabaseConnection.closeConnection(connection, preparedStmt);
+        } catch (SQLException ex) {
+            Logs.error(ex);
+        }
     }
 
     @Override

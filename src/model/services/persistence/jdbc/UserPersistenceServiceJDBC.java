@@ -22,8 +22,8 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
         if (find(user.getCode()) != null) {
             throw new PersistenceException("O usuário de código " + user.getCode() + " já está cadastrado.");
         }
-        String sql = "INSERT INTO usuario"
-                + " (code, name, email, telephone, group_id, active)"
+        String sql = "INSERT INTO users"
+                + " (code_erp, name, email, telephone, user_group, active)"
                 + " VALUE (?,?,?,?,?,?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -52,7 +52,25 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
 
     @Override
     public void update(User user) {
+        String sql = "UPDATE users SET "
+                + "name = ?, email = ?, telephone = ?, user_group = ?, active = ?"
+                + " WHERE code_erp = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
+            preparedStmt.setString(1, user.getName());
+            preparedStmt.setString(2, user.getEmail());
+            preparedStmt.setString(3, user.getTelephone());
+            preparedStmt.setInt(4, user.getGroup().getId());
+            preparedStmt.setBoolean(5, user.isActive());
+            preparedStmt.setInt(6, user.getCode());
+
+            Logs.informationQuery(preparedStmt);
+            preparedStmt.executeUpdate();
+
+            DatabaseConnection.closeConnection(connection, preparedStmt);
+        } catch (SQLException e) {
+            Logs.error(e);
+        }
     }
 
     @Override
@@ -75,8 +93,26 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
     }
 
     @Override
-    public User find(int id) {
-        return null;
+    public User find(int code) {
+        String sql = "SELECT * FROM users WHERE code_erp = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            Logs.informationQuery(stmt);
+            stmt.setInt(1, code);
+            ResultSet resultSet = stmt.executeQuery();
+
+            User userFound;
+            if (resultSet.next())
+                userFound = fromResultSet(resultSet);
+            else
+                userFound = null;
+
+            DatabaseConnection.closeConnection(connection, stmt, resultSet);
+            return userFound;
+        } catch (SQLException e) {
+            Logs.error(e);
+            return new User();
+        }
     }
 
     private User fromResultSet(ResultSet resultSet) throws SQLException {

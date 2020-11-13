@@ -48,6 +48,24 @@ public class UserGroupListController {
 
     @FXML
     public void onButtonDeleteAction(ActionEvent event) {
+        UserGroup userGroup = listViewUserGroups.getSelectionModel().getSelectedItem();
+        if (userGroup == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, "É necessário selecionar um grupo da lista", ButtonType.CLOSE);
+            alert.setHeaderText("Grupo não selecionado");
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.show();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Deseja excluir o grupo de usuários "
+                    + userGroup.getDescription() + "?", ButtonType.YES, ButtonType.NO);
+            alert.setHeaderText("Exclusão de grupo");
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.showAndWait().ifPresent(type -> {
+                if (type == ButtonType.YES) {
+                    userGroupPersistenceService.delete(userGroup.getId());
+                    updateList();
+                }
+            });
+        }
     }
 
     @FXML

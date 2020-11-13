@@ -6,15 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import model.entities.User;
 import model.entities.UserGroup;
+import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
 import ui.WindowLoader;
-import ui.controllers.abstracts.AbstractEntityFormController;
 import ui.util.Constraints;
 import ui.util.StageUtilities;
 import ui.util.Util;
@@ -22,7 +23,10 @@ import ui.util.Util;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class UserFormDialogController extends AbstractEntityFormController<User> {
+public class UserFormDialogController implements Initializable {
+
+    private UserPersistenceService persistenceService;
+    private User user;
 
     @FXML
     HBox hboxTitle;
@@ -64,8 +68,24 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
         StageUtilities.makeStageDragable(hboxTitle);
     }
 
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @FXML
     void onButtonConfirmAction(ActionEvent event) {
+        if (persistenceService == null) {
+            throw new IllegalStateException("UserPersistenceService está nulo");
+        }
+        User user = getFormData();
+        if (persistenceService.find(user.getCode()) == null)
+            persistenceService.insert(user);
+        else
+            persistenceService.update(user);
+    }
+
+    public void setUserPersistenceService(UserPersistenceService userPersistenceService) {
+        persistenceService = userPersistenceService;
     }
 
     @FXML
@@ -86,21 +106,19 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
         Constraints.setTextFieldMaxLength(textFieldName, 35);
     }
 
-    @Override
     public void updateFormData() {
-        if (entity == null) {
+        if (user == null) {
             throw new IllegalStateException("Usuário está nulo");
         }
-        textFieldUserCode.setText(String.valueOf(entity.getCode()));
-        textFieldName.setText(entity.getName());
-        textFieldEmail.setText(entity.getEmail());
-        textFieldTelephone.setText(entity.getTelephone());
+        textFieldUserCode.setText(String.valueOf(user.getCode()));
+        textFieldName.setText(user.getName());
+        textFieldEmail.setText(user.getEmail());
+        textFieldTelephone.setText(user.getTelephone());
         comboBoxGroup.setItems(FXCollections.observableArrayList(new UserGroupPersistenceServiceJDBC().findAll()));
-        comboBoxGroup.getSelectionModel().select(entity.getGroup());
-        checkBoxActive.setSelected(entity.isActive());
+        comboBoxGroup.getSelectionModel().select(user.getGroup());
+        checkBoxActive.setSelected(user.isActive());
     }
 
-    @Override
     public User getFormData() {
         Integer code = Util.tryParseToInt(textFieldUserCode.getText());
         String name = textFieldName.getText();
