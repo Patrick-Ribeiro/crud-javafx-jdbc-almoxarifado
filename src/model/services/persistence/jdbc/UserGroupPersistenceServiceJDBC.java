@@ -76,7 +76,21 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
 
     @Override
     public UserGroup find(int id) {
-        return null;
+        String sql = "SELECT * FROM user_groups WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
+            preparedStmt.setInt(1, id);
+            Logs.informationQuery(preparedStmt);
+            ResultSet resultSet = preparedStmt.executeQuery();
+            resultSet.next();
+
+            UserGroup userGroup = fromResultSet(resultSet);
+            DatabaseConnection.closeConnection(connection, preparedStmt, resultSet);
+            return userGroup;
+        } catch (SQLException ex) {
+            Logs.error(ex);
+            throw new PersistenceException(ex.getMessage());
+        }
     }
 
     private UserGroup fromResultSet(ResultSet resultSet) throws SQLException {

@@ -8,12 +8,12 @@ public class User {
     private String password;
     private String telephone;
     private UserGroup group;
-    private Boolean active;
+    private boolean active;
 
     public User() {
     }
 
-    public User(Integer code, String name, UserGroup group, Boolean active) {
+    public User(Integer code, String name, UserGroup group, boolean active) {
         this.code = code;
         this.name = name;
         this.group = group;

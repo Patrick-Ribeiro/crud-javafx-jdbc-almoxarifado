@@ -10,6 +10,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.StageStyle;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserGroupPersistenceService;
+import model.services.persistence.exceptions.DatabaseConnectionException;
+import ui.WindowLoader;
 import ui.util.StageUtilities;
 
 public class UserGroupListController {
@@ -41,6 +43,7 @@ public class UserGroupListController {
     @FXML
     public void onButtonCloseAction(ActionEvent event) {
         StageUtilities.currentStage(event).close();
+        WindowLoader.getMainScene().getRoot().setEffect(null);
     }
 
     @FXML
@@ -94,9 +97,16 @@ public class UserGroupListController {
         if (userGroupPersistenceService == null) {
             throw new IllegalStateException("UserGroupPersistenceService está nulo");
         }
-        ObservableList<UserGroup> items = FXCollections.observableArrayList(userGroupPersistenceService.findAll());
-        listViewUserGroups.setItems(items);
-        listViewUserGroups.refresh();
+        try {
+            ObservableList<UserGroup> items = FXCollections.observableArrayList(userGroupPersistenceService.findAll());
+            listViewUserGroups.setItems(items);
+            listViewUserGroups.refresh();
+        } catch (DatabaseConnectionException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
+            alert.setHeaderText("Erro de conexão com o banco de daddos.");
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.showAndWait();
+        }
     }
 
 }

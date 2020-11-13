@@ -2,6 +2,7 @@ package ui.controllers;
 
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import model.entities.User;
 import model.entities.UserGroup;
+import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.controllers.abstracts.AbstractEntityFormController;
 import ui.util.Constraints;
@@ -93,6 +95,7 @@ public class UserFormDialogController extends AbstractEntityFormController<User>
         textFieldName.setText(entity.getName());
         textFieldEmail.setText(entity.getEmail());
         textFieldTelephone.setText(entity.getTelephone());
+        comboBoxGroup.setItems(FXCollections.observableArrayList(new UserGroupPersistenceServiceJDBC().findAll()));
         comboBoxGroup.getSelectionModel().select(entity.getGroup());
         checkBoxActive.setSelected(entity.isActive());
     }

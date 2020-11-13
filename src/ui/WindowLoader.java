@@ -4,9 +4,11 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -52,7 +54,11 @@ public class WindowLoader extends Application {
             dialogStage.initOwner(parentStage);
             dialogStage.initStyle(StageStyle.UNDECORATED);
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            WindowLoader.getMainScene().getRoot().setEffect(new GaussianBlur());
+
+            ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
+            colorAdjust.setInput(new GaussianBlur());
+            WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
+
             dialogStage.showAndWait();
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -70,7 +76,10 @@ public class WindowLoader extends Application {
             dialogStage.initOwner(parentStage);
             dialogStage.initStyle(StageStyle.UNDECORATED);
             dialogStage.initModality(Modality.WINDOW_MODAL);
-            WindowLoader.getMainScene().getRoot().setEffect(new GaussianBlur());
+
+            ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
+            colorAdjust.setInput(new GaussianBlur());
+            WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
 
             T controller = loader.getController();
             initializingAction.accept(controller);

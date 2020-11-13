@@ -2,11 +2,13 @@ package model.services.persistence.jdbc;
 
 import model.entities.User;
 import model.entities.UserGroup;
+import model.services.persistence.abstracts.UserGroupPersistenceService;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.exceptions.PersistenceException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,17 +57,41 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
 
     @Override
     public List<User> findAll() {
+        String sql = "SELECT * FROM users";
+
         List<User> users = new ArrayList<>();
-        UserGroup userGroup = new UserGroup("Almoxarife");
-        users.add(new User(123, "User1", userGroup, true));
-        users.add(new User(321, "User2", userGroup, true));
-        users.add(new User(456, "User3", userGroup, true));
-        return users;
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            Logs.informationQuery(stmt);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                users.add(fromResultSet(resultSet));
+            }
+            DatabaseConnection.closeConnection(connection, stmt, resultSet);
+            return users;
+        } catch (SQLException e) {
+            Logs.error(e);
+            return new ArrayList<>();
+        }
     }
 
     @Override
     public User find(int id) {
         return null;
+    }
+
+    private User fromResultSet(ResultSet resultSet) throws SQLException {
+        Integer id = resultSet.getInt("code_erp");
+        String name = resultSet.getString("name");
+        String password = resultSet.getString("password");
+        String email = resultSet.getString("email");
+        Integer idGroup = resultSet.getInt("user_group");
+        UserGroup userGroup = new UserGroupPersistenceServiceJDBC().find(idGroup);
+        boolean active = resultSet.getBoolean("active");
+
+        User user = new User(id, name, userGroup, active);
+        user.setPassword(password);
+        user.setEmail(email);
+        return user;
     }
 }
 
