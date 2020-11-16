@@ -98,6 +98,10 @@
     -fx-border-color: #F0F0F0;
 }
 
+.list-cell{
+    -fx-font-size:14px;
+}
+
 .list:focused{
     -fx-background-color: transparent;
 }

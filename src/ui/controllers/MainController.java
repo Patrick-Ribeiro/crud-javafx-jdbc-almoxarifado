@@ -5,7 +5,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import model.services.persistence.jdbc.PackingPersistenceServiceJBDC;
 import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
+import ui.WindowLoader;
 import ui.controllers.abstracts.AbstractMainController;
 import ui.util.StageUtilities;
 
@@ -24,12 +27,6 @@ public class MainController extends AbstractMainController {
     Button buttonMaximize;
     @FXML
     ScrollPane mainScrollPane;
-    @FXML
-    Button buttonDashboard;
-    @FXML
-    Button buttonOrders;
-    @FXML
-    Button buttonUsers;
 
 
     @Override
@@ -39,7 +36,12 @@ public class MainController extends AbstractMainController {
 
     @FXML
     public void onButtonDashboardAction(Event event) {
-
+        Stage currentStage = StageUtilities.currentStage(event);
+        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/PackingList.fxml"), currentStage,
+                new Stage(), (PackingListController controller) -> {
+                    controller.setPersistenceService(new PackingPersistenceServiceJBDC());
+                    controller.updateList();
+                });
     }
 
     @FXML

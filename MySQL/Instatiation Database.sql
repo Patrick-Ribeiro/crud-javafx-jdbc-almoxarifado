@@ -34,12 +34,12 @@ CREATE TABLE IF NOT EXISTS `almox`.`users` (
   `password` VARCHAR(12) NULL,
   `email` VARCHAR(100) NULL,
   `telephone` VARCHAR(14) NULL,
-  `user_group` INT NOT NULL,
+  `group_id` INT NOT NULL,
   `active` TINYINT NOT NULL,
   PRIMARY KEY (`code_erp`),
-  INDEX `fk_usuario_grupo_usuario1_idx` (`user_group` ASC) VISIBLE,
+  INDEX `fk_usuario_grupo_usuario1_idx` (`group_id` ASC) VISIBLE,
   CONSTRAINT `fk_usuario_grupo_usuario1`
-    FOREIGN KEY (`user_group`)
+    FOREIGN KEY (`group_id`)
     REFERENCES `almox`.`user_groups` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -81,13 +81,13 @@ ENGINE = InnoDB;
 -- Table `almox`.`product_groups`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `almox`.`product_groups` (
-  `code_erp` INT NOT NULL,
+  `id_erp` INT NOT NULL,
   `description` VARCHAR(45) NOT NULL,
-  `expense` INT NOT NULL,
-  PRIMARY KEY (`code_erp`),
-  INDEX `fk_grupo_produto_despesa1_idx` (`expense` ASC) VISIBLE,
+  `expense_id` INT NOT NULL,
+  PRIMARY KEY (`id_erp`),
+  INDEX `fk_grupo_produto_despesa1_idx` (`expense_id` ASC) VISIBLE,
   CONSTRAINT `fk_grupo_produto_despesa1`
-    FOREIGN KEY (`expense`)
+    FOREIGN KEY (`expense_id`)
     REFERENCES `almox`.`expenses` (`debit`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -95,35 +95,52 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `almox`.`packings`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `almox`.`packings` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `description` VARCHAR(45) NOT NULL,
+  `abbreviation` VARCHAR(5) NOT NULL,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `almox`.`products`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `almox`.`products` (
-  `code_erp` INT NOT NULL,
+  `internalCode` INT NOT NULL,
   `description` VARCHAR(45) NOT NULL,
-  `description_erp` VARCHAR(45) NULL,
-  `category` INT NOT NULL,
-  `quantity_packaging` VARCHAR(45) NOT NULL,
-  `packaging` INT NOT NULL,
-  `group` INT NOT NULL,
+  `description_erp` VARCHAR(45) NOT NULL,
+  `category_id` INT NOT NULL,
+  `group_id` INT NOT NULL,
+  `packing_id` INT NOT NULL,
+  `quantity_packing` INT NOT NULL,
+  `buyer_user_id` INT NOT NULL,
   `active` TINYINT NOT NULL,
-  `buyer` INT NOT NULL,
-  PRIMARY KEY (`code_erp`),
-  INDEX `fk_produto_categoria1_idx` (`category` ASC) VISIBLE,
-  INDEX `fk_produto_grupo_produto1_idx` (`group` ASC) VISIBLE,
-  INDEX `fk_products_users1_idx` (`buyer` ASC) VISIBLE,
+  INDEX `fk_produto_categoria1_idx` (`category_id` ASC) VISIBLE,
+  INDEX `fk_produto_grupo_produto1_idx` (`group_id` ASC) VISIBLE,
+  INDEX `fk_products_users1_idx` (`buyer_user_id` ASC) VISIBLE,
+  INDEX `fk_products_packings1_idx` (`packing_id` ASC) VISIBLE,
+  PRIMARY KEY (`internalCode`),
   CONSTRAINT `fk_produto_categoria1`
-    FOREIGN KEY (`category`)
+    FOREIGN KEY (`category_id`)
     REFERENCES `almox`.`product_categories` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_produto_grupo_produto1`
-    FOREIGN KEY (`group`)
-    REFERENCES `almox`.`product_groups` (`code_erp`)
+    FOREIGN KEY (`group_id`)
+    REFERENCES `almox`.`product_groups` (`id_erp`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_products_users1`
-    FOREIGN KEY (`buyer`)
+    FOREIGN KEY (`buyer_user_id`)
     REFERENCES `almox`.`users` (`code_erp`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_products_packings1`
+    FOREIGN KEY (`packing_id`)
+    REFERENCES `almox`.`packings` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -133,20 +150,20 @@ ENGINE = InnoDB;
 -- Table `almox`.`departament_products`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `almox`.`departament_products` (
-  `departament` INT NOT NULL,
-  `product` INT NOT NULL,
+  `departament_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
   `throw` TINYINT NOT NULL,
-  PRIMARY KEY (`departament`, `product`),
-  INDEX `fk_departamento_has_produto_produto1_idx` (`product` ASC) VISIBLE,
-  INDEX `fk_departamento_has_produto_departamento1_idx` (`departament` ASC) VISIBLE,
+  PRIMARY KEY (`departament_id`, `product_id`),
+  INDEX `fk_departamento_has_produto_produto1_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_departamento_has_produto_departamento1_idx` (`departament_id` ASC) VISIBLE,
   CONSTRAINT `fk_departamento_has_produto_departamento1`
-    FOREIGN KEY (`departament`)
+    FOREIGN KEY (`departament_id`)
     REFERENCES `almox`.`departaments` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_departamento_has_produto_produto1`
-    FOREIGN KEY (`product`)
-    REFERENCES `almox`.`products` (`code_erp`)
+    FOREIGN KEY (`product_id`)
+    REFERENCES `almox`.`products` (`internalCode`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -157,15 +174,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `almox`.`products_movement` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `product` INT NOT NULL,
+  `product_id` INT NOT NULL,
   `date` DATE NOT NULL,
   `type` ENUM('IN', 'OU') NOT NULL,
   `quantity` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_products_movement_products1_idx` (`product` ASC) VISIBLE,
+  INDEX `fk_products_movement_products1_idx` (`product_id` ASC) VISIBLE,
   CONSTRAINT `fk_products_movement_products1`
-    FOREIGN KEY (`product`)
-    REFERENCES `almox`.`products` (`code_erp`)
+    FOREIGN KEY (`product_id`)
+    REFERENCES `almox`.`products` (`internalCode`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -175,15 +192,15 @@ ENGINE = InnoDB;
 -- Table `almox`.`product_inventory`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `almox`.`product_inventory` (
-  `product` INT NOT NULL,
+  `product_id` INT NOT NULL,
   `minimum_inventory` INT NOT NULL,
-  `estoque_atual` INT NOT NULL,
+  `current_invetory` INT NOT NULL,
   `maximum_inventory` INT NOT NULL,
-  INDEX `fk_estoques_produto1_idx` (`product` ASC) VISIBLE,
-  PRIMARY KEY (`product`),
+  INDEX `fk_estoques_produto1_idx` (`product_id` ASC) VISIBLE,
+  PRIMARY KEY (`product_id`),
   CONSTRAINT `fk_estoques_produto1`
-    FOREIGN KEY (`product`)
-    REFERENCES `almox`.`products` (`code_erp`)
+    FOREIGN KEY (`product_id`)
+    REFERENCES `almox`.`products` (`internalCode`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -192,6 +209,7 @@ ENGINE = InnoDB;
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
 
 USE almox;
 
