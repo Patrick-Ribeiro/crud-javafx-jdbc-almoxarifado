@@ -5,6 +5,7 @@ import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserGroupPersistenceService;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import model.services.persistence.exceptions.PersistenceException;
 
 import java.sql.Connection;
@@ -41,8 +42,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
 
             DatabaseConnection.closeConnection(connection, preparedStmt);
         } catch (SQLException ex) {
-            ex.printStackTrace();
-            Logs.error(ex);
+            throw new PersistenceException(ex.getMessage());
         }
     }
 
@@ -57,8 +57,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
 
             DatabaseConnection.closeConnection(connection, stmt);
         } catch (SQLException e) {
-            Logs.error(e);
-            throw new DatabaseConnectionException(e.getMessage());
+            throw new DatabaseIntegrityException(e.getMessage());
         }
     }
 
@@ -81,7 +80,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
 
             DatabaseConnection.closeConnection(connection, preparedStmt);
         } catch (SQLException e) {
-            Logs.error(e);
+            throw new PersistenceException(e.getMessage());
         }
     }
 
@@ -99,7 +98,6 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
             DatabaseConnection.closeConnection(connection, stmt, resultSet);
             return users;
         } catch (SQLException e) {
-            Logs.error(e);
             throw new PersistenceException(e.getMessage());
         }
     }
@@ -122,7 +120,6 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
             DatabaseConnection.closeConnection(connection, stmt, resultSet);
             return userFound;
         } catch (SQLException e) {
-            Logs.error(e);
             throw new PersistenceException(e.getMessage());
         }
     }
@@ -145,7 +142,6 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
             DatabaseConnection.closeConnection(connection, stmt, resultSet);
             return usersFound;
         } catch (SQLException e) {
-            Logs.error(e);
             throw new PersistenceException(e.getMessage());
         }
     }

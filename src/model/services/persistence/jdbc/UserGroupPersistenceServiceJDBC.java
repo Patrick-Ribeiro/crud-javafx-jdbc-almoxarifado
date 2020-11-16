@@ -3,6 +3,7 @@ package model.services.persistence.jdbc;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserGroupPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import model.services.persistence.exceptions.PersistenceException;
 import util.Logs;
 
@@ -26,7 +27,6 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
 
             DatabaseConnection.closeConnection(connection, preparedStmt);
         } catch (SQLException ex) {
-            Logs.error(ex);
             throw new PersistenceException(ex.getMessage());
         }
     }
@@ -41,7 +41,7 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
 
             DatabaseConnection.closeConnection(connection, preparedStmt);
         } catch (SQLException ex) {
-            Logs.error(ex);
+            throw new DatabaseIntegrityException(ex.getMessage());
         }
     }
 
@@ -60,7 +60,6 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
 
             DatabaseConnection.closeConnection(connection, preparedStmt);
         } catch (SQLException ex) {
-            Logs.error(ex);
             throw new DatabaseConnectionException(ex.getMessage());
         }
     }
@@ -97,7 +96,6 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
             DatabaseConnection.closeConnection(connection, preparedStmt, resultSet);
             return userGroup;
         } catch (SQLException ex) {
-            Logs.error(ex);
             throw new PersistenceException(ex.getMessage());
         }
     }

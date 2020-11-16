@@ -11,6 +11,7 @@ import javafx.stage.StageStyle;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserGroupPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import ui.WindowLoader;
 import ui.util.StageUtilities;
 
@@ -61,8 +62,15 @@ public class UserGroupListController {
             alert.initStyle(StageStyle.UNDECORATED);
             alert.showAndWait().ifPresent(type -> {
                 if (type == ButtonType.YES) {
-                    userGroupPersistenceService.delete(userGroup.getId());
-                    updateList();
+                    try {
+                        userGroupPersistenceService.delete(userGroup.getId());
+                        updateList();
+                    } catch (DatabaseIntegrityException ex) {
+                        Alert alertError = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
+                        alertError.setHeaderText("Não é possível excluir este grupo, pois está associado à um ou mais usuários.");
+                        alertError.initStyle(StageStyle.UNDECORATED);
+                        alertError.show();
+                    }
                 }
             });
         }
