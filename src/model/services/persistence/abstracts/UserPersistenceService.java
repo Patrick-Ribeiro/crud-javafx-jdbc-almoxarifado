@@ -25,4 +25,6 @@ public interface UserPersistenceService {
 
     public User find(int id);
 
+    public List<User> find(String filter);
+
 }

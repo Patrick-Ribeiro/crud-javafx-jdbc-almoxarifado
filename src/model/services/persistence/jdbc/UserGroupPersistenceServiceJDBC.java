@@ -106,7 +106,6 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
         Integer id = resultSet.getInt("id");
         String description = resultSet.getString("description");
         UserGroup userGroup = new UserGroup(id, description);
-        System.out.println(userGroup.getDescription());
         return userGroup;
     }
 }

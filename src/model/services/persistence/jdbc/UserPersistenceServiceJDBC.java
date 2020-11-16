@@ -4,6 +4,7 @@ import model.entities.User;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserGroupPersistenceService;
 import model.services.persistence.abstracts.UserPersistenceService;
+import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.exceptions.PersistenceException;
 
 import java.sql.Connection;
@@ -46,8 +47,19 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int code) {
+        String sql = "DELETE FROM users WHERE code_erp = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, code);
+            Logs.informationQuery(stmt);
+            stmt.executeUpdate();
+
+            DatabaseConnection.closeConnection(connection, stmt);
+        } catch (SQLException e) {
+            Logs.error(e);
+            throw new DatabaseConnectionException(e.getMessage());
+        }
     }
 
     @Override
@@ -88,7 +100,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
             return users;
         } catch (SQLException e) {
             Logs.error(e);
-            return new ArrayList<>();
+            throw new PersistenceException(e.getMessage());
         }
     }
 
@@ -111,7 +123,30 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
             return userFound;
         } catch (SQLException e) {
             Logs.error(e);
-            return new User();
+            throw new PersistenceException(e.getMessage());
+        }
+    }
+
+    @Override
+    public List<User> find(String filter) {
+        String sql = "SELECT * FROM users WHERE name LIKE ? OR code_erp LIKE ? OR email LIKE ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            Logs.informationQuery(stmt);
+            stmt.setString(1, filter + "%");
+            stmt.setString(2, filter + "%");
+            stmt.setString(3, filter + "%");
+            ResultSet resultSet = stmt.executeQuery();
+
+            List<User> usersFound = new ArrayList<>();
+            while (resultSet.next())
+                usersFound.add(fromResultSet(resultSet));
+
+            DatabaseConnection.closeConnection(connection, stmt, resultSet);
+            return usersFound;
+        } catch (SQLException e) {
+            Logs.error(e);
+            throw new PersistenceException(e.getMessage());
         }
     }
 
@@ -120,6 +155,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
         String name = resultSet.getString("name");
         String password = resultSet.getString("password");
         String email = resultSet.getString("email");
+        String telephone = resultSet.getString("telephone");
         Integer idGroup = resultSet.getInt("user_group");
         UserGroup userGroup = new UserGroupPersistenceServiceJDBC().find(idGroup);
         boolean active = resultSet.getBoolean("active");
@@ -127,6 +163,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
         User user = new User(id, name, userGroup, active);
         user.setPassword(password);
         user.setEmail(email);
+        user.setTelephone(telephone);
         return user;
     }
 }

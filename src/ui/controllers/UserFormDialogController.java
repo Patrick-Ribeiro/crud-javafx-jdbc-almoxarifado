@@ -15,11 +15,13 @@ import model.entities.User;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
+import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.util.Constraints;
 import ui.util.StageUtilities;
 import ui.util.Util;
 
+import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -59,8 +61,7 @@ public class UserFormDialogController implements Initializable {
 
     @FXML
     void onButtonCancelAction(ActionEvent event) {
-        StageUtilities.currentStage(event).close();
-        WindowLoader.getMainScene().getRoot().setEffect(null);
+        WindowLoader.closePopupScreen(StageUtilities.currentStage(event));
     }
 
     @FXML
@@ -73,15 +74,21 @@ public class UserFormDialogController implements Initializable {
     }
 
     @FXML
-    void onButtonConfirmAction(ActionEvent event) {
-        if (persistenceService == null) {
+    synchronized void onButtonConfirmAction(ActionEvent event) {
+        if (persistenceService == null)
             throw new IllegalStateException("UserPersistenceService está nulo");
-        }
         User user = getFormData();
         if (persistenceService.find(user.getCode()) == null)
             persistenceService.insert(user);
         else
             persistenceService.update(user);
+
+        WindowLoader.closePopupScreen(StageUtilities.currentStage(event));
+        WindowLoader.getMainController().loadScreen(getClass().getResource("/ui/fxml/userList.fxml"),
+                (UserListController controller) -> {
+                    controller.setUserPersistence(new UserPersistenceServiceJDBC());
+                    controller.updateTable();
+                });
     }
 
     public void setUserPersistenceService(UserPersistenceService userPersistenceService) {
@@ -94,6 +101,12 @@ public class UserFormDialogController implements Initializable {
         WindowLoader.getMainScene().getRoot().setEffect(null);
     }
 
+    @FXML
+    void onTextFieldUserCodeKeyPressed(Event event) {
+        if (!textFieldUserCode.isEditable())
+            labelErrorUserCode.setText("Não é possível editar o código");
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeNodes();
@@ -102,7 +115,6 @@ public class UserFormDialogController implements Initializable {
     private void initializeNodes() {
         Constraints.setTextFieldInteger(textFieldUserCode);
         Constraints.setTextFieldMaxLength(textFieldUserCode, 4);
-
         Constraints.setTextFieldMaxLength(textFieldName, 35);
     }
 
@@ -117,6 +129,11 @@ public class UserFormDialogController implements Initializable {
         comboBoxGroup.setItems(FXCollections.observableArrayList(new UserGroupPersistenceServiceJDBC().findAll()));
         comboBoxGroup.getSelectionModel().select(user.getGroup());
         checkBoxActive.setSelected(user.isActive());
+
+        if (user.getCode() != null) {
+            textFieldUserCode.setEditable(false);
+            textFieldUserCode.setDisable(false);
+        }
     }
 
     public User getFormData() {
@@ -132,4 +149,5 @@ public class UserFormDialogController implements Initializable {
         user.setTelephone(telephone);
         return user;
     }
+
 }

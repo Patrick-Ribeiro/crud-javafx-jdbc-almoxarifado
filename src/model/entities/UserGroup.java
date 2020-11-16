@@ -1,5 +1,7 @@
 package model.entities;
 
+import java.util.Objects;
+
 public class UserGroup {
 
     private Integer id;
@@ -31,6 +33,20 @@ public class UserGroup {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserGroup userGroup = (UserGroup) o;
+        return Objects.equals(id, userGroup.id) &&
+                Objects.equals(description, userGroup.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description);
     }
 
     @Override

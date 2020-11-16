@@ -1,6 +1,7 @@
 package ui;
 
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import ui.controllers.abstracts.AbstractMainController;
 import util.Logs;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.function.Consumer;
 public class WindowLoader extends Application {
 
     private static Scene mainScene;
+    private static AbstractMainController mainController;
 
     @Override
     public void start(Stage primaryStage) {
@@ -27,6 +30,7 @@ public class WindowLoader extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(locationMainFXMl));
             Parent root = loader.load();
             mainScene = new Scene(root, 1280, 720);
+            mainController = loader.getController();
 
             primaryStage.initStyle(StageStyle.UNDECORATED);
             primaryStage.setTitle("Almoxarifado");
@@ -61,7 +65,16 @@ public class WindowLoader extends Application {
         }
     }
 
+    public static void closePopupScreen(Stage stagePopup) {
+        stagePopup.close();
+        getMainScene().getRoot().setEffect(null);
+    }
+
     public static Scene getMainScene() {
         return mainScene;
+    }
+
+    public static AbstractMainController getMainController() {
+        return mainController;
     }
 }

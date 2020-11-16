@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.entities.User;
@@ -63,11 +65,19 @@ public class UserListController implements Initializable {
     }
 
     @FXML
-    public void onTextFieldSearchKeyPressed(Event event) {
+    public void onTextFieldSearchKeyPressed(KeyEvent event) {
+        String filterSearch = textFieldSearch.getText();
+        if (filterSearch.length() <= 1 || filterSearch == null || filterSearch.equals("")) {
+            filterTable(userPersistenceService.findAll());
+        } else {
+            filterTable(userPersistenceService.find(filterSearch));
+        }
     }
 
     @FXML
     public void onButtonSearchAction(Event event) {
+        String filterSearch = textFieldSearch.getText();
+        filterTable(userPersistenceService.find(filterSearch));
     }
 
     @FXML
@@ -76,8 +86,17 @@ public class UserListController implements Initializable {
         if (user == null) {
 
         } else {
-            userPersistenceService.delete(user.getCode());
-            updateTable();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Confirma a exclusão do usuário " + user.getCode() + "?",
+                    ButtonType.YES, ButtonType.NO);
+            alert.initStyle(StageStyle.UNDECORATED);
+            alert.setHeaderText("Exclusão de usuário");
+
+            alert.showAndWait().ifPresent(type -> {
+                if (type == ButtonType.YES) {
+                    userPersistenceService.delete(user.getCode());
+                    updateTable();
+                }
+            });
         }
     }
 
@@ -88,6 +107,7 @@ public class UserListController implements Initializable {
         dialogStage.setTitle("Formulário de usuário");
         URL fxmlLocation = getClass().getResource("/ui/fxml/userFormDialog.fxml");
         User user = tableViewUsers.getSelectionModel().getSelectedItem();
+
         WindowLoader.createPopupScreen(fxmlLocation, parentStage,
                 dialogStage, (UserFormDialogController controller) -> {
                     controller.setUser(user);
@@ -100,6 +120,7 @@ public class UserListController implements Initializable {
     public void onButtonUserGroupsAction(ActionEvent event) {
         URL fxmlLocation = getClass().getResource("/ui/fxml/userGroupList.fxml");
         Stage currentStage = StageUtilities.currentStage(event);
+
         WindowLoader.createPopupScreen(fxmlLocation, currentStage,
                 new Stage(), (UserGroupListController controller) -> {
                     controller.setUserGroupPersistence(new UserGroupPersistenceServiceJDBC());
@@ -110,11 +131,10 @@ public class UserListController implements Initializable {
     @FXML
     public void onButtonNewAction(Event event) {
         Stage parentStage = StageUtilities.currentStage(event);
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Formulário de usuário");
         URL fxmlLocation = getClass().getResource("/ui/fxml/userFormDialog.fxml");
+
         WindowLoader.createPopupScreen(fxmlLocation, parentStage,
-                dialogStage, (UserFormDialogController controller) -> {
+                new Stage(), (UserFormDialogController controller) -> {
                     controller.setUser(new User());
                     controller.setUserPersistenceService(new UserPersistenceServiceJDBC());
                     controller.updateFormData();
@@ -127,16 +147,7 @@ public class UserListController implements Initializable {
         }
         try {
             List<User> userList = userPersistenceService.findAll();
-            tableColumnUserCode.setCellValueFactory(new PropertyValueFactory("code"));
-            tableColumnUserName.setCellValueFactory(new PropertyValueFactory("name"));
-            tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory("email"));
-            tableColumnUserTelephone.setCellValueFactory(new PropertyValueFactory("telephone"));
-            tableColumnUserGroup.setCellValueFactory(new PropertyValueFactory("group"));
-            tableColumnUserActive.setCellValueFactory(new PropertyValueFactory("active"));
-            if (userList.size() != 0) {
-                tableViewUsers.setItems(FXCollections.observableArrayList(userList));
-                tableViewUsers.getSelectionModel().select(0);
-            }
+            filterTable(userList);
         } catch (DatabaseConnectionException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
             alert.setHeaderText("Erro de conexão com o banco de daddos.");
@@ -145,5 +156,17 @@ public class UserListController implements Initializable {
         }
     }
 
+    public void filterTable(List<User> userList) {
+        tableColumnUserCode.setCellValueFactory(new PropertyValueFactory("code"));
+        tableColumnUserName.setCellValueFactory(new PropertyValueFactory("name"));
+        tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory("email"));
+        tableColumnUserTelephone.setCellValueFactory(new PropertyValueFactory("telephone"));
+        tableColumnUserGroup.setCellValueFactory(new PropertyValueFactory("group"));
+        tableColumnUserActive.setCellValueFactory(new PropertyValueFactory("active"));
+        if (userList.size() != 0) {
+            tableViewUsers.setItems(FXCollections.observableArrayList(userList));
+            tableViewUsers.getSelectionModel().select(0);
+        }
+    }
 
 }
