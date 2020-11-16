@@ -59,6 +59,17 @@ public class UserFormDialogController implements Initializable {
     @FXML
     private Button buttonClose;
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initializeNodes();
+    }
+
+    private void initializeNodes() {
+        Constraints.setTextFieldInteger(textFieldUserCode);
+        Constraints.setTextFieldMaxLength(textFieldUserCode, 4);
+        Constraints.setTextFieldMaxLength(textFieldName, 35);
+    }
+
     @FXML
     void onButtonCancelAction(ActionEvent event) {
         WindowLoader.closePopupScreen(StageUtilities.currentStage(event));
@@ -77,11 +88,12 @@ public class UserFormDialogController implements Initializable {
     synchronized void onButtonConfirmAction(ActionEvent event) {
         if (persistenceService == null)
             throw new IllegalStateException("UserPersistenceService está nulo");
-        User user = getFormData();
-        if (persistenceService.find(user.getCode()) == null)
-            persistenceService.insert(user);
+
+        User userFromForm = getFormData();
+        if (persistenceService.find(userFromForm.getCode()) == null)
+            persistenceService.insert(userFromForm);
         else
-            persistenceService.update(user);
+            persistenceService.update(userFromForm);
 
         WindowLoader.closePopupScreen(StageUtilities.currentStage(event));
         WindowLoader.getMainController().loadScreen(getClass().getResource("/ui/fxml/userList.fxml"),
@@ -105,17 +117,6 @@ public class UserFormDialogController implements Initializable {
     void onTextFieldUserCodeKeyPressed(Event event) {
         if (!textFieldUserCode.isEditable())
             labelErrorUserCode.setText("Não é possível editar o código");
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initializeNodes();
-    }
-
-    private void initializeNodes() {
-        Constraints.setTextFieldInteger(textFieldUserCode);
-        Constraints.setTextFieldMaxLength(textFieldUserCode, 4);
-        Constraints.setTextFieldMaxLength(textFieldName, 35);
     }
 
     public void updateFormData() {

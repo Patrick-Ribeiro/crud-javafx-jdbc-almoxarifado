@@ -1,7 +1,7 @@
 package model.services.persistence.jdbc;
 
-import model.entities.UserGroup;
-import model.services.persistence.abstracts.UserGroupPersistenceService;
+import model.entities.Packing;
+import model.services.persistence.abstracts.PackingPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.exceptions.DatabaseIntegrityException;
 import model.services.persistence.exceptions.PersistenceException;
@@ -14,14 +14,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceService {
+public class PackingPersistenceServiceJBDC implements PackingPersistenceService {
 
     @Override
-    public void insert(UserGroup userGroup) {
-        String sql = "INSERT INTO user_groups (description) VALUE (?)";
+    public void insert(Packing packing) {
+        String sql = "INSERT INTO packings (description, abbreviation) VALUES (?,?)";
 
         try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
-            preparedStmt.setString(1, userGroup.getDescription());
+            preparedStmt.setString(1, packing.getDescription());
+            preparedStmt.setString(2, packing.getAbbreviation());
             Logs.informationQuery(preparedStmt);
             preparedStmt.executeUpdate();
 
@@ -33,7 +34,7 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
 
     @Override
     public void delete(int id) {
-        String sql = "DELETE FROM user_groups WHERE id = ?";
+        String sql = "DELETE FROM packings WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
             preparedStmt.setInt(1, id);
@@ -46,12 +47,13 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
     }
 
     @Override
-    public void update(UserGroup userGroup) {
-        String sql = "UPDATE user_groups SET description = ? WHERE id = ?";
+    public void update(Packing packing) {
+        String sql = "UPDATE packings SET description = ?, abbreviation = ? WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
-            preparedStmt.setString(1, userGroup.getDescription());
-            preparedStmt.setInt(2, userGroup.getId());
+            preparedStmt.setString(1, packing.getDescription());
+            preparedStmt.setString(2, packing.getAbbreviation());
+            preparedStmt.setInt(3, packing.getId());
             Logs.informationQuery(preparedStmt);
             preparedStmt.executeUpdate();
 
@@ -62,26 +64,26 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
     }
 
     @Override
-    public List<UserGroup> findAll() {
-        String sql = "SELECT * FROM user_groups";
+    public List<Packing> findAll() {
+        String sql = "SELECT * FROM packings";
 
         try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
             Logs.informationQuery(preparedStmt);
             ResultSet resultSet = preparedStmt.executeQuery();
 
-            List<UserGroup> groups = new ArrayList<>();
+            List<Packing> packings = new ArrayList<>();
             while (resultSet.next()) {
-                groups.add(fromResultSet(resultSet));
+                packings.add(fromResultSet(resultSet));
             }
-            return groups;
+            return packings;
         } catch (SQLException ex) {
             throw new PersistenceException(ex.getMessage());
         }
     }
 
     @Override
-    public UserGroup find(int id) {
-        String sql = "SELECT * FROM user_groups WHERE id = ?";
+    public Packing find(int id) {
+        String sql = "SELECT * FROM packings WHERE id = ?";
 
         try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
             preparedStmt.setInt(1, id);
@@ -89,18 +91,18 @@ public class UserGroupPersistenceServiceJDBC implements UserGroupPersistenceServ
             ResultSet resultSet = preparedStmt.executeQuery();
             resultSet.next();
 
-            UserGroup userGroup = fromResultSet(resultSet);
+            Packing packingFound = fromResultSet(resultSet);
             DatabaseConnection.closeConnection(connection, preparedStmt, resultSet);
-            return userGroup;
+            return packingFound;
         } catch (SQLException ex) {
             throw new PersistenceException(ex.getMessage());
         }
     }
 
-    private UserGroup fromResultSet(ResultSet resultSet) throws SQLException {
+    private Packing fromResultSet(ResultSet resultSet) throws SQLException {
         Integer id = resultSet.getInt("id");
         String description = resultSet.getString("description");
-        UserGroup userGroup = new UserGroup(id, description);
-        return userGroup;
+        String abbreviation = resultSet.getString("abbreviation");
+        return new Packing(id, description, abbreviation);
     }
 }

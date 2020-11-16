@@ -157,6 +157,7 @@ public class UserListController implements Initializable {
     }
 
     public void filterTable(List<User> userList) {
+        tableViewUsers.getItems().clear();
         tableColumnUserCode.setCellValueFactory(new PropertyValueFactory("code"));
         tableColumnUserName.setCellValueFactory(new PropertyValueFactory("name"));
         tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory("email"));

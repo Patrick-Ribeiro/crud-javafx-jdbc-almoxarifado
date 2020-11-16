@@ -57,7 +57,6 @@
 
 .button-menu:hover {
     -fx-background-color: #B2DFFF;
-    -fx-text-fill:  #0C5EE8;
 }
 
 .textfield {

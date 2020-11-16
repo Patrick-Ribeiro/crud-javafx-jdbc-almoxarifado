@@ -4,6 +4,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -20,7 +22,7 @@
                         <Font size="13.0" />
                     </font>
                     <graphic>
-                        <FontAwesomeIconView />
+                        <FontAwesomeIconView size="16" />
                     </graphic>
                 </Button>
                 <Button fx:id="buttonProducts" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Produtos">
@@ -31,7 +33,7 @@
                         <Font size="13.0" />
                     </font>
                     <graphic>
-                        <FontAwesomeIconView />
+                        <FontAwesomeIconView size="16" />
                     </graphic>
                 </Button>
                 <Button fx:id="buttonOrders" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonOrdersAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Pedidos">
@@ -42,7 +44,7 @@
                         <Font size="13.0" />
                     </font>
                     <graphic>
-                        <FontAwesomeIconView />
+                        <FontAwesomeIconView size="16" />
                     </graphic>
                 </Button>
                 <Button fx:id="buttonUsers" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonUsersAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Usuários">
@@ -52,9 +54,13 @@
                     <font>
                         <Font size="13.0" />
                     </font>
-                    <graphic>
-                        <FontAwesomeIconView />
-                    </graphic>
+               <graphic>
+                  <ImageView fitHeight="28.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../media/icons/user.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
                 </Button>
             </children>
         </VBox>
