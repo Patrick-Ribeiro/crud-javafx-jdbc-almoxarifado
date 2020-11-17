@@ -96,7 +96,6 @@ public class PackingListController implements Initializable {
             alert.initStyle(StageStyle.UNDECORATED);
             alert.showAndWait();
         }
-
     }
 
     @FXML

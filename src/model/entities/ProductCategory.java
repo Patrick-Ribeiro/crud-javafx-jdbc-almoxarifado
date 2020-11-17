@@ -5,7 +5,8 @@ public class ProductCategory {
     private Integer id;
     private String description;
 
-    public ProductCategory() {
+    public ProductCategory(String description) {
+        this.description = description;
     }
 
     public ProductCategory(Integer id, String description) {
@@ -31,8 +32,6 @@ public class ProductCategory {
 
     @Override
     public String toString() {
-        return "ProductCategory{" +
-                "description='" + description + '\'' +
-                '}';
+        return description;
     }
 }
