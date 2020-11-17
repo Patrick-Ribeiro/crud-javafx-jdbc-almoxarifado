@@ -51,13 +51,13 @@
                       <TextField fx:id="textFieldSearch" onKeyPressed="#onTextFieldSearchKeyPressed" prefHeight="35.0" prefWidth="50.0" promptText="Pesquisa" styleClass="textField-search" stylesheets="@../css/styles.css" />
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
                      <children>
-                        <Button fx:id="buttonProductGroups" mnemonicParsing="false" onAction="#onButtonProductGroupsAction" prefHeight="30.0" prefWidth="80.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
+                        <Button fx:id="buttonGroups" mnemonicParsing="false" onAction="#onButtonGroupsAction" prefHeight="30.0" prefWidth="80.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Button>
                         <Button fx:id="buttonPackings" mnemonicParsing="false" onAction="#onButtonPackingsAction" prefHeight="30.0" prefWidth="82.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Embalagens" />
-                        <Button fx:id="buttonPackings1" mnemonicParsing="false" onAction="#onButtonPackingsAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Categorias" />
+                        <Button fx:id="buttonCategories" mnemonicParsing="false" onAction="#onButtonCategoriesAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Categorias" />
                      </children>
                   </HBox>
                </children>

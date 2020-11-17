@@ -13,6 +13,7 @@ import model.entities.Product;
 import model.entities.ProductCategory;
 import model.entities.ProductGroup;
 import model.entities.User;
+import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.jdbc.PackingPersistenceServiceJBDC;
@@ -72,8 +73,18 @@ public class ProductListController implements Initializable {
     }
 
     @FXML
-    void onButtonProductGroupsAction(ActionEvent event) {
+    void onButtonGroupsAction(ActionEvent event) {
 
+    }
+
+    @FXML
+    void onButtonCategoriesAction(ActionEvent event) {
+        Stage currentStage = StageUtilities.currentStage(event);
+        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/productCategoryList.fxml"), currentStage,
+                new Stage(), (ProductCategoryListController controller) -> {
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductCategoryPersistenceService());
+                    controller.updateList();
+                });
     }
 
     @FXML
@@ -81,7 +92,7 @@ public class ProductListController implements Initializable {
         Stage currentStage = StageUtilities.currentStage(event);
         WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/PackingList.fxml"), currentStage,
                 new Stage(), (PackingListController controller) -> {
-                    controller.setPersistenceService(new PackingPersistenceServiceJBDC());
+                    controller.setPersistenceService(PersistenceServiceFactory.createPackingPersistenceService());
                     controller.updateList();
                 });
     }

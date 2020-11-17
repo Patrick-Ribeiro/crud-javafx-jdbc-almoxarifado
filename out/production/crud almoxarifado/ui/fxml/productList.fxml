@@ -16,16 +16,17 @@
     <children>
         <HBox alignment="TOP_RIGHT" fillHeight="false" minHeight="-Infinity" spacing="5.0">
             <children>
-            <GridPane prefHeight="30.0" prefWidth="1082.0">
+            <GridPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" prefWidth="1082.0">
               <columnConstraints>
                 <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="RIGHT" minWidth="-Infinity" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="2">
                      <children>
                             <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#onButtonDeleteAction" prefHeight="35.0" prefWidth="55.0" styleClass="button-attention" stylesheets="@../css/styles.css" text="Excluir">
                            <font>
@@ -47,19 +48,16 @@
                         </Button>
                      </children>
                   </HBox>
-                  <HBox maxWidth="1.7976931348623157E308" nodeOrientation="LEFT_TO_RIGHT" spacing="5.0" GridPane.hgrow="ALWAYS" GridPane.valignment="TOP" GridPane.vgrow="ALWAYS">
+                      <TextField fx:id="textFieldSearch" onKeyPressed="#onTextFieldSearchKeyPressed" prefHeight="35.0" prefWidth="50.0" promptText="Pesquisa" styleClass="textField-search" stylesheets="@../css/styles.css" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
                      <children>
-                            <TextField fx:id="textFieldSearch" onKeyPressed="#onTextFieldSearchKeyPressed" prefHeight="35.0" prefWidth="330.0" promptText="Pesquisa" styleClass="textField-search" stylesheets="@../css/styles.css">
-                                <HBox.margin>
-                                    <Insets />
-                                </HBox.margin>
-                            </TextField>
-                        <Button fx:id="buttonProductGroups" mnemonicParsing="false" onAction="#onButtonProductGroupsAction" prefHeight="35.0" prefWidth="60.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
+                        <Button fx:id="buttonGroups" mnemonicParsing="false" onAction="#onButtonGroupsAction" prefHeight="30.0" prefWidth="80.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Button>
-                        <Button fx:id="buttonPackings" mnemonicParsing="false" onAction="#onButtonPackingsAction" prefHeight="30.0" prefWidth="85.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Embalagens" />
+                        <Button fx:id="buttonPackings" mnemonicParsing="false" onAction="#onButtonPackingsAction" prefHeight="30.0" prefWidth="82.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Embalagens" />
+                        <Button fx:id="buttonCategories" mnemonicParsing="false" onAction="#onButtonCategoriesAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Categorias" />
                      </children>
                   </HBox>
                </children>
