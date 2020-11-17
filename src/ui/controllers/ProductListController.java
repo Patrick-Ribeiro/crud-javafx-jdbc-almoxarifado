@@ -74,7 +74,12 @@ public class ProductListController implements Initializable {
 
     @FXML
     void onButtonGroupsAction(ActionEvent event) {
-
+        Stage currentStage = StageUtilities.currentStage(event);
+        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/productGroupList.fxml"), currentStage,
+                new Stage(), (ProductGroupListController controller) -> {
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductGroupPersistenceService());
+                    controller.updateTable();
+                });
     }
 
     @FXML

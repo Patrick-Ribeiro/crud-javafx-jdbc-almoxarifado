@@ -25,7 +25,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
             throw new PersistenceException("O usuário de código " + user.getCode() + " já está cadastrado.");
         }
         String sql = "INSERT INTO users"
-                + " (code_erp, name, email, telephone, user_group, active)"
+                + " (code_erp, name, email, telephone, group_id, active)"
                 + " VALUE (?,?,?,?,?,?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
@@ -64,7 +64,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
     @Override
     public void update(User user) {
         String sql = "UPDATE users SET "
-                + "name = ?, email = ?, telephone = ?, user_group = ?, active = ?"
+                + "name = ?, email = ?, telephone = ?, group_id = ?, active = ?"
                 + " WHERE code_erp = ?";
 
         try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
@@ -152,7 +152,7 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
         String password = resultSet.getString("password");
         String email = resultSet.getString("email");
         String telephone = resultSet.getString("telephone");
-        Integer idGroup = resultSet.getInt("user_group");
+        Integer idGroup = resultSet.getInt("group_id");
         UserGroup userGroup = new UserGroupPersistenceServiceJDBC().find(idGroup);
         boolean active = resultSet.getBoolean("active");
 

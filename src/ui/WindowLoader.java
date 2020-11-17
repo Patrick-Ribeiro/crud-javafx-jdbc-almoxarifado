@@ -53,7 +53,6 @@ public class WindowLoader extends Application {
             dialogStage.initModality(Modality.WINDOW_MODAL);
 
             ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
-            colorAdjust.setInput(new GaussianBlur());
             WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
 
             T controller = loader.getController();
