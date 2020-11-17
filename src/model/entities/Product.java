@@ -92,7 +92,7 @@ public class Product {
         this.buyer = buyer;
     }
 
-    public Boolean getActive() {
+    public Boolean isActive() {
         return active;
     }
 

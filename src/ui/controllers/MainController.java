@@ -1,11 +1,13 @@
 package ui.controllers;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.jdbc.PackingPersistenceServiceJBDC;
 import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
@@ -36,17 +38,20 @@ public class MainController extends AbstractMainController {
 
     @FXML
     public void onButtonDashboardAction(Event event) {
-        Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/PackingList.fxml"), currentStage,
-                new Stage(), (PackingListController controller) -> {
-                    controller.setPersistenceService(new PackingPersistenceServiceJBDC());
-                    controller.updateList();
-                });
+
     }
 
     @FXML
-    public void onButtonOrdersAction(Event event) {
+    public void onButtonOrdersAction(ActionEvent event) {
 
+    }
+
+    @FXML
+    void onButtonProductsAction(ActionEvent event) {
+        loadScreen(getClass().getResource("/ui/fxml/productList.fxml"), (ProductListController controller) -> {
+            controller.setPersistenceService(PersistenceServiceFactory.createProductPersistenceService());
+            controller.updateTable();
+        });
     }
 
     @FXML

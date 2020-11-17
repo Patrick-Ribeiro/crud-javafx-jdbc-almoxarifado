@@ -25,7 +25,7 @@
                         <FontAwesomeIconView size="16" />
                     </graphic>
                 </Button>
-                <Button fx:id="buttonProducts" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Produtos">
+                <Button fx:id="buttonProducts" alignment="BASELINE_LEFT" focusTraversable="false" graphicTextGap="5.0" mnemonicParsing="false" onAction="#onButtonProductsAction" prefHeight="30.0" prefWidth="180.0" styleClass="button-menu" stylesheets="@../css/styles.css" text="Produtos">
                     <opaqueInsets>
                         <Insets />
                     </opaqueInsets>
