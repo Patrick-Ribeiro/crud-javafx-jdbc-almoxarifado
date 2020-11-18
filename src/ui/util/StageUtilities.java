@@ -26,12 +26,6 @@ public class StageUtilities {
             stage.setX(event.getScreenX() - xOffset);
             stage.setY(event.getScreenY() - yOffset);
             //stage.setOpacity(0.8F);
-        });/*
-        pane.setOnDragDone((event) -> {
-            stage.setOpacity(1F);
         });
-        pane.setOnMouseReleased((event) -> {
-            stage.setOpacity(1F);
-        });*/
     }
 }
