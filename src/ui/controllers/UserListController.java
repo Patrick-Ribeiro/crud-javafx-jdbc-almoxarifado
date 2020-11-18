@@ -7,7 +7,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -18,24 +17,18 @@ import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
 import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
+import ui.listeners.DataChangeListener;
+import ui.util.Alerts;
 import ui.util.StageUtilities;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class UserListController implements Initializable {
+public class UserListController implements Initializable, DataChangeListener {
 
-    UserPersistenceService userPersistenceService;
+    UserPersistenceService persistenceService;
 
-    @FXML
-    Button buttonNew;
-    @FXML
-    Button buttonEdit;
-    @FXML
-    Button buttonDelete;
-    @FXML
-    Button buttonSearch;
     @FXML
     Button buttonUserGroups;
     @FXML
@@ -60,24 +53,24 @@ public class UserListController implements Initializable {
 
     }
 
-    public void setUserPersistence(UserPersistenceService userPersistenceService) {
-        this.userPersistenceService = userPersistenceService;
+    public void setPersistenceService(UserPersistenceService persistenceService) {
+        this.persistenceService = persistenceService;
     }
 
     @FXML
     public void onTextFieldSearchKeyPressed(KeyEvent event) {
         String filterSearch = textFieldSearch.getText();
         if (filterSearch.length() <= 1 || filterSearch == null || filterSearch.equals("")) {
-            filterTable(userPersistenceService.findAll());
+            filterTable(persistenceService.findAll());
         } else {
-            filterTable(userPersistenceService.find(filterSearch));
+            filterTable(persistenceService.find(filterSearch));
         }
     }
 
     @FXML
     public void onButtonSearchAction(Event event) {
         String filterSearch = textFieldSearch.getText();
-        filterTable(userPersistenceService.find(filterSearch));
+        filterTable(persistenceService.find(filterSearch));
     }
 
     @FXML
@@ -86,14 +79,9 @@ public class UserListController implements Initializable {
         if (user == null) {
 
         } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Confirma a exclusão do usuário " + user.getCode() + "?",
-                    ButtonType.YES, ButtonType.NO);
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.setHeaderText("Exclusão de usuário");
-
-            alert.showAndWait().ifPresent(type -> {
+            Alerts.showConfirmation("Exclusão de usuário", "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
                 if (type == ButtonType.YES) {
-                    userPersistenceService.delete(user.getCode());
+                    persistenceService.delete(user.getCode());
                     updateTable();
                 }
             });
@@ -113,6 +101,7 @@ public class UserListController implements Initializable {
                     controller.setUser(user);
                     controller.setUserPersistenceService(new UserPersistenceServiceJDBC());
                     controller.updateFormData();
+                    controller.subscribeListener(this);
                 });
     }
 
@@ -138,15 +127,16 @@ public class UserListController implements Initializable {
                     controller.setUser(new User());
                     controller.setUserPersistenceService(new UserPersistenceServiceJDBC());
                     controller.updateFormData();
+                    controller.subscribeListener(this);
                 });
     }
 
     public void updateTable() {
-        if (userPersistenceService == null) {
+        if (persistenceService == null) {
             throw new IllegalStateException("UserPersistenceService é nulo");
         }
         try {
-            List<User> userList = userPersistenceService.findAll();
+            List<User> userList = persistenceService.findAll();
             filterTable(userList);
         } catch (DatabaseConnectionException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
@@ -170,4 +160,8 @@ public class UserListController implements Initializable {
         }
     }
 
+    @Override
+    public void onChangedData() {
+        updateTable();
+    }
 }

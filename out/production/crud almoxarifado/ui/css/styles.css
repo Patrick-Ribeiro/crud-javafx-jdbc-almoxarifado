@@ -20,6 +20,14 @@
     -fx-border-radius: 5;
 }
 
+.button-simple {
+    -fx-background-color: #FAFAFA;
+    -fx-text-fill:  #0C5EE8;
+    -fx-background-radius: 8;
+    -fx-border-color: #BEBEBE;
+    -fx-border-radius: 5;
+}
+
 .button-classic:hover {
     -fx-background-color: #C7EAFF;
 }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="269.0" prefWidth="303.0" style="-fx-background-color: #FAFAFA;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.PackingListController">
+<AnchorPane prefHeight="269.0" prefWidth="303.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.PackingListController">
     <children>
         <ListView fx:id="listViewPackings" focusTraversable="false" layoutX="20.0" layoutY="84.0" prefHeight="184.0" prefWidth="303.0" styleClass="table-view" stylesheets="@../css/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" />
         <HBox layoutX="113.0" layoutY="44.0" spacing="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="44.0">

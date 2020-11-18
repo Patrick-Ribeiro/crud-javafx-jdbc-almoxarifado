@@ -57,7 +57,7 @@ public class MainController extends AbstractMainController {
     @FXML
     public void onButtonUsersAction(Event event) {
         loadScreen(getClass().getResource("/ui/fxml/userList.fxml"), (UserListController controller) -> {
-            controller.setUserPersistence(new UserPersistenceServiceJDBC());
+            controller.setPersistenceService(new UserPersistenceServiceJDBC());
             controller.updateTable();
         });
     }

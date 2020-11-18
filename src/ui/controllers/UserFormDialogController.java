@@ -15,14 +15,15 @@ import model.entities.User;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
-import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
+import ui.listeners.DataChangeListener;
 import ui.util.Constraints;
 import ui.util.StageUtilities;
 import ui.util.Util;
 
-import java.awt.event.KeyEvent;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class UserFormDialogController implements Initializable {
@@ -59,6 +60,8 @@ public class UserFormDialogController implements Initializable {
     @FXML
     private Button buttonClose;
 
+    private List<DataChangeListener> listeners = new ArrayList<>();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initializeNodes();
@@ -68,6 +71,16 @@ public class UserFormDialogController implements Initializable {
         Constraints.setTextFieldInteger(textFieldUserCode);
         Constraints.setTextFieldMaxLength(textFieldUserCode, 4);
         Constraints.setTextFieldMaxLength(textFieldName, 35);
+    }
+
+    public void subscribeListener(DataChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    private void notifyChanges() {
+        for (DataChangeListener listener : listeners) {
+            listener.onChangedData();
+        }
     }
 
     @FXML
@@ -96,11 +109,7 @@ public class UserFormDialogController implements Initializable {
             persistenceService.update(userFromForm);
 
         WindowLoader.closePopupScreen(StageUtilities.currentStage(event));
-        WindowLoader.getMainController().loadScreen(getClass().getResource("/ui/fxml/userList.fxml"),
-                (UserListController controller) -> {
-                    controller.setUserPersistence(new UserPersistenceServiceJDBC());
-                    controller.updateTable();
-                });
+        notifyChanges();
     }
 
     public void setUserPersistenceService(UserPersistenceService userPersistenceService) {
