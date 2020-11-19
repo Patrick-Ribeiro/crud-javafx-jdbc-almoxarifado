@@ -35,8 +35,7 @@ public class ProductGroupListController {
 
     @FXML
     void onButtonCloseAction(ActionEvent event) {
-        Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.closePopupScreen(currentStage);
+        WindowLoader.closePopup(StageUtilities.currentStage(event));
     }
 
     @FXML

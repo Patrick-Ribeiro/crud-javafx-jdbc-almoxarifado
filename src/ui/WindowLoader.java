@@ -16,12 +16,15 @@ import util.Logs;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class WindowLoader extends Application {
 
     private static Scene mainScene;
     private static AbstractMainController mainController;
+    private static List<Stage> popupsOpen = new ArrayList<>();
 
     @Override
     public void start(Stage primaryStage) {
@@ -52,28 +55,34 @@ public class WindowLoader extends Application {
             dialogStage.initStyle(StageStyle.UNDECORATED);
             dialogStage.initModality(Modality.WINDOW_MODAL);
 
-            ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
-            WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
-
             T controller = loader.getController();
             initializingAction.accept(controller);
 
-            dialogStage.showAndWait();
+            dialogStage.setOnShowing(event -> {
+                ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
+                WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
+            });
+
+            openPopup(dialogStage);
         } catch (IOException ex) {
             System.out.println("ERRO " + ex.getMessage());
         }
     }
 
-    public static void closePopupScreen(Stage stagePopup) {
-        stagePopup.close();
-        getMainScene().getRoot().setEffect(null);
+    private static void openPopup(Stage popup) {
+        popupsOpen.add(popup);
+        popup.showAndWait();
+    }
+
+    public static void closePopup(Stage popup) {
+        popup.close();
+        popupsOpen.remove(popup);
+        if (popupsOpen.size() < 1) {
+            WindowLoader.getMainScene().getRoot().setEffect(null);
+        }
     }
 
     public static Scene getMainScene() {
         return mainScene;
-    }
-
-    public static AbstractMainController getMainController() {
-        return mainController;
     }
 }

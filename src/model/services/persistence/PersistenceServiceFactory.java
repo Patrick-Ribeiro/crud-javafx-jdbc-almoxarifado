@@ -1,30 +1,28 @@
 package model.services.persistence;
 
-import model.services.persistence.abstracts.PackingPersistenceService;
-import model.services.persistence.abstracts.ProductCategoryPersistenceService;
-import model.services.persistence.abstracts.ProductGroupPersistenceService;
-import model.services.persistence.abstracts.ProductPersistenceService;
-import model.services.persistence.jdbc.PackingPersistenceServiceJBDC;
-import model.services.persistence.jdbc.ProductCategoryPersistenceServiceJDBC;
-import model.services.persistence.jdbc.ProductGroupPersistenceServiceJDBC;
-import model.services.persistence.jdbc.ProductPersistenceServiceJDBC;
+import model.services.persistence.abstracts.*;
+import model.services.persistence.jdbc.*;
 
 public class PersistenceServiceFactory {
 
-    public static PackingPersistenceService createPackingPersistenceService() {
+    public static PackingPersistenceService createPackingService() {
         return new PackingPersistenceServiceJBDC();
     }
 
-    public static ProductPersistenceService createProductPersistenceService() {
+    public static ProductPersistenceService createProductService() {
         return new ProductPersistenceServiceJDBC();
     }
 
-    public static ProductCategoryPersistenceService createProductCategoryPersistenceService() {
+    public static ProductCategoryPersistenceService createProductCategoryService() {
         return new ProductCategoryPersistenceServiceJDBC();
     }
 
-    public static ProductGroupPersistenceService createProductGroupPersistenceService() {
+    public static ProductGroupPersistenceService createProductGroupService() {
         return new ProductGroupPersistenceServiceJDBC();
+    }
+
+    public static UserGroupPersistenceService createUserGroupService() {
+        return new UserGroupPersistenceServiceJDBC();
     }
 
 }

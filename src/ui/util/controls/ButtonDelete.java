@@ -6,10 +6,11 @@ public class ButtonDelete extends Button {
 
     public ButtonDelete() {
         String style = getClass().getResource("/ui/css/styles.css").toExternalForm();
-        super.getStylesheets().add(style);
-        super.getStyleClass().add("button-attention");
+        getStylesheets().add(style);
+        getStyleClass().add("button-attention");
 
+        setMinWidth(70);
         setPrefSize(60, 20);
-        super.setText("Excluir");
+        setText("Excluir");
     }
 }

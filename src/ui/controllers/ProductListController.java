@@ -12,11 +12,9 @@ import javafx.stage.StageStyle;
 import model.entities.Product;
 import model.entities.ProductCategory;
 import model.entities.ProductGroup;
-import model.entities.User;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
-import model.services.persistence.jdbc.PackingPersistenceServiceJBDC;
 import ui.WindowLoader;
 import ui.util.StageUtilities;
 
@@ -29,26 +27,17 @@ public class ProductListController implements Initializable {
     ProductPersistenceService persistenceService;
 
     @FXML
-    private TextField textFieldSearch;
-
-    @FXML
     private TableView<Product> tableViewProducts;
-
     @FXML
     private TableColumn<Product, Integer> tableColumnInternalCode;
-
     @FXML
     private TableColumn<Product, String> tableColumnDescription;
-
     @FXML
     private TableColumn<Product, String> tableColumnDescriptionERP;
-
     @FXML
     private TableColumn<Product, ProductCategory> tableColumnCategory;
-
     @FXML
     private TableColumn<Product, ProductGroup> tableColumnGroup;
-
     @FXML
     private TableColumn<Product, Boolean> tableColumnActive;
 
@@ -77,7 +66,7 @@ public class ProductListController implements Initializable {
         Stage currentStage = StageUtilities.currentStage(event);
         WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/productGroupList.fxml"), currentStage,
                 new Stage(), (ProductGroupListController controller) -> {
-                    controller.setPersistenceService(PersistenceServiceFactory.createProductGroupPersistenceService());
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductGroupService());
                     controller.updateTable();
                 });
     }
@@ -87,7 +76,7 @@ public class ProductListController implements Initializable {
         Stage currentStage = StageUtilities.currentStage(event);
         WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/productCategoryList.fxml"), currentStage,
                 new Stage(), (ProductCategoryListController controller) -> {
-                    controller.setPersistenceService(PersistenceServiceFactory.createProductCategoryPersistenceService());
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductCategoryService());
                     controller.updateList();
                 });
     }
@@ -95,9 +84,9 @@ public class ProductListController implements Initializable {
     @FXML
     void onButtonPackingsAction(ActionEvent event) {
         Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/PackingList.fxml"), currentStage,
+        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/packingList.fxml"), currentStage,
                 new Stage(), (PackingListController controller) -> {
-                    controller.setPersistenceService(PersistenceServiceFactory.createPackingPersistenceService());
+                    controller.setPersistenceService(PersistenceServiceFactory.createPackingService());
                     controller.updateList();
                 });
     }

@@ -13,7 +13,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import model.entities.User;
 import model.entities.UserGroup;
+import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.UserPersistenceService;
+import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
@@ -67,25 +69,14 @@ public class UserFormDialogController implements Initializable {
         initializeNodes();
     }
 
-    private void initializeNodes() {
-        Constraints.setTextFieldInteger(textFieldUserCode);
-        Constraints.setTextFieldMaxLength(textFieldUserCode, 4);
-        Constraints.setTextFieldMaxLength(textFieldName, 35);
-    }
-
-    public void subscribeListener(DataChangeListener listener) {
-        listeners.add(listener);
-    }
-
-    private void notifyChanges() {
-        for (DataChangeListener listener : listeners) {
-            listener.onChangedData();
-        }
+    @FXML
+    void onButtonCancelAction(ActionEvent event) {
+        WindowLoader.closePopup(StageUtilities.currentStage(event));
     }
 
     @FXML
-    void onButtonCancelAction(ActionEvent event) {
-        WindowLoader.closePopupScreen(StageUtilities.currentStage(event));
+    void onButtonCloseAction(ActionEvent event) {
+        WindowLoader.closePopup(StageUtilities.currentStage(event));
     }
 
     @FXML
@@ -93,8 +84,10 @@ public class UserFormDialogController implements Initializable {
         StageUtilities.makeStageDragable(hboxTitle);
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    @FXML
+    void onTextFieldUserCodeKeyPressed(Event event) {
+        if (!textFieldUserCode.isEditable())
+            labelErrorUserCode.setText("Não é possível editar o código");
     }
 
     @FXML
@@ -108,27 +101,35 @@ public class UserFormDialogController implements Initializable {
         else
             persistenceService.update(userFromForm);
 
-        WindowLoader.closePopupScreen(StageUtilities.currentStage(event));
+        WindowLoader.closePopup(StageUtilities.currentStage(event));
         notifyChanges();
+    }
+
+    private void initializeNodes() {
+        Constraints.setTextFieldInteger(textFieldUserCode);
+        Constraints.setTextFieldMaxLength(textFieldUserCode, 4);
+        Constraints.setTextFieldMaxLength(textFieldName, 35);
     }
 
     public void setUserPersistenceService(UserPersistenceService userPersistenceService) {
         persistenceService = userPersistenceService;
     }
 
-    @FXML
-    void onButtonCloseAction(ActionEvent event) {
-        StageUtilities.currentStage(event).close();
-        WindowLoader.getMainScene().getRoot().setEffect(null);
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    @FXML
-    void onTextFieldUserCodeKeyPressed(Event event) {
-        if (!textFieldUserCode.isEditable())
-            labelErrorUserCode.setText("Não é possível editar o código");
+    public void subscribeListener(DataChangeListener listener) {
+        listeners.add(listener);
     }
 
-    public void updateFormData() {
+    private void notifyChanges() {
+        for (DataChangeListener listener : listeners) {
+            listener.onChangedData();
+        }
+    }
+
+    public void updateFormData() throws DatabaseConnectionException {
         if (user == null) {
             throw new IllegalStateException("Usuário está nulo");
         }
@@ -136,7 +137,7 @@ public class UserFormDialogController implements Initializable {
         textFieldName.setText(user.getName());
         textFieldEmail.setText(user.getEmail());
         textFieldTelephone.setText(user.getTelephone());
-        comboBoxGroup.setItems(FXCollections.observableArrayList(new UserGroupPersistenceServiceJDBC().findAll()));
+        comboBoxGroup.setItems(FXCollections.observableArrayList(PersistenceServiceFactory.createUserGroupService().findAll()));
         comboBoxGroup.getSelectionModel().select(user.getGroup());
         checkBoxActive.setSelected(user.isActive());
 

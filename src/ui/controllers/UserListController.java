@@ -57,8 +57,6 @@ public class UserListController implements Initializable, DataChangeListener {
     TableColumn<User, User> tableColumnEdit;
     @FXML
     TableColumn<User, User> tableColumnDelete;
-    @FXML
-    Button buttonEdit;
 
 
     @Override
@@ -99,16 +97,7 @@ public class UserListController implements Initializable, DataChangeListener {
 
     @FXML
     public void onButtonNewAction(Event event) {
-        Stage parentStage = StageUtilities.currentStage(event);
-        URL fxmlLocation = getClass().getResource("/ui/fxml/userFormDialog.fxml");
-
-        WindowLoader.createPopupScreen(fxmlLocation, parentStage,
-                new Stage(), (UserFormDialogController controller) -> {
-                    controller.setUser(new User());
-                    controller.setUserPersistenceService(new UserPersistenceServiceJDBC());
-                    controller.updateFormData();
-                    controller.subscribeListener(this);
-                });
+        createUserForm(new User());
     }
 
     public void updateTable() {
@@ -138,9 +127,11 @@ public class UserListController implements Initializable, DataChangeListener {
         initDeleteButtons();
         initActiveCheckBoxes();
 
-        if (userList.size() != 0) {
+        if (userList != null && userList.size() != 0) {
+            tableViewUsers.getColumns().clear();
+            tableViewUsers.getColumns().setAll(tableColumnUserCode, tableColumnUserName, tableColumnUserEmail, tableColumnUserTelephone,
+                    tableColumnUserGroup, tableColumnUserActive, tableColumnEdit, tableColumnDelete);
             tableViewUsers.setItems(FXCollections.observableArrayList(userList));
-            tableViewUsers.getSelectionModel().select(0);
         }
     }
 

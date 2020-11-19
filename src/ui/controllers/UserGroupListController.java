@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.stage.StageStyle;
@@ -13,64 +14,49 @@ import model.services.persistence.abstracts.UserGroupPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.exceptions.DatabaseIntegrityException;
 import ui.WindowLoader;
+import ui.listeners.DataChangeListener;
+import ui.listeners.Notifier;
+import ui.util.Alerts;
 import ui.util.StageUtilities;
 
-public class UserGroupListController {
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
 
-    UserGroupPersistenceService userGroupPersistenceService;
+public class UserGroupListController implements Initializable, Notifier {
+
+    private UserGroupPersistenceService persistenceService;
+    private List<DataChangeListener> listeners = new ArrayList<>();
 
     @FXML
     private ListView<UserGroup> listViewUserGroups;
-
-    @FXML
-    private Button buttonDelete;
-
-    @FXML
-    private Button buttonEdit;
-
-    @FXML
-    private Button buttonNew;
-
     @FXML
     private HBox hboxTitle;
 
-    @FXML
-    private Button buttonClose;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
 
     public void setUserGroupPersistence(UserGroupPersistenceService userGroupPersistenceService) {
-        this.userGroupPersistenceService = userGroupPersistenceService;
+        this.persistenceService = userGroupPersistenceService;
     }
 
     @FXML
     public void onButtonCloseAction(ActionEvent event) {
-        StageUtilities.currentStage(event).close();
-        WindowLoader.getMainScene().getRoot().setEffect(null);
+        WindowLoader.closePopup(StageUtilities.currentStage(event));
     }
 
     @FXML
     public void onButtonDeleteAction(ActionEvent event) {
         UserGroup userGroup = listViewUserGroups.getSelectionModel().getSelectedItem();
         if (userGroup == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "É necessário selecionar um grupo da lista", ButtonType.CLOSE);
-            alert.setHeaderText("Grupo não selecionado");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.show();
+            Alerts.showAlert("Erro", "Grupo não selecionado", " necessário selecionar um grupo da lista", Alert.AlertType.ERROR);
         } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Deseja excluir o grupo de usuários "
-                    + userGroup.getDescription() + "?", ButtonType.YES, ButtonType.NO);
-            alert.setHeaderText("Exclusão de grupo");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.showAndWait().ifPresent(type -> {
-                if (type == ButtonType.YES) {
-                    try {
-                        userGroupPersistenceService.delete(userGroup.getId());
-                        updateList();
-                    } catch (DatabaseIntegrityException ex) {
-                        Alert alertError = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-                        alertError.setHeaderText("Não é possível excluir este grupo, pois está associado à um ou mais usuários.");
-                        alertError.initStyle(StageStyle.UNDECORATED);
-                        alertError.show();
-                    }
+            Alerts.showConfirmation("Exclusão de grupo", "Deseja excluir o grupo de usuários?").ifPresent(type -> {
+                if (type == ButtonType.OK) {
+                    deleteUserGroup(userGroup);
                 }
             });
         }
@@ -80,10 +66,7 @@ public class UserGroupListController {
     public void onButtonEditAction(ActionEvent event) {
         UserGroup userGroup = listViewUserGroups.getSelectionModel().getSelectedItem();
         if (userGroup == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "É necessário selecionar um grupo da lista", ButtonType.CLOSE);
-            alert.setHeaderText("Grupo não selecionado");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.show();
+            Alerts.showAlert("Erro", "Grupo não selecionado", " necessário selecionar um grupo da lista", Alert.AlertType.ERROR);
         } else {
             TextInputDialog inputDialog = new TextInputDialog(userGroup.getDescription());
             inputDialog.setHeaderText("Editar grupo");
@@ -93,8 +76,7 @@ public class UserGroupListController {
             String newDescription = inputDialog.getResult();
             if (newDescription != null) {
                 userGroup.setDescription(newDescription);
-                userGroupPersistenceService.update(userGroup);
-                updateList();
+                updateUserGroup(userGroup);
             }
         }
     }
@@ -109,7 +91,7 @@ public class UserGroupListController {
         String description = inputDialog.getResult();
         if (description != null) {
             UserGroup userGroup = new UserGroup(description);
-            userGroupPersistenceService.insert(userGroup);
+            persistenceService.insert(userGroup);
             updateList();
         }
     }
@@ -120,19 +102,51 @@ public class UserGroupListController {
     }
 
     public void updateList() {
-        if (userGroupPersistenceService == null) {
+        if (persistenceService == null) {
             throw new IllegalStateException("UserGroupPersistenceService está nulo");
         }
         try {
-            ObservableList<UserGroup> items = FXCollections.observableArrayList(userGroupPersistenceService.findAll());
+            ObservableList<UserGroup> items = FXCollections.observableArrayList(persistenceService.findAll());
             listViewUserGroups.setItems(items);
             listViewUserGroups.refresh();
+
+            if (items.size() > 0) {
+                listViewUserGroups.getSelectionModel().select(0);
+            }
         } catch (DatabaseConnectionException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-            alert.setHeaderText("Erro de conexão com o banco de daddos.");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.showAndWait();
+            Alerts.showAlert("Erro", "Erro de conexão com o banco de dados", ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
+    private void deleteUserGroup(UserGroup userGroup) {
+        try {
+            persistenceService.delete(userGroup.getId());
+            updateList();
+        } catch (DatabaseIntegrityException ex) {
+            Alerts.showAlert("Erro de integridade", "Não é possível excluir este grupo",
+                    ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    private void updateUserGroup(UserGroup userGroup) {
+        try {
+            persistenceService.update(userGroup);
+            updateList();
+        } catch (DatabaseConnectionException ex) {
+            Alerts.showAlert("Erro de integridade", "Não é possível excluir este grupo, pois está associado à um ou mais usuários.",
+                    ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    @Override
+    public void subscribeListener(DataChangeListener listener) {
+        listeners.add(listener);
+    }
+
+    @Override
+    public void notifyListeners() {
+        for (DataChangeListener listener : listeners) {
+            listener.onChangedData();
+        }
+    }
 }

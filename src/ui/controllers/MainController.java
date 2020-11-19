@@ -49,7 +49,7 @@ public class MainController extends AbstractMainController {
     @FXML
     void onButtonProductsAction(ActionEvent event) {
         loadScreen(getClass().getResource("/ui/fxml/productList.fxml"), (ProductListController controller) -> {
-            controller.setPersistenceService(PersistenceServiceFactory.createProductPersistenceService());
+            controller.setPersistenceService(PersistenceServiceFactory.createProductService());
             controller.updateTable();
         });
     }

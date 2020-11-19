@@ -47,13 +47,11 @@ public class PackingListController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     @FXML
     void onButtonCloseAction(ActionEvent event) {
-        StageUtilities.currentStage(event).close();
-        WindowLoader.getMainScene().getRoot().setEffect(null);
+        WindowLoader.closePopup(StageUtilities.currentStage(event));
     }
 
     @FXML

@@ -18,25 +18,25 @@ public class Alerts {
         alert.setContentText(content);
         alert.initStyle(StageStyle.UNDECORATED);
         alert.initModality(Modality.APPLICATION_MODAL);
+        alert.setResizable(true);
 
-        alert.setOnShown(event -> {
-            ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
-            WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
-        });
-        alert.setOnCloseRequest(event -> {
-            WindowLoader.getMainScene().getRoot().setEffect(null);
-        });
+        setEffects(alert);
         alert.show();
     }
 
     public static Optional<ButtonType> showConfirmation(String header, String content) {
-        Alert alert = new Alert(Alert.AlertType.WARNING, content, ButtonType.YES, ButtonType.NO);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, content);
         alert.setTitle("Confirmação");
         alert.setHeaderText(header);
         alert.setContentText(content);
         alert.initStyle(StageStyle.UNDECORATED);
         alert.initModality(Modality.APPLICATION_MODAL);
 
+        setEffects(alert);
+        return alert.showAndWait();
+    }
+
+    private static void setEffects(Alert alert) {
         alert.setOnShown(event -> {
             ColorAdjust colorAdjust = new ColorAdjust(0, 0.0, -0.2, 0);
             WindowLoader.getMainScene().getRoot().setEffect(colorAdjust);
@@ -44,6 +44,5 @@ public class Alerts {
         alert.setOnCloseRequest(event -> {
             WindowLoader.getMainScene().getRoot().setEffect(null);
         });
-        return alert.showAndWait();
     }
 }

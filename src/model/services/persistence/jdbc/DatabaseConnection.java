@@ -59,7 +59,7 @@ public class DatabaseConnection {
 
     private static Properties loadProperties() {
         try (FileInputStream fileInputStream = new FileInputStream(new File("").getCanonicalPath()
-                + "\\settings\\database.properties")) {
+                + "/settings/database.properties")) {
             Properties properties = new Properties();
             properties.load(fileInputStream);
             return properties;
