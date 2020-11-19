@@ -12,9 +12,8 @@ public class ButtonEdit extends Button {
         getStylesheets().add(style);
         getStyleClass().add("button-classic");
 
-        setMinWidth(70);
-        setPrefSize(60, 20);
-        setTextAlignment(TextAlignment.CENTER);
+        super.setMinSize(70, 30);
+        super.setMaxSize(75, 30);
         setText("Editar");
     }
 }

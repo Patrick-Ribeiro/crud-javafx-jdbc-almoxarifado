@@ -7,16 +7,15 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import model.entities.User;
 import model.entities.UserGroup;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
-import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.util.Constraints;
@@ -52,15 +51,7 @@ public class UserFormDialogController implements Initializable {
     @FXML
     private Label labelErrorUserGroup;
     @FXML
-    private CheckBox checkBoxActive;
-    @FXML
     private Label labelErrorTelephone;
-    @FXML
-    private Button buttonCancel;
-    @FXML
-    private Button buttonConfirm;
-    @FXML
-    private Button buttonClose;
 
     private List<DataChangeListener> listeners = new ArrayList<>();
 
@@ -80,7 +71,7 @@ public class UserFormDialogController implements Initializable {
     }
 
     @FXML
-    public void onHBoxTitleMouseMoved(Event event) {
+    public void onHBoxTitleMouseMoved(KeyEvent event) {
         StageUtilities.makeStageDragable(hboxTitle);
     }
 
@@ -140,7 +131,6 @@ public class UserFormDialogController implements Initializable {
         textFieldTelephone.setText(user.getTelephone());
         comboBoxGroup.setItems(FXCollections.observableArrayList(PersistenceServiceFactory.createUserGroupService().findAll()));
         comboBoxGroup.getSelectionModel().select(user.getGroup());
-        checkBoxActive.setSelected(user.isActive());
 
         if (user.getCode() != null) {
             textFieldUserCode.setEditable(false);
@@ -154,11 +144,17 @@ public class UserFormDialogController implements Initializable {
         String email = textFieldEmail.getText();
         String telephone = textFieldTelephone.getText();
         UserGroup userGroup = comboBoxGroup.getSelectionModel().getSelectedItem();
-        Boolean active = checkBoxActive.isSelected();
 
-        User user = new User(code, name, userGroup, active);
+        if (user.getCode() == null) {
+            user = new User();
+            user.setActive(false);
+        }
+        user.setCode(code);
+        user.setName(name);
+        user.setGroup(userGroup);
         user.setEmail(email);
         user.setTelephone(telephone);
+
         return user;
     }
 

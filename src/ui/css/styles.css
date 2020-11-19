@@ -116,7 +116,7 @@
 }
 
 .list-cell{
-    -fx-font-size:12px;
+    -fx-font-size:14px;
 }
 
 .list:focused{

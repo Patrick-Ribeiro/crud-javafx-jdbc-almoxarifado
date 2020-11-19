@@ -4,7 +4,6 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -68,11 +67,6 @@
                         <Insets top="2.0" />
                     </padding>
                 </Label>
-                <CheckBox fx:id="checkBoxActive" alignment="CENTER" mnemonicParsing="false" styleClass="checkbox" stylesheets="@../css/styles.css" text="Ativo" GridPane.columnIndex="2" GridPane.rowIndex="4">
-                    <font>
-                        <Font size="14.0" />
-                    </font>
-                </CheckBox>
                 <Label fx:id="labelErrorTelephone" textFill="RED" GridPane.columnIndex="2" GridPane.rowIndex="1">
                     <padding>
                         <Insets top="2.0" />

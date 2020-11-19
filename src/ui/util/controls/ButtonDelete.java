@@ -9,8 +9,8 @@ public class ButtonDelete extends Button {
         getStylesheets().add(style);
         getStyleClass().add("button-attention");
 
-        setMinWidth(70);
-        setPrefSize(60, 20);
+        super.setMinSize(70, 30);
+        super.setMaxSize(75, 30);
         setText("Excluir");
     }
 }

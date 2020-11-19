@@ -1,6 +1,7 @@
 package model.services.persistence.abstracts;
 
 import model.entities.User;
+import model.entities.UserGroup;
 import model.services.persistence.exceptions.PersistenceException;
 
 import java.util.List;
@@ -26,5 +27,7 @@ public interface UserPersistenceService {
     public User find(int id);
 
     public List<User> find(String filter);
+
+    public List<User> find(UserGroup userGroup);
 
 }

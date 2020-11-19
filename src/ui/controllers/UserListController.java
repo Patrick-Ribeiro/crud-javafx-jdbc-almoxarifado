@@ -7,7 +7,6 @@ import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
@@ -19,7 +18,6 @@ import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
-import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.util.Alerts;
@@ -72,7 +70,7 @@ public class UserListController implements Initializable, DataChangeListener {
     @FXML
     public void onTextFieldSearchKeyPressed(KeyEvent event) {
         String filterSearch = textFieldSearch.getText();
-        if (filterSearch.length() <= 1 || filterSearch == null || filterSearch.equals("")) {
+        if (filterSearch.length() <= 1) {
             filterTable(persistenceService.findAll());
         } else {
             filterTable(persistenceService.find(filterSearch));
@@ -116,13 +114,13 @@ public class UserListController implements Initializable, DataChangeListener {
         }
     }
 
-    public void filterTable(List<User> userList) {
+    public synchronized void filterTable(List<User> userList) {
         tableViewUsers.getItems().clear();
-        tableColumnUserCode.setCellValueFactory(new PropertyValueFactory("code"));
-        tableColumnUserName.setCellValueFactory(new PropertyValueFactory("name"));
-        tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory("email"));
-        tableColumnUserTelephone.setCellValueFactory(new PropertyValueFactory("telephone"));
-        tableColumnUserGroup.setCellValueFactory(new PropertyValueFactory("group"));
+        tableColumnUserCode.setCellValueFactory(new PropertyValueFactory<>("code"));
+        tableColumnUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        tableColumnUserTelephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
+        tableColumnUserGroup.setCellValueFactory(new PropertyValueFactory<>("group"));
 
         initEditButtons();
         initDeleteButtons();
@@ -215,7 +213,7 @@ public class UserListController implements Initializable, DataChangeListener {
     private void deleteUser(User user) {
         Alerts.showConfirmation("Exclusão de usuário",
                 "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
-            if (type == ButtonType.YES) {
+            if (type == ButtonType.OK) {
                 persistenceService.delete(user.getCode());
                 updateTable();
             }

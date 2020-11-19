@@ -27,17 +27,17 @@
                <children>
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
                      <children>
-                        <Button fx:id="buttonUserGroups" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonUserGroupsAction" prefHeight="35.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
+                        <Button fx:id="buttonUserGroups" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonUserGroupsAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                         </Button>
-                            <Button fx:id="buttonNew" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="35.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Novo">
+                            <Button fx:id="buttonNew" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="30.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Novo">
                            <font>
                               <Font size="12.0" />
                            </font>
                            <HBox.margin>
-                              <Insets right="15.0" />
+                              <Insets right="17.5" />
                            </HBox.margin>
                         </Button>
                      </children>
@@ -60,11 +60,11 @@
         <TableView fx:id="tableViewUsers" focusTraversable="false" prefHeight="545.0">
             <columns>
                 <TableColumn fx:id="tableColumnUserCode" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" text="Código" />
-                <TableColumn fx:id="tableColumnUserName" editable="false" minWidth="210.0" prefWidth="-1.0" resizable="false" text="Nome" />
+                <TableColumn fx:id="tableColumnUserName" editable="false" minWidth="213.0" prefWidth="-1.0" resizable="false" text="Nome" />
                 <TableColumn fx:id="tableColumnUserEmail" editable="false" minWidth="240.0" prefWidth="-1.0" resizable="false" text="Email" />
                 <TableColumn fx:id="tableColumnUserTelephone" editable="false" minWidth="150.0" prefWidth="-1.0" resizable="false" text="Telefone" />
                 <TableColumn fx:id="tableColumnUserGroup" editable="false" minWidth="150.0" prefWidth="-1.0" resizable="false" text="Grupo" />
-                <TableColumn fx:id="tableColumnUserActive" editable="false" minWidth="70.0" prefWidth="-1.0" resizable="false" text="Ativo" />
+                <TableColumn fx:id="tableColumnUserActive" editable="false" minWidth="60.0" prefWidth="-1.0" resizable="false" text="Ativo" />
             <TableColumn fx:id="tableColumnEdit" editable="false" minWidth="75.0" prefWidth="-1.0" resizable="false" />
             <TableColumn fx:id="tableColumnDelete" editable="false" minWidth="75.0" prefWidth="-1.0" resizable="false" />
             </columns>

@@ -1,9 +1,11 @@
 package ui.controllers;
 
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
@@ -12,12 +14,16 @@ import javafx.stage.StageStyle;
 import model.entities.Product;
 import model.entities.ProductCategory;
 import model.entities.ProductGroup;
+import model.entities.User;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import ui.WindowLoader;
 import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
+import ui.util.controls.ButtonDelete;
+import ui.util.controls.ButtonEdit;
+import ui.util.controls.CheckBoxActive;
 
 import java.net.URL;
 import java.util.List;
@@ -38,9 +44,11 @@ public class ProductListController implements Initializable {
     @FXML
     private TableColumn<Product, ProductCategory> tableColumnCategory;
     @FXML
-    private TableColumn<Product, ProductGroup> tableColumnGroup;
+    TableColumn<Product, Product> tableColumnActive;
     @FXML
-    private TableColumn<Product, Boolean> tableColumnActive;
+    TableColumn<Product, Product> tableColumnEdit;
+    @FXML
+    TableColumn<Product, Product> tableColumnDelete;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -59,7 +67,13 @@ public class ProductListController implements Initializable {
 
     @FXML
     void onButtonNewAction(ActionEvent event) {
+        Stage parentStage = StageUtilities.currentStage(event);
 
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_FORM_DIALOG, parentStage,
+                new Stage(), (ProductFormDialogController controller) -> {
+                    controller.setEntity(new Product());
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductService());
+                });
     }
 
     @FXML
@@ -122,11 +136,84 @@ public class ProductListController implements Initializable {
         tableColumnDescription.setCellValueFactory(new PropertyValueFactory("description"));
         tableColumnDescriptionERP.setCellValueFactory(new PropertyValueFactory("descriptionERP"));
         tableColumnCategory.setCellValueFactory(new PropertyValueFactory("category"));
-        tableColumnGroup.setCellValueFactory(new PropertyValueFactory("group"));
-        tableColumnActive.setCellValueFactory(new PropertyValueFactory("active"));
+
+        initActiveCheckBoxes();
+        initDeleteButtons();
+        initEditButtons();
+
         if (productList != null && productList.size() != 0) {
             tableViewProducts.setItems(FXCollections.observableArrayList(productList));
             tableViewProducts.getSelectionModel().select(0);
         }
+    }
+
+    private void initEditButtons() {
+        tableColumnEdit.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        tableColumnEdit.setCellFactory(param -> new TableCell<Product, Product>() {
+            private final Button button = new ButtonEdit();
+
+            @Override
+            protected void updateItem(Product product, boolean empty) {
+                this.setAlignment(Pos.CENTER);
+                super.updateItem(product, empty);
+                if (product == null) {
+                    setGraphic(null);
+                    return;
+                }
+                setGraphic(button);
+                button.setOnAction(event -> createProductForm(product));
+            }
+        });
+    }
+
+    private void initActiveCheckBoxes() {
+        tableColumnActive.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        tableColumnActive.setCellFactory(param -> new TableCell<Product, Product>() {
+            private final CheckBox checkBox = new CheckBoxActive();
+
+            @Override
+            protected void updateItem(Product product, boolean empty) {
+                this.setAlignment(Pos.CENTER);
+                super.updateItem(product, empty);
+                if (product == null) {
+                    setGraphic(null);
+                    return;
+                }
+                setGraphic(checkBox);
+                checkBox.setSelected(product.isActive());
+                checkBox.setOnAction(event -> {
+                    product.setActive(checkBox.isSelected());
+                    persistenceService.update(product);
+                    updateTable();
+                });
+            }
+        });
+    }
+
+    private void initDeleteButtons() {
+        tableColumnDelete.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        tableColumnDelete.setCellFactory(param -> new TableCell<Product, Product>() {
+            private final Button button = new ButtonDelete();
+
+            @Override
+            protected void updateItem(Product product, boolean empty) {
+                this.setAlignment(Pos.CENTER);
+                super.updateItem(product, empty);
+                if (product == null) {
+                    setGraphic(null);
+                    return;
+                }
+                setGraphic(button);
+                button.setOnAction(event -> deleteProduct(product));
+            }
+        });
+    }
+
+    private void createProductForm(Product product) {
+
+    }
+
+    private void deleteProduct(Product product) {
+
     }
 }

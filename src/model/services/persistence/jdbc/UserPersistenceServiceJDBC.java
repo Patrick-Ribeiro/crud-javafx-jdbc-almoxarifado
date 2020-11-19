@@ -146,6 +146,25 @@ public class UserPersistenceServiceJDBC implements UserPersistenceService {
         }
     }
 
+    @Override
+    public List<User> find(UserGroup userGroup) {
+        String sql = "SELECT * FROM users WHERE group_id = ?";
+
+        List<User> users = new ArrayList<>();
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, userGroup.getId());
+            Logs.informationQuery(stmt);
+            ResultSet resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                users.add(fromResultSet(resultSet));
+            }
+            DatabaseConnection.closeConnection(connection, stmt, resultSet);
+            return users;
+        } catch (SQLException e) {
+            throw new PersistenceException(e.getMessage());
+        }
+    }
+
     private User fromResultSet(ResultSet resultSet) throws SQLException {
         Integer id = resultSet.getInt("code_erp");
         String name = resultSet.getString("name");

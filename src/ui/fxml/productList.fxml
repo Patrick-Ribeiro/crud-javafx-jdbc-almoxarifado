@@ -26,19 +26,16 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="2">
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" spacing="5.0" GridPane.columnIndex="2">
                      <children>
-                            <Button fx:id="buttonDelete" mnemonicParsing="false" onAction="#onButtonDeleteAction" prefHeight="35.0" prefWidth="55.0" styleClass="button-attention" stylesheets="@../css/styles.css" text="Excluir">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
+                        <Button fx:id="buttonGroups" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonGroupsAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
                         </Button>
-                            <Button fx:id="buttonEdit" mnemonicParsing="false" onAction="#onButtonEditAction" prefHeight="35.0" prefWidth="55.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Editar">
-                           <font>
-                              <Font size="12.0" />
-                           </font>
-                        </Button>
-                            <Button fx:id="buttonNew" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="35.0" prefWidth="55.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Incluir">
+                        <Button fx:id="buttonPackings" mnemonicParsing="false" onAction="#onButtonPackingsAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Embalagens" />
+                        <Button fx:id="buttonCategories" mnemonicParsing="false" onAction="#onButtonCategoriesAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Categorias" />
+                            <Button fx:id="buttonNew" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="30.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Novo">
                            <font>
                               <Font size="12.0" />
                            </font>
@@ -49,17 +46,7 @@
                      </children>
                   </HBox>
                       <TextField fx:id="textFieldSearch" onKeyPressed="#onTextFieldSearchKeyPressed" prefHeight="35.0" prefWidth="50.0" promptText="Pesquisa" styleClass="textField-search" stylesheets="@../css/styles.css" />
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="5.0" GridPane.columnIndex="1">
-                     <children>
-                        <Button fx:id="buttonGroups" mnemonicParsing="false" onAction="#onButtonGroupsAction" prefHeight="30.0" prefWidth="80.0" styleClass="button-simple" stylesheets="@../css/styles.css" text="Grupos" HBox.hgrow="ALWAYS">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Button>
-                        <Button fx:id="buttonPackings" mnemonicParsing="false" onAction="#onButtonPackingsAction" prefHeight="30.0" prefWidth="82.0" styleClass="button-simple" stylesheets="@../css/styles.css" text="Embalagens" />
-                        <Button fx:id="buttonCategories" mnemonicParsing="false" onAction="#onButtonCategoriesAction" prefHeight="30.0" styleClass="button-simple" stylesheets="@../css/styles.css" text="Categorias" />
-                     </children>
-                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="156.0" spacing="5.0" GridPane.columnIndex="1" />
                </children>
             </GridPane>
             </children>
@@ -69,11 +56,12 @@
         <TableView fx:id="tableViewProducts" focusTraversable="false" prefHeight="545.0">
             <columns>
                 <TableColumn fx:id="tableColumnInternalCode" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" text="Código" />
-                <TableColumn fx:id="tableColumnDescription" editable="false" minWidth="220.0" prefWidth="-1.0" resizable="false" text="Descrição" />
-                <TableColumn fx:id="tableColumnDescriptionERP" editable="false" minWidth="250.0" prefWidth="-1.0" resizable="false" text="Descrição ERP" />
+                <TableColumn fx:id="tableColumnDescription" editable="false" minWidth="255.0" prefWidth="-1.0" resizable="false" text="Descrição" />
+                <TableColumn fx:id="tableColumnDescriptionERP" editable="false" minWidth="300.0" prefWidth="-1.0" resizable="false" text="Descrição ERP" />
                 <TableColumn fx:id="tableColumnCategory" editable="false" minWidth="200.0" prefWidth="-1.0" resizable="false" text="Categoria" />
-                <TableColumn fx:id="tableColumnGroup" editable="false" minWidth="200.0" prefWidth="-1.0" resizable="false" text="Grupo" />
-                <TableColumn fx:id="tableColumnActive" editable="false" minWidth="100.0" prefWidth="-1.0" resizable="false" text="Ativo" />
+                <TableColumn fx:id="tableColumnActive" editable="false" minWidth="60.0" prefWidth="-1.0" resizable="false" text="Ativo" />
+            <TableColumn fx:id="tableColumnEdit" minWidth="70.0" prefWidth="-1.0" />
+            <TableColumn fx:id="tableColumnDelete" minWidth="70.0" prefWidth="75.0" />
             </columns>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" />
