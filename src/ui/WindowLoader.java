@@ -1,18 +1,16 @@
 package ui;
 
 import javafx.application.Application;
-import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import ui.controllers.abstracts.AbstractMainController;
-import util.Logs;
+import ui.util.FXMLLocation;
 
 import java.io.IOException;
 import java.net.URL;
@@ -28,9 +26,8 @@ public class WindowLoader extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        String locationMainFXMl = "/ui/fxml/main.fxml";
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(locationMainFXMl));
+            FXMLLoader loader = new FXMLLoader(FXMLLocation.MAIN);
             Parent root = loader.load();
             mainScene = new Scene(root, 1280, 720);
             mainController = loader.getController();

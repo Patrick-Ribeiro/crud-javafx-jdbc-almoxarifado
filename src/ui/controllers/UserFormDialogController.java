@@ -109,6 +109,7 @@ public class UserFormDialogController implements Initializable {
         Constraints.setTextFieldInteger(textFieldUserCode);
         Constraints.setTextFieldMaxLength(textFieldUserCode, 4);
         Constraints.setTextFieldMaxLength(textFieldName, 35);
+        Constraints.setTextFieldMaxLength(textFieldTelephone, 14);
     }
 
     public void setUserPersistenceService(UserPersistenceService userPersistenceService) {

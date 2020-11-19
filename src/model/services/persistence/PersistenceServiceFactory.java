@@ -25,4 +25,8 @@ public class PersistenceServiceFactory {
         return new UserGroupPersistenceServiceJDBC();
     }
 
+    public static UserPersistenceService createUserService() {
+        return new UserPersistenceServiceJDBC();
+    }
+
 }

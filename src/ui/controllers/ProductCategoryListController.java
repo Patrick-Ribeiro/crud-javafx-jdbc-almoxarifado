@@ -45,6 +45,7 @@ public class ProductCategoryListController implements Initializable {
     @FXML
     void onButtonCloseAction(ActionEvent event) {
         WindowLoader.closePopup(StageUtilities.currentStage(event));
+        WindowLoader.closePopup(StageUtilities.currentStage(event));
     }
 
     @FXML

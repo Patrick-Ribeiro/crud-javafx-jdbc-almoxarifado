@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.entities.User;
 import model.entities.UserGroup;
+import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.UserPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.jdbc.UserGroupPersistenceServiceJDBC;
@@ -22,6 +23,7 @@ import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.util.Alerts;
+import ui.util.FXMLLocation;
 import ui.util.controls.ButtonDelete;
 import ui.util.controls.ButtonEdit;
 import ui.util.StageUtilities;
@@ -85,10 +87,9 @@ public class UserListController implements Initializable, DataChangeListener {
 
     @FXML
     public void onButtonUserGroupsAction(ActionEvent event) {
-        URL fxmlLocation = getClass().getResource("/ui/fxml/userGroupList.fxml");
         Stage currentStage = StageUtilities.currentStage(event);
 
-        WindowLoader.createPopupScreen(fxmlLocation, currentStage,
+        WindowLoader.createPopupScreen(FXMLLocation.USER_GROUP_LIST, currentStage,
                 new Stage(), (UserGroupListController controller) -> {
                     controller.setUserGroupPersistence(new UserGroupPersistenceServiceJDBC());
                     controller.updateList();
@@ -198,15 +199,14 @@ public class UserListController implements Initializable, DataChangeListener {
     }
 
     private void createUserForm(User user) {
-        Stage parentStage = (Stage) ((Node) tableViewUsers).getScene().getWindow();
+        Stage parentStage = (Stage) (tableViewUsers).getScene().getWindow();
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Formulário de usuário");
-        URL fxmlLocation = getClass().getResource("/ui/fxml/userFormDialog.fxml");
 
-        WindowLoader.createPopupScreen(fxmlLocation, parentStage,
+        WindowLoader.createPopupScreen(FXMLLocation.USER_FORM_DIALOG, parentStage,
                 dialogStage, (UserFormDialogController controller) -> {
                     controller.setUser(user);
-                    controller.setUserPersistenceService(new UserPersistenceServiceJDBC());
+                    controller.setUserPersistenceService(PersistenceServiceFactory.createUserService());
                     controller.updateFormData();
                     controller.subscribeListener(this);
                 });

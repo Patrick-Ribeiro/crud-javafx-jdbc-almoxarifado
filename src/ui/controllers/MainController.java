@@ -12,6 +12,7 @@ import model.services.persistence.jdbc.PackingPersistenceServiceJBDC;
 import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
 import ui.WindowLoader;
 import ui.controllers.abstracts.AbstractMainController;
+import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
 
 import java.net.URL;
@@ -48,7 +49,7 @@ public class MainController extends AbstractMainController {
 
     @FXML
     void onButtonProductsAction(ActionEvent event) {
-        loadScreen(getClass().getResource("/ui/fxml/productList.fxml"), (ProductListController controller) -> {
+        loadScreen(FXMLLocation.PRODUCT_LIST, (ProductListController controller) -> {
             controller.setPersistenceService(PersistenceServiceFactory.createProductService());
             controller.updateTable();
         });
@@ -56,7 +57,7 @@ public class MainController extends AbstractMainController {
 
     @FXML
     public void onButtonUsersAction(Event event) {
-        loadScreen(getClass().getResource("/ui/fxml/userList.fxml"), (UserListController controller) -> {
+        loadScreen(FXMLLocation.USER_LIST, (UserListController controller) -> {
             controller.setPersistenceService(new UserPersistenceServiceJDBC());
             controller.updateTable();
         });

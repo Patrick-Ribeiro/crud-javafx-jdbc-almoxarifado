@@ -16,6 +16,7 @@ import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import ui.WindowLoader;
+import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
 
 import java.net.URL;
@@ -64,7 +65,7 @@ public class ProductListController implements Initializable {
     @FXML
     void onButtonGroupsAction(ActionEvent event) {
         Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/productGroupList.fxml"), currentStage,
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_GROUP_LIST, currentStage,
                 new Stage(), (ProductGroupListController controller) -> {
                     controller.setPersistenceService(PersistenceServiceFactory.createProductGroupService());
                     controller.updateTable();
@@ -74,7 +75,7 @@ public class ProductListController implements Initializable {
     @FXML
     void onButtonCategoriesAction(ActionEvent event) {
         Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/productCategoryList.fxml"), currentStage,
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_CATEGORY_LIST, currentStage,
                 new Stage(), (ProductCategoryListController controller) -> {
                     controller.setPersistenceService(PersistenceServiceFactory.createProductCategoryService());
                     controller.updateList();
@@ -84,7 +85,7 @@ public class ProductListController implements Initializable {
     @FXML
     void onButtonPackingsAction(ActionEvent event) {
         Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(getClass().getResource("/ui/fxml/packingList.fxml"), currentStage,
+        WindowLoader.createPopupScreen(FXMLLocation.PACKING_LIST, currentStage,
                 new Stage(), (PackingListController controller) -> {
                     controller.setPersistenceService(PersistenceServiceFactory.createPackingService());
                     controller.updateList();
