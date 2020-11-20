@@ -73,6 +73,7 @@ public class ProductListController implements Initializable {
                 new Stage(), (ProductFormDialogController controller) -> {
                     controller.setEntity(new Product());
                     controller.setPersistenceService(PersistenceServiceFactory.createProductService());
+                    controller.updateFormData();
                 });
     }
 

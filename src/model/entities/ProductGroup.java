@@ -15,6 +15,11 @@ public class ProductGroup {
         this.expense = expense;
     }
 
+    public ProductGroup(Integer id, String description) {
+        this.id = id;
+        this.description = description;
+    }
+
     public Integer getId() {
         return id;
     }

@@ -18,6 +18,8 @@ USE `almox` ;
 -- -----------------------------------------------------
 -- Table `almox`.`user_groups`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`user_groups` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`user_groups` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(45) NOT NULL,
@@ -28,6 +30,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`users`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`users` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`users` (
   `code_erp` INT NOT NULL,
   `name` VARCHAR(45) NOT NULL,
@@ -49,6 +53,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`expenses`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`expenses` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`expenses` (
   `debit` INT NOT NULL,
   `description` VARCHAR(100) NULL,
@@ -60,6 +66,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`product_categories`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`product_categories` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`product_categories` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(100) NOT NULL,
@@ -70,6 +78,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`departaments`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`departaments` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`departaments` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
@@ -80,14 +90,16 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`product_groups`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`product_groups` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`product_groups` (
   `id_erp` INT NOT NULL,
   `description` VARCHAR(45) NOT NULL,
-  `expense_id` INT NOT NULL,
+  `expense_debit` INT NOT NULL,
   PRIMARY KEY (`id_erp`),
-  INDEX `fk_grupo_produto_despesa1_idx` (`expense_id` ASC) VISIBLE,
+  INDEX `fk_grupo_produto_despesa1_idx` (`expense_debit` ASC) VISIBLE,
   CONSTRAINT `fk_grupo_produto_despesa1`
-    FOREIGN KEY (`expense_id`)
+    FOREIGN KEY (`expense_debit`)
     REFERENCES `almox`.`expenses` (`debit`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -97,6 +109,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`packings`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`packings` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`packings` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(45) NOT NULL,
@@ -108,6 +122,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`products`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`products` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`products` (
   `internalCode` INT NOT NULL,
   `description` VARCHAR(45) NOT NULL,
@@ -149,6 +165,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`departament_products`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`departament_products` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`departament_products` (
   `departament_id` INT NOT NULL,
   `product_id` INT NOT NULL,
@@ -172,6 +190,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`products_movement`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`products_movement` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`products_movement` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `product_id` INT NOT NULL,
@@ -191,6 +211,8 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 -- Table `almox`.`product_inventory`
 -- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`product_inventory` ;
+
 CREATE TABLE IF NOT EXISTS `almox`.`product_inventory` (
   `product_id` INT NOT NULL,
   `minimum_inventory` INT NOT NULL,
@@ -204,6 +226,11 @@ CREATE TABLE IF NOT EXISTS `almox`.`product_inventory` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

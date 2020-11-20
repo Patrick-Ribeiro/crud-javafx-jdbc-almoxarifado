@@ -35,7 +35,7 @@
                         </Button>
                         <Button fx:id="buttonPackings" mnemonicParsing="false" onAction="#onButtonPackingsAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Embalagens" />
                         <Button fx:id="buttonCategories" mnemonicParsing="false" onAction="#onButtonCategoriesAction" prefHeight="30.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Categorias" />
-                            <Button fx:id="buttonNew" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="30.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Incluir">
+                            <Button fx:id="buttonNew" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="30.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Novo">
                            <font>
                               <Font size="12.0" />
                            </font>

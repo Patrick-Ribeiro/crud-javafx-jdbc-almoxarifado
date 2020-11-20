@@ -98,7 +98,7 @@
                   <Insets top="2.0" />
                </padding>
             </Label>
-                <JFXTextField fx:id="textFieldUserCode" focusColor="#0c5ee8" labelFloat="true" onKeyPressed="#onTextFieldUserCodeKeyPressed" promptText="Código ERP" styleClass="textfield" stylesheets="@../css/styles.css">
+                <JFXTextField fx:id="textFieldInternalCode" focusColor="#0c5ee8" labelFloat="true" onKeyPressed="#onTextFieldUserCodeKeyPressed" promptText="Código ERP" styleClass="textfield" stylesheets="@../css/styles.css">
                     <font>
                         <Font size="14.0" />
                     </font>
