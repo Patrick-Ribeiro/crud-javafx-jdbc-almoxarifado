@@ -14,6 +14,7 @@ public class FXMLLocation {
     public static final URL PRODUCT_GROUP_LIST = FXMLLocation.class.getResource("/ui/fxml/productGroupList.fxml");
     public static final URL PRODUCT_CATEGORY_LIST = FXMLLocation.class.getResource("/ui/fxml/productCategoryList.fxml");
     public static final URL PACKING_LIST = FXMLLocation.class.getResource("/ui/fxml/packingList.fxml");
-    public static final URL PRODUCT_FORM_DIALOG = FXMLLocation.class.getResource("/ui/fxml/productFormDialog.fxml");
+    public static final URL PRODUCT_FORM = FXMLLocation.class.getResource("/ui/fxml/productFormDialog.fxml");
+    public static final URL PRODUCT_GROUP_FORM = FXMLLocation.class.getResource("/ui/fxml/productGroupForm.fxml");
 
 }

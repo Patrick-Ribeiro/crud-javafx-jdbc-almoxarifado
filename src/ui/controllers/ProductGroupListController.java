@@ -9,17 +9,21 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import model.entities.Expense;
 import model.entities.ProductGroup;
 import model.entities.User;
+import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductGroupPersistenceService;
 import ui.WindowLoader;
+import ui.listeners.DataChangeListener;
+import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
 import ui.util.controls.ButtonDelete;
 import ui.util.controls.ButtonEdit;
 import ui.util.controls.CheckBoxActive;
 
-public class ProductGroupListController {
+public class ProductGroupListController implements DataChangeListener {
 
     private ProductGroupPersistenceService persistenceService;
 
@@ -67,7 +71,7 @@ public class ProductGroupListController {
 
     @FXML
     void onButtonNewAction(ActionEvent event) {
-
+        createProductGroupForm(new ProductGroup());
     }
 
     @FXML
@@ -149,10 +153,25 @@ public class ProductGroupListController {
     }
 
     private void createProductGroupForm(ProductGroup group) {
+        Stage parentStage = (Stage) (tableViewGroups).getScene().getWindow();
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Formulário de usuário");
+
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_GROUP_FORM, parentStage,
+                dialogStage, (ProductGroupFormController controller) -> {
+                    controller.setEntity(group);
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductGroupService());
+                    controller.updateFormData();
+                    controller.subscribeListener(this);
+                });
     }
 
     private void deteleProductGroup(ProductGroup group) {
 
     }
 
+    @Override
+    public void onChangedData() {
+
+    }
 }

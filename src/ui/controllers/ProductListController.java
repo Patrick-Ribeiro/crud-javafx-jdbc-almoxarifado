@@ -69,7 +69,7 @@ public class ProductListController implements Initializable {
     void onButtonNewAction(ActionEvent event) {
         Stage parentStage = StageUtilities.currentStage(event);
 
-        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_FORM_DIALOG, parentStage,
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_FORM, parentStage,
                 new Stage(), (ProductFormDialogController controller) -> {
                     controller.setEntity(new Product());
                     controller.setPersistenceService(PersistenceServiceFactory.createProductService());

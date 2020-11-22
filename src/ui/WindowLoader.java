@@ -48,7 +48,7 @@ public class WindowLoader extends Application {
 
             dialogStage.setScene(new Scene(pane));
             dialogStage.setResizable(false);
-            dialogStage.initOwner(parentStage);
+            dialogStage.initOwner(WindowLoader.getMainScene().getWindow());
             dialogStage.initStyle(StageStyle.UNDECORATED);
             dialogStage.initModality(Modality.WINDOW_MODAL);
 
