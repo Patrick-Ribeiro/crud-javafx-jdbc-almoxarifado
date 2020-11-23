@@ -121,7 +121,7 @@ public class UserFormDialogController implements Initializable {
         }
     }
 
-    public void updateFormData() throws DatabaseConnectionException {
+    public void updateFormData() {
         if (user == null) {
             throw new IllegalStateException("Usuário está nulo");
         }

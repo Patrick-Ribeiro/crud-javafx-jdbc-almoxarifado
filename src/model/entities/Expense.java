@@ -2,27 +2,29 @@ package model.entities;
 
 import model.entities.enums.TypeExpense;
 
+import java.util.Objects;
+
 public class Expense {
 
-    private Integer id;
+    private Integer debit;
     private String description;
-    private TypeExpense typeExpense;
+    private TypeExpense type;
 
     public Expense() {
     }
 
-    public Expense(Integer id, String description, TypeExpense typeExpense) {
-        this.id = id;
+    public Expense(Integer debit, String description, TypeExpense type) {
+        this.debit = debit;
         this.description = description;
-        this.typeExpense = typeExpense;
+        this.type = type;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getDebit() {
+        return debit;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setDebit(Integer debit) {
+        this.debit = debit;
     }
 
     public String getDescription() {
@@ -33,19 +35,31 @@ public class Expense {
         this.description = description;
     }
 
-    public TypeExpense getTypeExpense() {
-        return typeExpense;
+    public TypeExpense getType() {
+        return type;
     }
 
-    public void setTypeExpense(TypeExpense typeExpense) {
-        this.typeExpense = typeExpense;
+    public void setType(TypeExpense type) {
+        this.type = type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Expense expense = (Expense) o;
+        return debit.equals(expense.debit) &&
+                Objects.equals(description, expense.description) &&
+                type == expense.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(debit, description, type);
     }
 
     @Override
     public String toString() {
-        return "Expense{" +
-                "description='" + description + '\'' +
-                ", typeExpense=" + typeExpense +
-                '}';
+        return type.toPortuguese() + " - " + description;
     }
 }

@@ -17,6 +17,7 @@ import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductGroupPersistenceService;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
+import ui.util.Alerts;
 import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
 import ui.util.controls.ButtonDelete;
@@ -86,7 +87,7 @@ public class ProductGroupListController implements DataChangeListener {
             protected void updateItem(Expense item, boolean empty) {
                 super.updateItem(item, empty);
                 if (item != null && !empty) {
-                    setText("" + item.getId());
+                    setText("" + item.getDebit());
                 } else {
                     setText(null);
                 }
@@ -167,11 +168,17 @@ public class ProductGroupListController implements DataChangeListener {
     }
 
     private void deteleProductGroup(ProductGroup group) {
-
+        Alerts.showConfirmation("Exclusão de grupo",
+                "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
+            if (type == ButtonType.OK) {
+                persistenceService.delete(group.getId());
+                updateTable();
+            }
+        });
     }
 
     @Override
     public void onChangedData() {
-
+        updateTable();
     }
 }

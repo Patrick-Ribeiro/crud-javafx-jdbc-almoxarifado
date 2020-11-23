@@ -1,11 +1,9 @@
 package model.services.persistence.jdbc;
 
-import model.entities.Expense;
-import model.entities.Product;
-import model.entities.ProductGroup;
-import model.entities.UserGroup;
+import model.entities.*;
 import model.entities.enums.TypeExpense;
 import model.services.persistence.abstracts.ProductGroupPersistenceService;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import model.services.persistence.exceptions.PersistenceException;
 import util.Logs;
 
@@ -22,29 +20,82 @@ public class ProductGroupPersistenceServiceJDBC implements ProductGroupPersisten
 
     @Override
     public void insert(ProductGroup group) {
+        String sql = "INSERT INTO product_groups (id_erp, description, expense_debit) VALUES (?,?,?)";
 
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
+            preparedStmt.setInt(1, group.getId());
+            preparedStmt.setString(2, group.getDescription());
+            preparedStmt.setInt(3, group.getExpense().getDebit());
+            Logs.informationQuery(preparedStmt);
+            preparedStmt.executeUpdate();
+
+            DatabaseConnection.closeConnection(connection, preparedStmt);
+        } catch (SQLException ex) {
+            throw new PersistenceException(ex.getMessage());
+        }
     }
 
     @Override
     public void delete(int id) {
+        String sql = "DELETE FROM product_groups WHERE id_erp = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            Logs.informationQuery(stmt);
+            stmt.executeUpdate();
+
+            DatabaseConnection.closeConnection(connection, stmt);
+        } catch (SQLException e) {
+            throw new DatabaseIntegrityException(e.getMessage());
+        }
     }
 
     @Override
     public void update(ProductGroup group) {
+        String sql = "UPDATE product_groups SET description = ?, expense_debit = ? WHERE id_erp = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
+            preparedStmt.setString(1, group.getDescription());
+            preparedStmt.setInt(2, group.getExpense().getDebit());
+            preparedStmt.setInt(3, group.getId());
+            Logs.informationQuery(preparedStmt);
+            preparedStmt.executeUpdate();
+
+            DatabaseConnection.closeConnection(connection, preparedStmt);
+        } catch (SQLException ex) {
+            throw new PersistenceException(ex.getMessage());
+        }
     }
 
     @Override
     public ProductGroup find(int id) {
-        return null;
+        String sql = "SELECT product_groups.*, expenses.description as expense_description, expenses.type as expense_type "
+                + "FROM product_groups "
+                + "INNER JOIN expenses ON product_groups.expense_debit = expenses.debit WHERE id_erp = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
+            preparedStmt.setInt(1, id);
+            Logs.informationQuery(preparedStmt);
+            ResultSet resultSet = preparedStmt.executeQuery();
+
+            ProductGroup groupFound = null;
+            if (resultSet.next()) {
+                Expense expenseFound = instatiateExpense(resultSet);
+                groupFound = instantiateProductGroup(resultSet, expenseFound);
+            }
+
+            DatabaseConnection.closeConnection(connection, preparedStmt, resultSet);
+            return groupFound;
+        } catch (SQLException ex) {
+            throw new PersistenceException(ex.getMessage());
+        }
     }
 
     @Override
     public List<ProductGroup> findAll() {
         String sql = "SELECT product_groups.*, expenses.description as expense_description, expenses.type as expense_type "
                 + "FROM product_groups "
-                + "INNER JOIN expenses ON product_groups.expense_debit = expenses.debit;";
+                + "INNER JOIN expenses ON product_groups.expense_debit = expenses.debit";
 
         try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
             Logs.informationQuery(preparedStmt);
@@ -57,7 +108,7 @@ public class ProductGroupPersistenceServiceJDBC implements ProductGroupPersisten
 
                 if (expense == null) {
                     expense = instatiateExpense(resultSet);
-                    map.put(expense.getId(), expense);
+                    map.put(expense.getDebit(), expense);
                 }
                 groups.add(instantiateProductGroup(resultSet, expense));
             }

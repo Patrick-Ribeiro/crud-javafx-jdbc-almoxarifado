@@ -29,4 +29,8 @@ public class PersistenceServiceFactory {
         return new UserPersistenceServiceJDBC();
     }
 
+    public static ExpensePersistenceService createExpenseService() {
+        return new ExpensePersistenceServiceJDBC();
+    }
+
 }

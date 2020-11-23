@@ -43,6 +43,6 @@ public class Packing {
 
     @Override
     public String toString() {
-        return "(" + abbreviation + ") " + description;
+        return abbreviation + " - " + description;
     }
 }

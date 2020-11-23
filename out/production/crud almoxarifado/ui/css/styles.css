@@ -116,7 +116,7 @@
 }
 
 .list-cell{
-    -fx-font-size:14px;
+    -fx-font-size:13px;
 }
 
 .list:focused{
@@ -141,7 +141,7 @@
 .table-view .column-header-background .label{
     -fx-background-color: transparent;
     -fx-text-fill: #515151;
-    -fx-font-size: 14px;
+    -fx-font-size: 13px;
 }
 
 .table-view .column-header {
