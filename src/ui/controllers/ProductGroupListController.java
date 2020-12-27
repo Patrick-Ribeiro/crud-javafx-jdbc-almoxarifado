@@ -51,24 +51,10 @@ public class ProductGroupListController implements DataChangeListener {
     }
 
     @FXML
-    void onButtonExpenseAction(ActionEvent event) {
-
-    }
-
-    @FXML
     void onButtonCloseAction(ActionEvent event) {
         WindowLoader.closePopup(StageUtilities.currentStage(event));
     }
 
-    @FXML
-    void onButtonDeleteAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onButtonEditAction(ActionEvent event) {
-
-    }
 
     @FXML
     void onButtonNewAction(ActionEvent event) {
@@ -154,7 +140,7 @@ public class ProductGroupListController implements DataChangeListener {
     }
 
     private void createProductGroupForm(ProductGroup group) {
-        Stage parentStage = (Stage) (tableViewGroups).getScene().getWindow();
+        Stage parentStage = (Stage) WindowLoader.getMainScene().getWindow();
         Stage dialogStage = new Stage();
         dialogStage.setTitle("Formulário de usuário");
 

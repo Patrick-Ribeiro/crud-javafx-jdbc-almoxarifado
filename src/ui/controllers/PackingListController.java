@@ -13,7 +13,9 @@ import model.entities.Packing;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.PackingPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
+import model.services.persistence.exceptions.PersistenceException;
 import ui.WindowLoader;
+import ui.util.Alerts;
 import ui.util.StageUtilities;
 
 import java.net.URL;
@@ -66,34 +68,53 @@ public class PackingListController implements Initializable {
 
     @FXML
     void onButtonNewAction(ActionEvent event) {
+        String description = showInputDescription();
+        String abbreviation = null;
+        if (description != null) {
+            abbreviation = showInputAbbreviation();
+            if (abbreviation != null) {
+                insertPacking(new Packing(description, abbreviation));
+            }
+        }
+    }
+
+    private void insertPacking(Packing packing) {
+        try {
+            persistenceService.insert(packing);
+            updateList();
+        } catch (PersistenceException ex) {
+            Alerts.showAlert("Erro de persistência", "Erro ao inserir embalagem",
+                    ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public String showInputDescription() {
         TextInputDialog inputDialog = new TextInputDialog("Descrição");
         inputDialog.setHeaderText("Nova embalagem");
         inputDialog.initStyle(StageStyle.UNDECORATED);
         inputDialog.showAndWait();
 
         String description = inputDialog.getResult();
-        if (description != null && description.length() > 0) {
-            TextInputDialog inputDialog2 = new TextInputDialog("Abreviação");
-            inputDialog2.initStyle(StageStyle.UNDECORATED);
-            inputDialog2.showAndWait();
-            String abbreviation = inputDialog2.getResult();
-
-            if (abbreviation != null && abbreviation.length() > 0) {
-                Packing packing = new Packing(description, abbreviation);
-                persistenceService.insert(packing);
-                updateList();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "A abreviação não pode ser nula", ButtonType.CLOSE);
-                alert.setHeaderText("Abreviação inválida.");
-                alert.initStyle(StageStyle.UNDECORATED);
-                alert.showAndWait();
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "A descrição não pode ser nula", ButtonType.CLOSE);
-            alert.setHeaderText("Descrição inválida.");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.showAndWait();
+        if (!(description != null && description.length() > 0)) {
+            Alerts.showAlert("Erro na descrição", "Descrição inválida",
+                    "A descrição não pode ser nula", Alert.AlertType.ERROR);
+            return null;
         }
+        return description;
+    }
+
+    public String showInputAbbreviation() {
+        TextInputDialog inputDialog2 = new TextInputDialog("Abreviação");
+        inputDialog2.initStyle(StageStyle.UNDECORATED);
+        inputDialog2.showAndWait();
+        String abbreviation = inputDialog2.getResult();
+
+        if (!(abbreviation.length() > 0 && abbreviation.length() <= 5)) {
+            Alerts.showAlert("Nova embalagem", "Abreviação inválida",
+                    "A abreviação deve conter de 1 à 5 caractéres", Alert.AlertType.ERROR);
+            return null;
+        }
+        return abbreviation;
     }
 
     @FXML

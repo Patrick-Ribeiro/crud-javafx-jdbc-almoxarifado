@@ -46,6 +46,6 @@ public class ProductGroup {
 
     @Override
     public String toString() {
-        return description;
+        return String.valueOf(id);
     }
 }

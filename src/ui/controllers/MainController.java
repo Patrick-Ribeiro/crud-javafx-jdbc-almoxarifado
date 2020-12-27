@@ -48,6 +48,11 @@ public class MainController extends AbstractMainController {
     }
 
     @FXML
+    public void onButtonExpensesAction(ActionEvent event) {
+
+    }
+
+    @FXML
     void onButtonProductsAction(ActionEvent event) {
         loadScreen(FXMLLocation.PRODUCT_LIST, (ProductListController controller) -> {
             controller.setPersistenceService(PersistenceServiceFactory.createProductService());

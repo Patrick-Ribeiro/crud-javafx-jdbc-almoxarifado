@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import model.entities.User;
 import model.entities.UserGroup;
@@ -71,7 +72,7 @@ public class UserFormDialogController implements Initializable {
     }
 
     @FXML
-    public void onHBoxTitleMouseMoved(KeyEvent event) {
+    void onHBoxTitleMouseMoved(MouseEvent event) {
         StageUtilities.makeStageDragable(hboxTitle);
     }
 

@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -14,9 +15,11 @@ import model.entities.ProductGroup;
 import model.entities.User;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductGroupPersistenceService;
+import model.services.persistence.exceptions.PersistenceException;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.listeners.Notifier;
+import ui.util.Alerts;
 import ui.util.Constraints;
 import ui.util.StageUtilities;
 import ui.util.Util;
@@ -71,13 +74,18 @@ public class ProductGroupFormController implements Initializable, Notifier {
             throw new IllegalStateException("ProductGroupPersistenceService está nulo");
 
         ProductGroup groupForm = getFormData();
-        if (persistenceService.find(groupForm.getId()) == null)
-            persistenceService.insert(groupForm);
-        else
-            persistenceService.update(groupForm);
+        try {
+            if (persistenceService.find(groupForm.getId()) == null)
+                persistenceService.insert(groupForm);
+            else
+                persistenceService.update(groupForm);
 
-        WindowLoader.closePopup(StageUtilities.currentStage(event));
-        notifyListeners();
+            WindowLoader.closePopup(StageUtilities.currentStage(event));
+            notifyListeners();
+        } catch (PersistenceException ex) {
+            Alerts.showAlert("Erro de persistência", "Erro ao persistir o grupo",
+                    ex.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     private void initializeNodes() {

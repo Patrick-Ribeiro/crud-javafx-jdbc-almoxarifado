@@ -75,4 +75,9 @@ public class User {
     public void setActive(boolean active) {
         this.active = active;
     }
+
+    @Override
+    public String toString() {
+        return group.getDescription() + " - " + name;
+    }
 }

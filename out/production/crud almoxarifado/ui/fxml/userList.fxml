@@ -60,13 +60,13 @@
         <TableView fx:id="tableViewUsers" focusTraversable="false" prefHeight="545.0">
             <columns>
                 <TableColumn fx:id="tableColumnUserCode" editable="false" maxWidth="100.0" minWidth="100.0" prefWidth="-1.0" text="Código" />
-                <TableColumn fx:id="tableColumnUserName" editable="false" minWidth="213.0" prefWidth="-1.0" resizable="false" text="Nome" />
-                <TableColumn fx:id="tableColumnUserEmail" editable="false" minWidth="240.0" prefWidth="-1.0" resizable="false" text="Email" />
-                <TableColumn fx:id="tableColumnUserTelephone" editable="false" minWidth="150.0" prefWidth="-1.0" resizable="false" text="Telefone" />
-                <TableColumn fx:id="tableColumnUserGroup" editable="false" minWidth="150.0" prefWidth="-1.0" resizable="false" text="Grupo" />
-                <TableColumn fx:id="tableColumnUserActive" editable="false" minWidth="60.0" prefWidth="-1.0" resizable="false" text="Ativo" />
-            <TableColumn fx:id="tableColumnEdit" editable="false" minWidth="75.0" prefWidth="-1.0" resizable="false" />
-            <TableColumn fx:id="tableColumnDelete" editable="false" minWidth="75.0" prefWidth="-1.0" resizable="false" />
+                <TableColumn fx:id="tableColumnUserName" editable="false" maxWidth="1.7976931348623157E308" minWidth="213.0" prefWidth="-1.0" resizable="false" text="Nome" />
+                <TableColumn fx:id="tableColumnUserEmail" editable="false" maxWidth="1.7976931348623157E308" minWidth="240.0" prefWidth="-1.0" resizable="false" text="Email" />
+                <TableColumn fx:id="tableColumnUserTelephone" editable="false" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="-1.0" resizable="false" text="Telefone" />
+                <TableColumn fx:id="tableColumnUserGroup" editable="false" maxWidth="1.7976931348623157E308" minWidth="150.0" prefWidth="-1.0" resizable="false" text="Grupo" />
+                <TableColumn fx:id="tableColumnUserActive" editable="false" maxWidth="1.7976931348623157E308" minWidth="60.0" prefWidth="-1.0" resizable="false" text="Ativo" />
+            <TableColumn fx:id="tableColumnEdit" editable="false" maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="-1.0" resizable="false" />
+            <TableColumn fx:id="tableColumnDelete" editable="false" maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="-1.0" resizable="false" />
             </columns>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" />

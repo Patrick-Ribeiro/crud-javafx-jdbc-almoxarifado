@@ -13,11 +13,6 @@
    <children>
       <HBox alignment="TOP_RIGHT" layoutX="148.0" layoutY="98.0" spacing="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="45.0">
          <children>
-            <Button fx:id="buttonExpense" mnemonicParsing="false" onAction="#onButtonExpenseAction" prefHeight="30.0" prefWidth="69.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Despesas">
-               <font>
-                  <Font size="12.0" />
-               </font>
-            </Button>
             <Button fx:id="buttonNew" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="30.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Novo">
                <font>
                   <Font size="12.0" />

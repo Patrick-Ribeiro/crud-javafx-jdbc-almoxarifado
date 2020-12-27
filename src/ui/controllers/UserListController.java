@@ -107,10 +107,8 @@ public class UserListController implements Initializable, DataChangeListener {
             List<User> userList = persistenceService.findAll();
             filterTable(userList);
         } catch (DatabaseConnectionException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-            alert.setHeaderText("Erro de conexão com o banco de daddos.");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.showAndWait();
+            Alerts.showAlert("Erro de conexão", "Não foi possível se conectar ao banco de dados",
+                    ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 

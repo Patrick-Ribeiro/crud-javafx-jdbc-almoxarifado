@@ -9,14 +9,14 @@ public class Product {
     private ProductGroup group;
     private Packing packing;
     private Integer quantityPacking;
-    private Buyer buyer;
+    private User buyer;
     private Boolean active;
 
     public Product() {
     }
 
     public Product(Integer internalCode, String description, String descriptionERP, ProductCategory category,
-                   ProductGroup group, Packing packing, Integer quantityPacking, Buyer buyer, Boolean active) {
+                   ProductGroup group, Packing packing, Integer quantityPacking, User buyer, Boolean active) {
         this.internalCode = internalCode;
         this.description = description;
         this.descriptionERP = descriptionERP;
@@ -84,11 +84,11 @@ public class Product {
         this.quantityPacking = quantityPacking;
     }
 
-    public Buyer getBuyer() {
+    public User getBuyer() {
         return buyer;
     }
 
-    public void setBuyer(Buyer buyer) {
+    public void setBuyer(User buyer) {
         this.buyer = buyer;
     }
 

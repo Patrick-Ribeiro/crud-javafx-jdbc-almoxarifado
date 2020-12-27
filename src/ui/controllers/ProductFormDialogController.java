@@ -6,6 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
@@ -15,9 +16,11 @@ import model.entities.*;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
+import model.services.persistence.exceptions.PersistenceException;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.listeners.Notifier;
+import ui.util.Alerts;
 import ui.util.Constraints;
 import ui.util.StageUtilities;
 import ui.util.Util;
@@ -92,7 +95,14 @@ public class ProductFormDialogController implements Initializable, Notifier {
 
     @FXML
     void onButtonConfirmAction(ActionEvent event) {
-
+        Product product = getFormData();
+        try {
+            persistenceService.insert(product);
+            WindowLoader.closePopup(StageUtilities.currentStage(event));
+        } catch (PersistenceException ex) {
+            Alerts.showAlert("Erro ao inserir", "Não foi possível inserir o produto",
+                    ex.getMessage(), Alert.AlertType.ERROR);
+        }
     }
 
     @FXML
@@ -138,13 +148,13 @@ public class ProductFormDialogController implements Initializable, Notifier {
 
         comboBoxGroup.setItems(FXCollections.observableArrayList(PersistenceServiceFactory.createProductGroupService().findAll()));
         comboBoxCategory.setItems(FXCollections.observableArrayList(PersistenceServiceFactory.createProductCategoryService().findAll()));
-        //comboBoxBuyer.setItems(FXCollections.observableArrayList(PersistenceServiceFactory.createUserService().find()));
+        UserGroup groupBuyer = PersistenceServiceFactory.createUserGroupService().find(2);
+        comboBoxBuyer.setItems(FXCollections.observableArrayList(PersistenceServiceFactory.createUserService().find(groupBuyer)));
         comboBoxPacking.setItems(FXCollections.observableArrayList(PersistenceServiceFactory.createPackingService().findAll()));
 
         comboBoxGroup.getSelectionModel().select(product.getGroup());
         comboBoxCategory.getSelectionModel().select(product.getCategory());
         comboBoxPacking.getSelectionModel().select(product.getPacking());
-
 
         if (product.getInternalCode() != null) {
             textFieldInternalCode.setEditable(false);
@@ -165,6 +175,7 @@ public class ProductFormDialogController implements Initializable, Notifier {
         ProductCategory category = comboBoxCategory.getSelectionModel().getSelectedItem();
         Packing packing = comboBoxPacking.getSelectionModel().getSelectedItem();
         Integer quantityPacking = Util.tryParseToInt(textFieldQuantityPacking.getText());
+        User buyer = comboBoxBuyer.getSelectionModel().getSelectedItem();
 
         product.setInternalCode(internalCode);
         product.setDescription(description);
@@ -173,6 +184,7 @@ public class ProductFormDialogController implements Initializable, Notifier {
         product.setCategory(category);
         product.setPacking(packing);
         product.setQuantityPacking(quantityPacking);
+        product.setBuyer(buyer);
 
         return product;
     }
