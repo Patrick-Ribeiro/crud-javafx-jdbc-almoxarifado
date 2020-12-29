@@ -17,4 +17,7 @@ public class FXMLLocation {
     public static final URL PRODUCT_FORM = FXMLLocation.class.getResource("/ui/fxml/productFormDialog.fxml");
     public static final URL PRODUCT_GROUP_FORM = FXMLLocation.class.getResource("/ui/fxml/productGroupForm.fxml");
 
+    public static final URL EXPENSE_LIST = FXMLLocation.class.getResource("/ui/fxml/expenseList.fxml");
+    public static final URL EXPENSE_FORM = FXMLLocation.class.getResource("/ui/fxml/expenseFormDialog.fxml");
+
 }

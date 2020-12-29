@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1095.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.ExpenseListController">
+    <children>
+        <HBox alignment="TOP_RIGHT" fillHeight="false" minHeight="-Infinity" spacing="5.0">
+            <children>
+            <GridPane nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" prefWidth="1082.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" />
+                  <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints halignment="RIGHT" minWidth="-Infinity" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" spacing="5.0" GridPane.columnIndex="2">
+                     <children>
+                            <Button fx:id="buttonNew" minWidth="70.0" mnemonicParsing="false" onAction="#onButtonNewAction" prefHeight="30.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Novo">
+                           <font>
+                              <Font size="12.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="15.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
+                      <TextField fx:id="textFieldSearch" onKeyPressed="#onTextFieldSearchKeyPressed" prefHeight="35.0" prefWidth="50.0" promptText="Pesquisa" styleClass="textField-search" stylesheets="@../css/styles.css" />
+                  <HBox alignment="CENTER" prefHeight="30.0" prefWidth="156.0" spacing="5.0" GridPane.columnIndex="1" />
+               </children>
+            </GridPane>
+            </children>
+            <padding>
+                <Insets bottom="5.0" top="5.0" />
+            </padding></HBox>
+        <TableView fx:id="tableViewExpenses" fixedCellSize="50.0" focusTraversable="false" maxHeight="1.7976931348623157E308" prefHeight="545.0">
+            <columns>
+                <TableColumn fx:id="tableColumnDebit" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Débito" />
+                <TableColumn fx:id="tableColumnDescription" editable="false" maxWidth="1.7976931348623157E308" minWidth="570.0" prefWidth="-1.0" resizable="false" text="Descrição" />
+                <TableColumn fx:id="tableColumnType" editable="false" maxWidth="1.7976931348623157E308" minWidth="220.0" prefWidth="-1.0" resizable="false" text="Tipo" />
+            <TableColumn fx:id="tableColumnEdit" maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="-1.0" resizable="false" />
+            <TableColumn fx:id="tableColumnDelete" maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="-1.0" resizable="false" />
+            </columns>
+            <VBox.margin>
+                <Insets left="15.0" right="15.0" />
+            </VBox.margin>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+        </TableView>
+    </children>
+</VBox>

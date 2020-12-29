@@ -6,11 +6,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import model.services.persistence.PersistenceServiceFactory;
-import model.services.persistence.jdbc.PackingPersistenceServiceJBDC;
 import model.services.persistence.jdbc.UserPersistenceServiceJDBC;
-import ui.WindowLoader;
 import ui.controllers.abstracts.AbstractMainController;
 import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
@@ -49,7 +46,10 @@ public class MainController extends AbstractMainController {
 
     @FXML
     public void onButtonExpensesAction(ActionEvent event) {
-
+        loadScreen(FXMLLocation.EXPENSE_LIST, (ExpenseListController controller) -> {
+            controller.setPersistenceService(PersistenceServiceFactory.createExpenseService());
+            controller.updateTable();
+        });
     }
 
     @FXML

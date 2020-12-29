@@ -1,13 +1,13 @@
 package model.entities.enums;
 
-public enum TypeExpense {
+public enum ExpenseType {
     SELLING("S", "Venda"),
     CONSUMPTION("C", "Consumo");
 
     private final String abreviation;
     private final String portuguese;
 
-    TypeExpense(String abreviation, String portuguese) {
+    ExpenseType(String abreviation, String portuguese) {
         this.abreviation = abreviation;
         this.portuguese = portuguese;
     }
@@ -17,6 +17,11 @@ public enum TypeExpense {
     }
 
     public String toPortuguese() {
+        return portuguese;
+    }
+
+    @Override
+    public String toString() {
         return portuguese;
     }
 }

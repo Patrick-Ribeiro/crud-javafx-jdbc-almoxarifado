@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="270.0" prefWidth="470.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.ExpenseFormDialogController">
+    <children>
+        <HBox fx:id="hboxTitle" alignment="TOP_RIGHT" minHeight="-Infinity" onMouseMoved="#onHBoxTitleMouseMoved" prefHeight="30.0" prefWidth="300.0" spacing="5.0" style="-fx-background-color: #F0F0F0;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+            <children>
+                <Label prefHeight="30.0" prefWidth="600.0" text="Formulário de Despesa">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="10.0" />
+                    </HBox.margin>
+                </Label>
+                <Button fx:id="buttonClose" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onButtonCloseAction" prefHeight="20.0" prefWidth="20.0" styleClass="button-close" stylesheets="@../css/styles.css">
+                    <HBox.margin>
+                        <Insets right="3.0" top="3.0" />
+                    </HBox.margin>
+                </Button>
+            </children>
+        </HBox>
+        <GridPane layoutX="35.0" layoutY="20.0" prefWidth="420.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="210.0" prefWidth="210.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="220.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="0.0" prefWidth="0.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="210.0" prefWidth="220.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="TOP" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="-Infinity" minHeight="-Infinity" prefHeight="40.0" valignment="TOP" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label fx:id="labelErrorDebit" textFill="RED" GridPane.rowIndex="1">
+                    <padding>
+                        <Insets top="2.0" />
+                    </padding>
+                    <font>
+                        <Font size="11.0" />
+                    </font>
+                </Label>
+                <Label fx:id="labelErrorDescription" textFill="RED" GridPane.rowIndex="3">
+                    <padding>
+                        <Insets top="2.0" />
+                    </padding>
+                </Label>
+                <Label fx:id="labelErrorType" textFill="RED" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                    <padding>
+                        <Insets top="2.0" />
+                    </padding>
+                </Label>
+                <JFXTextField fx:id="textFieldDebit" focusColor="#0c5ee8" labelFloat="true" onKeyPressed="#onTextFieldUserCodeKeyPressed" promptText="Débito" styleClass="textfield" stylesheets="@../css/styles.css">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </JFXTextField>
+                <JFXTextField fx:id="textFieldDescription" focusColor="#0c5ee8" labelFloat="true" promptText="Descrição" styleClass="textfield" stylesheets="@../css/styles.css" GridPane.rowIndex="2">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </JFXTextField>
+                <JFXComboBox fx:id="comboBoxType" focusColor="#0c5ee8" labelFloat="true" prefHeight="30.0" prefWidth="245.0" promptText="Tipo" styleClass="combobox" stylesheets="@../css/styles.css" GridPane.columnIndex="3" />
+            </children>
+        </GridPane>
+        <HBox layoutX="326.0" layoutY="241.0" prefHeight="35.0" prefWidth="204.0" spacing="5.0" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+            <children>
+                <Button fx:id="buttonCancel" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonCancelAction" prefHeight="35.0" prefWidth="100.0" styleClass="button-classic" stylesheets="@../css/styles.css" text="Cancelar">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+                <Button fx:id="buttonConfirm" focusTraversable="false" mnemonicParsing="false" onAction="#onButtonConfirmAction" prefHeight="35.0" prefWidth="100.0" styleClass="button-highlight" stylesheets="@../css/styles.css" text="Concluir">
+                    <font>
+                        <Font size="12.0" />
+                    </font>
+                </Button>
+            </children>
+        </HBox>
+    </children>
+</AnchorPane>

@@ -1,6 +1,7 @@
 package model.services.persistence.jdbc;
 
 import model.entities.ProductCategory;
+import model.entities.User;
 import model.entities.UserGroup;
 import model.services.persistence.abstracts.ProductCategoryPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
@@ -82,7 +83,24 @@ public class ProductCategoryPersistenceServiceJDBC implements ProductCategoryPer
 
     @Override
     public ProductCategory find(int id) {
-        return null;
+        String sql = "SELECT * FROM product_categories WHERE id = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            Logs.informationQuery(stmt);
+            stmt.setInt(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+
+            ProductCategory categoryFound;
+            if (resultSet.next())
+                categoryFound = fromResultSet(resultSet);
+            else
+                categoryFound = null;
+
+            DatabaseConnection.closeConnection(connection, stmt, resultSet);
+            return categoryFound;
+        } catch (SQLException e) {
+            throw new PersistenceException(e.getMessage());
+        }
     }
 
     private ProductCategory fromResultSet(ResultSet resultSet) throws SQLException {

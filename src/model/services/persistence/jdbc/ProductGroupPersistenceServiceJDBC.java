@@ -1,7 +1,7 @@
 package model.services.persistence.jdbc;
 
 import model.entities.*;
-import model.entities.enums.TypeExpense;
+import model.entities.enums.ExpenseType;
 import model.services.persistence.abstracts.ProductGroupPersistenceService;
 import model.services.persistence.exceptions.DatabaseIntegrityException;
 import model.services.persistence.exceptions.PersistenceException;
@@ -93,7 +93,9 @@ public class ProductGroupPersistenceServiceJDBC implements ProductGroupPersisten
 
     @Override
     public List<ProductGroup> findAll() {
-        String sql = "SELECT product_groups.*, expenses.description as expense_description, expenses.type as expense_type "
+        String sql = "SELECT product_groups.*, "
+                + "expenses.description as expense_description, "
+                + "expenses.type as expense_type "
                 + "FROM product_groups "
                 + "INNER JOIN expenses ON product_groups.expense_debit = expenses.debit";
 
@@ -127,8 +129,8 @@ public class ProductGroupPersistenceServiceJDBC implements ProductGroupPersisten
     private Expense instatiateExpense(ResultSet resultSet) throws SQLException {
         Integer expenseDebit = resultSet.getInt("expense_debit");
         String expenseDescription = resultSet.getString("expense_description");
-        TypeExpense typeExpense = TypeExpense.valueOf(resultSet.getString("expense_type"));
-        return new Expense(expenseDebit, expenseDescription, typeExpense);
+        ExpenseType expenseType = ExpenseType.valueOf(resultSet.getString("expense_type"));
+        return new Expense(expenseDebit, expenseDescription, expenseType);
     }
 
 

@@ -67,14 +67,7 @@ public class ProductListController implements Initializable {
 
     @FXML
     void onButtonNewAction(ActionEvent event) {
-        Stage parentStage = StageUtilities.currentStage(event);
-
-        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_FORM, parentStage,
-                new Stage(), (ProductFormDialogController controller) -> {
-                    controller.setEntity(new Product());
-                    controller.setPersistenceService(PersistenceServiceFactory.createProductService());
-                    controller.updateFormData();
-                });
+        createProductForm(new Product());
     }
 
     @FXML
@@ -211,7 +204,16 @@ public class ProductListController implements Initializable {
     }
 
     private void createProductForm(Product product) {
+        Stage parentStage = (Stage) (tableViewProducts).getScene().getWindow();
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Formulário de produto");
 
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_FORM, parentStage,
+                dialogStage, (ProductFormDialogController controller) -> {
+                    controller.setEntity(product);
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductService());
+                    controller.updateFormData();
+                });
     }
 
     private void deleteProduct(Product product) {

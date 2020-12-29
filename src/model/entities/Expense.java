@@ -1,6 +1,6 @@
 package model.entities;
 
-import model.entities.enums.TypeExpense;
+import model.entities.enums.ExpenseType;
 
 import java.util.Objects;
 
@@ -8,12 +8,12 @@ public class Expense {
 
     private Integer debit;
     private String description;
-    private TypeExpense type;
+    private ExpenseType type;
 
     public Expense() {
     }
 
-    public Expense(Integer debit, String description, TypeExpense type) {
+    public Expense(Integer debit, String description, ExpenseType type) {
         this.debit = debit;
         this.description = description;
         this.type = type;
@@ -35,11 +35,11 @@ public class Expense {
         this.description = description;
     }
 
-    public TypeExpense getType() {
+    public ExpenseType getType() {
         return type;
     }
 
-    public void setType(TypeExpense type) {
+    public void setType(ExpenseType type) {
         this.type = type;
     }
 
