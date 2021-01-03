@@ -22,12 +22,15 @@ import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.util.Alerts;
 import ui.util.FXMLLocation;
+import ui.util.TableViewUtilities;
 import ui.util.controls.ButtonDelete;
 import ui.util.controls.ButtonEdit;
 import ui.util.StageUtilities;
 import ui.util.controls.CheckBoxActive;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -41,26 +44,19 @@ public class UserListController implements Initializable, DataChangeListener {
     TextField textFieldSearch;
     @FXML
     TableView<User> tableViewUsers;
-    @FXML
-    TableColumn<User, Integer> tableColumnUserCode;
-    @FXML
-    TableColumn<User, String> tableColumnUserName;
-    @FXML
-    TableColumn<User, String> tableColumnUserEmail;
-    @FXML
-    TableColumn<User, String> tableColumnUserTelephone;
-    @FXML
-    TableColumn<User, UserGroup> tableColumnUserGroup;
-    @FXML
-    TableColumn<User, User> tableColumnUserActive;
-    @FXML
-    TableColumn<User, User> tableColumnEdit;
-    @FXML
-    TableColumn<User, User> tableColumnDelete;
 
+    TableColumn<User, Integer> tableColumnUserCode;
+    TableColumn<User, String> tableColumnUserName;
+    TableColumn<User, String> tableColumnUserEmail;
+    TableColumn<User, String> tableColumnUserTelephone;
+    TableColumn<User, UserGroup> tableColumnUserGroup;
+    TableColumn<User, User> tableColumnUserActive;
+    TableColumn<User, User> tableColumnEdit;
+    TableColumn<User, User> tableColumnDelete;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        initColumns();
     }
 
     public void setPersistenceService(UserPersistenceService persistenceService) {
@@ -112,24 +108,43 @@ public class UserListController implements Initializable, DataChangeListener {
         }
     }
 
+    private void initColumns() {
+        tableColumnUserCode = new TableColumn<>("Código ERP");
+        tableColumnUserName = new TableColumn<>("Nome");
+        tableColumnUserEmail = new TableColumn<>("Email");
+        tableColumnUserTelephone = new TableColumn<>("Telefone");
+        tableColumnUserGroup = new TableColumn<>("Grupo");
+        tableColumnUserActive = new TableColumn<>("Ativo");
+        tableColumnEdit = new TableColumn<>();
+        tableColumnDelete = new TableColumn<>();
+
+        tableColumnEdit.setMinWidth(60);
+        tableColumnDelete.setMinWidth(60);
+        tableColumnUserActive.setMinWidth(60);
+    }
+
     public synchronized void filterTable(List<User> userList) {
-        tableViewUsers.getItems().clear();
         tableColumnUserCode.setCellValueFactory(new PropertyValueFactory<>("code"));
         tableColumnUserName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tableColumnUserEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         tableColumnUserTelephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
         tableColumnUserGroup.setCellValueFactory(new PropertyValueFactory<>("group"));
 
+        if (userList != null && userList.size() != 0) {
+            List<TableColumn> columnList = new ArrayList<>();
+            columnList.add(tableColumnUserCode);
+            columnList.add(tableColumnUserName);
+            columnList.add(tableColumnUserEmail);
+            columnList.add(tableColumnUserTelephone);
+            columnList.add(tableColumnUserGroup);
+            columnList.add(tableColumnUserActive);
+            columnList.add(tableColumnEdit);
+            columnList.add(tableColumnDelete);
+            TableViewUtilities.loadColumns(tableViewUsers, columnList, userList);
+        }
         initEditButtons();
         initDeleteButtons();
         initActiveCheckBoxes();
-
-        if (userList != null && userList.size() != 0) {
-            tableViewUsers.getColumns().clear();
-            tableViewUsers.getColumns().setAll(tableColumnUserCode, tableColumnUserName, tableColumnUserEmail, tableColumnUserTelephone,
-                    tableColumnUserGroup, tableColumnUserActive, tableColumnEdit, tableColumnDelete);
-            tableViewUsers.setItems(FXCollections.observableArrayList(userList));
-        }
     }
 
     private void initEditButtons() {

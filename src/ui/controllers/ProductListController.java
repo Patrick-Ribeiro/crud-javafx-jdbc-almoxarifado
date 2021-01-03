@@ -19,6 +19,7 @@ import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import ui.WindowLoader;
+import ui.listeners.DataChangeListener;
 import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
 import ui.util.controls.ButtonDelete;
@@ -29,7 +30,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class ProductListController implements Initializable {
+public class ProductListController implements Initializable, DataChangeListener {
 
     ProductPersistenceService persistenceService;
 
@@ -213,10 +214,16 @@ public class ProductListController implements Initializable {
                     controller.setEntity(product);
                     controller.setPersistenceService(PersistenceServiceFactory.createProductService());
                     controller.updateFormData();
+                    controller.subscribeListener(this);
                 });
     }
 
     private void deleteProduct(Product product) {
 
+    }
+
+    @Override
+    public void onChangedData() {
+        updateTable();
     }
 }

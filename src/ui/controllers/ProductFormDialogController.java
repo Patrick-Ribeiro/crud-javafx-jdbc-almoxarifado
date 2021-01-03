@@ -97,8 +97,12 @@ public class ProductFormDialogController implements Initializable, Notifier {
     void onButtonConfirmAction(ActionEvent event) {
         Product product = getFormData();
         try {
-            persistenceService.insert(product);
+            if(product.getInternalCode() == null)
+                persistenceService.insert(product);
+            else
+                persistenceService.update(product);
             WindowLoader.closePopup(StageUtilities.currentStage(event));
+            notifyListeners();
         } catch (PersistenceException ex) {
             Alerts.showAlert("Erro ao inserir", "Não foi possível inserir o produto",
                     ex.getMessage(), Alert.AlertType.ERROR);
@@ -155,6 +159,7 @@ public class ProductFormDialogController implements Initializable, Notifier {
         comboBoxGroup.getSelectionModel().select(product.getGroup());
         comboBoxCategory.getSelectionModel().select(product.getCategory());
         comboBoxPacking.getSelectionModel().select(product.getPacking());
+        comboBoxBuyer.getSelectionModel().select(product.getBuyer());
 
         if (product.getInternalCode() != null) {
             textFieldInternalCode.setEditable(false);

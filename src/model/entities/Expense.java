@@ -44,22 +44,27 @@ public class Expense {
     }
 
     @Override
+    public String toString() {
+        return type.toPortuguese() + " - " + description;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         Expense expense = (Expense) o;
-        return debit.equals(expense.debit) &&
-                Objects.equals(description, expense.description) &&
-                type == expense.type;
+
+        if (!debit.equals(expense.debit)) return false;
+        if (description != null ? !description.equals(expense.description) : expense.description != null) return false;
+        return type == expense.type;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(debit, description, type);
-    }
-
-    @Override
-    public String toString() {
-        return type.toPortuguese() + " - " + description;
+        int result = debit.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (type != null ? type.hashCode() : 0);
+        return result;
     }
 }

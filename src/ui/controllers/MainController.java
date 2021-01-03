@@ -17,6 +17,8 @@ import java.util.ResourceBundle;
 
 public class MainController extends AbstractMainController {
 
+    private MenuItem currentMenuItemOpen;
+
     @FXML
     HBox hboxTitle;
     @FXML
@@ -50,6 +52,7 @@ public class MainController extends AbstractMainController {
             controller.setPersistenceService(PersistenceServiceFactory.createExpenseService());
             controller.updateTable();
         });
+        currentMenuItemOpen = MenuItem.EXPENSES;
     }
 
     @FXML
@@ -58,6 +61,8 @@ public class MainController extends AbstractMainController {
             controller.setPersistenceService(PersistenceServiceFactory.createProductService());
             controller.updateTable();
         });
+        updateCurrentMenuItemOpen(MenuItem.PRODUCTS);
+        currentMenuItemOpen = MenuItem.PRODUCTS;
     }
 
     @FXML
@@ -66,6 +71,7 @@ public class MainController extends AbstractMainController {
             controller.setPersistenceService(new UserPersistenceServiceJDBC());
             controller.updateTable();
         });
+        currentMenuItemOpen = MenuItem.USERS;
     }
 
     @FXML
@@ -77,4 +83,19 @@ public class MainController extends AbstractMainController {
     protected ScrollPane getMainScrollPane() {
         return mainScrollPane;
     }
+
+    private void updateCurrentMenuItemOpen(MenuItem item) {
+        currentMenuItemOpen = item;
+
+        switch (currentMenuItemOpen) {
+            case EXPENSES:
+        }
+    }
+}
+
+enum MenuItem {
+    DASHBOARD,
+    PRODUCTS,
+    USERS,
+    EXPENSES;
 }

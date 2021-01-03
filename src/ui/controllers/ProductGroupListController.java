@@ -15,6 +15,7 @@ import model.entities.ProductGroup;
 import model.entities.User;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductGroupPersistenceService;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.util.Alerts;
@@ -154,13 +155,18 @@ public class ProductGroupListController implements DataChangeListener {
     }
 
     private void deteleProductGroup(ProductGroup group) {
-        Alerts.showConfirmation("Exclusão de grupo",
-                "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
-            if (type == ButtonType.OK) {
-                persistenceService.delete(group.getId());
-                updateTable();
-            }
-        });
+        try {
+            Alerts.showConfirmation("Exclusão de grupo",
+                    "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
+                if (type == ButtonType.OK) {
+                    persistenceService.delete(group.getId());
+                    updateTable();
+                }
+            });
+        } catch (DatabaseIntegrityException ex) {
+            Alerts.showAlert("Erro ao excluir grupo", "Não é possível excluir este grupo de produto",
+                    "O grupo está associado à um ou mais produtos.\n" + ex.getMessage(),Alert.AlertType.ERROR);
+        }
     }
 
     @Override

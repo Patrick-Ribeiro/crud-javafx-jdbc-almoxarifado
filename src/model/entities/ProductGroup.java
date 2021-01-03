@@ -48,4 +48,22 @@ public class ProductGroup {
     public String toString() {
         return String.valueOf(id);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductGroup that = (ProductGroup) o;
+
+        if (!id.equals(that.id)) return false;
+        return expense != null ? expense.equals(that.expense) : that.expense == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (expense != null ? expense.hashCode() : 0);
+        return result;
+    }
 }

@@ -45,4 +45,24 @@ public class Packing {
     public String toString() {
         return abbreviation + " - " + description;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Packing packing = (Packing) o;
+
+        if (!id.equals(packing.id)) return false;
+        if (description != null ? !description.equals(packing.description) : packing.description != null) return false;
+        return abbreviation != null ? abbreviation.equals(packing.abbreviation) : packing.abbreviation == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (abbreviation != null ? abbreviation.hashCode() : 0);
+        return result;
+    }
 }
