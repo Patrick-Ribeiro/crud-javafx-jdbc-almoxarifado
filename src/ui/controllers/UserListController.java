@@ -118,9 +118,14 @@ public class UserListController implements Initializable, DataChangeListener {
         tableColumnEdit = new TableColumn<>();
         tableColumnDelete = new TableColumn<>();
 
+        // minimum value
         tableColumnEdit.setMinWidth(60);
         tableColumnDelete.setMinWidth(60);
         tableColumnUserActive.setMinWidth(60);
+        // maximum value
+        tableColumnEdit.setMaxWidth(60);
+        tableColumnDelete.setMaxWidth(60);
+        tableColumnUserActive.setMaxWidth(60);
     }
 
     public synchronized void filterTable(List<User> userList) {
@@ -130,7 +135,7 @@ public class UserListController implements Initializable, DataChangeListener {
         tableColumnUserTelephone.setCellValueFactory(new PropertyValueFactory<>("telephone"));
         tableColumnUserGroup.setCellValueFactory(new PropertyValueFactory<>("group"));
 
-        if (userList != null && userList.size() != 0) {
+        if (userList != null && userList.size() > 0) {
             List<TableColumn> columnList = new ArrayList<>();
             columnList.add(tableColumnUserCode);
             columnList.add(tableColumnUserName);

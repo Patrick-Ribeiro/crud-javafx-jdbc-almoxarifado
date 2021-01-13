@@ -18,15 +18,19 @@ import model.entities.User;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
+import ui.util.Alerts;
 import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
+import ui.util.TableViewUtilities;
 import ui.util.controls.ButtonDelete;
 import ui.util.controls.ButtonEdit;
 import ui.util.controls.CheckBoxActive;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -36,110 +40,42 @@ public class ProductListController implements Initializable, DataChangeListener 
 
     @FXML
     private TableView<Product> tableViewProducts;
-    @FXML
+
     private TableColumn<Product, Integer> tableColumnInternalCode;
-    @FXML
     private TableColumn<Product, String> tableColumnDescription;
-    @FXML
     private TableColumn<Product, String> tableColumnDescriptionERP;
-    @FXML
     private TableColumn<Product, ProductCategory> tableColumnCategory;
-    @FXML
-    TableColumn<Product, Product> tableColumnActive;
-    @FXML
-    TableColumn<Product, Product> tableColumnEdit;
-    @FXML
-    TableColumn<Product, Product> tableColumnDelete;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-
-    }
-
-    @FXML
-    void onButtonDeleteAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onButtonEditAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void onButtonNewAction(ActionEvent event) {
-        createProductForm(new Product());
-    }
-
-    @FXML
-    void onButtonGroupsAction(ActionEvent event) {
-        Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_GROUP_LIST, currentStage,
-                new Stage(), (ProductGroupListController controller) -> {
-                    controller.setPersistenceService(PersistenceServiceFactory.createProductGroupService());
-                    controller.updateTable();
-                });
-    }
-
-    @FXML
-    void onButtonCategoriesAction(ActionEvent event) {
-        Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_CATEGORY_LIST, currentStage,
-                new Stage(), (ProductCategoryListController controller) -> {
-                    controller.setPersistenceService(PersistenceServiceFactory.createProductCategoryService());
-                    controller.updateList();
-                });
-    }
-
-    @FXML
-    void onButtonPackingsAction(ActionEvent event) {
-        Stage currentStage = StageUtilities.currentStage(event);
-        WindowLoader.createPopupScreen(FXMLLocation.PACKING_LIST, currentStage,
-                new Stage(), (PackingListController controller) -> {
-                    controller.setPersistenceService(PersistenceServiceFactory.createPackingService());
-                    controller.updateList();
-                });
-    }
-
-    @FXML
-    void onTextFieldSearchKeyPressed(KeyEvent event) {
-
-    }
+    private TableColumn<Product, Product> tableColumnActive;
+    private TableColumn<Product, Product> tableColumnEdit;
+    private TableColumn<Product, Product> tableColumnDelete;
 
     public void setPersistenceService(ProductPersistenceService persistenceService) {
         this.persistenceService = persistenceService;
     }
 
-    public void updateTable() {
-        if (persistenceService == null) {
-            throw new IllegalStateException("UserPersistenceService é nulo");
-        }
-        try {
-            List<Product> productList = persistenceService.findAll();
-            filterTable(productList);
-        } catch (DatabaseConnectionException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-            alert.setHeaderText("Erro de conexão com o banco de daddos.");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.showAndWait();
-        }
+    //<editor-fold desc="Initializers">
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initColumns();
     }
 
-    public void filterTable(List<Product> productList) {
-        tableViewProducts.getItems().clear();
-        tableColumnInternalCode.setCellValueFactory(new PropertyValueFactory("internalCode"));
-        tableColumnDescription.setCellValueFactory(new PropertyValueFactory("description"));
-        tableColumnDescriptionERP.setCellValueFactory(new PropertyValueFactory("descriptionERP"));
-        tableColumnCategory.setCellValueFactory(new PropertyValueFactory("category"));
+    private void initColumns() {
+        tableColumnInternalCode = new TableColumn<>("Código");
+        tableColumnDescription = new TableColumn<>("Descrição");
+        tableColumnDescriptionERP = new TableColumn<>("Descrição ERP");
+        tableColumnCategory = new TableColumn<>("Categoria");
+        tableColumnActive = new TableColumn<>("Ativo");
+        tableColumnEdit = new TableColumn<>();
+        tableColumnDelete = new TableColumn<>();
 
-        initActiveCheckBoxes();
-        initDeleteButtons();
-        initEditButtons();
-
-        if (productList != null && productList.size() != 0) {
-            tableViewProducts.setItems(FXCollections.observableArrayList(productList));
-            tableViewProducts.getSelectionModel().select(0);
-        }
+        // minimum value
+        tableColumnEdit.setMinWidth(60);
+        tableColumnDelete.setMinWidth(60);
+        tableColumnActive.setMinWidth(60);
+        // maximum value
+        tableColumnEdit.setMaxWidth(60);
+        tableColumnDelete.setMaxWidth(60);
+        tableColumnActive.setMaxWidth(60);
     }
 
     private void initEditButtons() {
@@ -203,6 +139,84 @@ public class ProductListController implements Initializable, DataChangeListener 
             }
         });
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Events">
+    @FXML
+    void onButtonNewAction(ActionEvent event) {
+        createProductForm(new Product());
+    }
+
+    @FXML
+    void onButtonGroupsAction(ActionEvent event) {
+        Stage currentStage = StageUtilities.currentStage(event);
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_GROUP_LIST, currentStage,
+                new Stage(), (ProductGroupListController controller) -> {
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductGroupService());
+                    controller.updateTable();
+                });
+    }
+
+    @FXML
+    void onButtonCategoriesAction(ActionEvent event) {
+        Stage currentStage = StageUtilities.currentStage(event);
+        WindowLoader.createPopupScreen(FXMLLocation.PRODUCT_CATEGORY_LIST, currentStage,
+                new Stage(), (ProductCategoryListController controller) -> {
+                    controller.setPersistenceService(PersistenceServiceFactory.createProductCategoryService());
+                    controller.updateList();
+                });
+    }
+
+    @FXML
+    void onButtonPackingsAction(ActionEvent event) {
+        Stage currentStage = StageUtilities.currentStage(event);
+        WindowLoader.createPopupScreen(FXMLLocation.PACKING_LIST, currentStage,
+                new Stage(), (PackingListController controller) -> {
+                    controller.setPersistenceService(PersistenceServiceFactory.createPackingService());
+                    controller.updateList();
+                });
+    }
+
+    @FXML
+    void onTextFieldSearchKeyPressed(KeyEvent event) {
+
+    }
+    //</editor-fold>
+
+    public void updateTable() {
+        if (persistenceService == null) {
+            throw new IllegalStateException("UserPersistenceService é nulo");
+        }
+        try {
+            List<Product> productList = persistenceService.findAll();
+            filterTable(productList);
+        } catch (DatabaseConnectionException ex) {
+            Alerts.showAlert("Erro de conexão", "Não foi possível se conectar ao banco de dados",
+                    ex.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public void filterTable(List<Product> productList) {
+        tableColumnInternalCode.setCellValueFactory(new PropertyValueFactory("internalCode"));
+        tableColumnDescription.setCellValueFactory(new PropertyValueFactory("description"));
+        tableColumnDescriptionERP.setCellValueFactory(new PropertyValueFactory("descriptionERP"));
+        tableColumnCategory.setCellValueFactory(new PropertyValueFactory("category"));
+
+        if (productList != null && productList.size() != 0) {
+            List<TableColumn> columnList = new ArrayList<>();
+            columnList.add(tableColumnInternalCode);
+            columnList.add(tableColumnDescription);
+            columnList.add(tableColumnDescriptionERP);
+            columnList.add(tableColumnCategory);
+            columnList.add(tableColumnActive);
+            columnList.add(tableColumnEdit);
+            columnList.add(tableColumnDelete);
+            TableViewUtilities.loadColumns(tableViewProducts, columnList, productList);
+        }
+        initActiveCheckBoxes();
+        initDeleteButtons();
+        initEditButtons();
+    }
 
     private void createProductForm(Product product) {
         Stage parentStage = (Stage) (tableViewProducts).getScene().getWindow();
@@ -219,7 +233,19 @@ public class ProductListController implements Initializable, DataChangeListener 
     }
 
     private void deleteProduct(Product product) {
-
+        Alerts.showConfirmation("Exclusão de produto",
+                "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
+            if (type == ButtonType.OK) {
+                try {
+                    persistenceService.delete(product.getInternalCode());
+                    updateTable();
+                } catch (DatabaseIntegrityException ex) {
+                    Alerts.showAlert("Erro ao excluir produto",
+                            "Não é possível excluir este produto",
+                            "", Alert.AlertType.ERROR);
+                }
+            }
+        });
     }
 
     @Override

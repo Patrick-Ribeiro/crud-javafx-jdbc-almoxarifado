@@ -3,6 +3,7 @@ package model.services.persistence.jdbc;
 import model.entities.*;
 import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.*;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import model.services.persistence.exceptions.PersistenceException;
 import util.Logs;
 
@@ -18,9 +19,9 @@ import java.util.Map;
 public class ProductPersistenceServiceJDBC implements ProductPersistenceService {
 
     private ProductCategoryPersistenceService serviceCategory = PersistenceServiceFactory.createProductCategoryService();
-    private ProductGroupPersistenceService serviceGroup =  PersistenceServiceFactory.createProductGroupService();
-    private PackingPersistenceService servicePacking =  PersistenceServiceFactory.createPackingService();
-    private UserPersistenceService serviceBuyer =  PersistenceServiceFactory.createUserService();
+    private ProductGroupPersistenceService serviceGroup = PersistenceServiceFactory.createProductGroupService();
+    private PackingPersistenceService servicePacking = PersistenceServiceFactory.createPackingService();
+    private UserPersistenceService serviceBuyer = PersistenceServiceFactory.createUserService();
 
     @Override
     public void insert(Product product) throws PersistenceException {
@@ -51,8 +52,18 @@ public class ProductPersistenceServiceJDBC implements ProductPersistenceService 
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int internalCode) {
+        String sql = "DELETE FROM products WHERE internal_code = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, internalCode);
+            Logs.informationQuery(stmt);
+            stmt.executeUpdate();
+
+            DatabaseConnection.closeConnection(connection, stmt);
+        } catch (SQLException e) {
+            throw new DatabaseIntegrityException(e.getMessage());
+        }
     }
 
     @Override

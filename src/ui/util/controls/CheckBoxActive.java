@@ -7,8 +7,9 @@ public class CheckBoxActive extends CheckBox {
     public CheckBoxActive() {
         super();
         String style = getClass().getResource("/ui/css/styles.css").toExternalForm();
-        this.getStylesheets().add(style);
-        this.getStyleClass().add("checkbox");
-        this.setPrefSize(25, 25);
+        getStylesheets().add(style);
+        getStyleClass().add("checkbox");
+        super.setMinSize(25, 25);
+        super.setMaxSize(25, 25);
     }
 }

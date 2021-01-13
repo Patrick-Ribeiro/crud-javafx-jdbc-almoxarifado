@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -12,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1095.0" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.ExpenseListController">
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="mainFxmlClass" stylesheets="@../css/styles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controllers.ExpenseListController">
     <children>
         <HBox alignment="TOP_RIGHT" fillHeight="false" minHeight="-Infinity" spacing="5.0">
             <children>
@@ -47,13 +46,6 @@
                 <Insets bottom="5.0" top="5.0" />
             </padding></HBox>
         <TableView fx:id="tableViewExpenses" fixedCellSize="50.0" focusTraversable="false" maxHeight="1.7976931348623157E308" prefHeight="545.0">
-            <columns>
-                <TableColumn fx:id="tableColumnDebit" editable="false" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="-1.0" text="Débito" />
-                <TableColumn fx:id="tableColumnDescription" editable="false" maxWidth="1.7976931348623157E308" minWidth="570.0" prefWidth="-1.0" resizable="false" text="Descrição" />
-                <TableColumn fx:id="tableColumnType" editable="false" maxWidth="1.7976931348623157E308" minWidth="220.0" prefWidth="-1.0" resizable="false" text="Tipo" />
-            <TableColumn fx:id="tableColumnEdit" maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="-1.0" resizable="false" />
-            <TableColumn fx:id="tableColumnDelete" maxWidth="1.7976931348623157E308" minWidth="75.0" prefWidth="-1.0" resizable="false" />
-            </columns>
             <VBox.margin>
                 <Insets left="15.0" right="15.0" />
             </VBox.margin>

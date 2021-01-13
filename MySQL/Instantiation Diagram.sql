@@ -125,20 +125,20 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `almox`.`products` ;
 
 CREATE TABLE IF NOT EXISTS `almox`.`products` (
-  `internalCode` INT NOT NULL,
+  `internal_code` INT NOT NULL,
   `description` VARCHAR(45) NOT NULL,
   `description_erp` VARCHAR(45) NOT NULL,
   `category_id` INT NOT NULL,
   `group_id` INT NOT NULL,
   `packing_id` INT NOT NULL,
-  `quantity_packing` INT NOT NULL,
+  `quantity_packing` DOUBLE NOT NULL,
   `buyer_user_id` INT NOT NULL,
   `active` TINYINT NOT NULL,
   INDEX `fk_produto_categoria1_idx` (`category_id` ASC) VISIBLE,
   INDEX `fk_produto_grupo_produto1_idx` (`group_id` ASC) VISIBLE,
   INDEX `fk_products_users1_idx` (`buyer_user_id` ASC) VISIBLE,
   INDEX `fk_products_packings1_idx` (`packing_id` ASC) VISIBLE,
-  PRIMARY KEY (`internalCode`),
+  PRIMARY KEY (`internal_code`),
   CONSTRAINT `fk_produto_categoria1`
     FOREIGN KEY (`category_id`)
     REFERENCES `almox`.`product_categories` (`id`)
@@ -181,28 +181,30 @@ CREATE TABLE IF NOT EXISTS `almox`.`departament_products` (
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_departamento_has_produto_produto1`
     FOREIGN KEY (`product_id`)
-    REFERENCES `almox`.`products` (`internalCode`)
+    REFERENCES `almox`.`products` (`internal_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `almox`.`products_movement`
+-- Table `almox`.`products_movements`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `almox`.`products_movement` ;
+DROP TABLE IF EXISTS `almox`.`products_movements` ;
 
-CREATE TABLE IF NOT EXISTS `almox`.`products_movement` (
+CREATE TABLE IF NOT EXISTS `almox`.`products_movements` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `product_id` INT NOT NULL,
   `date` DATE NOT NULL,
   `type` ENUM('IN', 'OU') NOT NULL,
-  `quantity` INT NOT NULL,
+  `quantity` DOUBLE NOT NULL,
+  `previous_inventory` DOUBLE NULL,
+  `final_inventory` DOUBLE NULL,
   PRIMARY KEY (`id`),
   INDEX `fk_products_movement_products1_idx` (`product_id` ASC) VISIBLE,
   CONSTRAINT `fk_products_movement_products1`
     FOREIGN KEY (`product_id`)
-    REFERENCES `almox`.`products` (`internalCode`)
+    REFERENCES `almox`.`products` (`internal_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -215,14 +217,14 @@ DROP TABLE IF EXISTS `almox`.`product_inventory` ;
 
 CREATE TABLE IF NOT EXISTS `almox`.`product_inventory` (
   `product_id` INT NOT NULL,
-  `minimum_inventory` INT NOT NULL,
-  `current_invetory` INT NOT NULL,
-  `maximum_inventory` INT NOT NULL,
+  `minimum_inventory` DOUBLE NOT NULL,
+  `current_invetory` DOUBLE NOT NULL,
+  `maximum_inventory` DOUBLE NOT NULL,
   INDEX `fk_estoques_produto1_idx` (`product_id` ASC) VISIBLE,
   PRIMARY KEY (`product_id`),
   CONSTRAINT `fk_estoques_produto1`
     FOREIGN KEY (`product_id`)
-    REFERENCES `almox`.`products` (`internalCode`)
+    REFERENCES `almox`.`products` (`internal_code`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

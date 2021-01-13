@@ -18,17 +18,20 @@ import model.services.persistence.PersistenceServiceFactory;
 import model.services.persistence.abstracts.ExpensePersistenceService;
 import model.services.persistence.abstracts.ProductPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
+import model.services.persistence.exceptions.DatabaseIntegrityException;
 import ui.WindowLoader;
 import ui.controllers.*;
 import ui.listeners.DataChangeListener;
 import ui.util.Alerts;
 import ui.util.FXMLLocation;
 import ui.util.StageUtilities;
+import ui.util.TableViewUtilities;
 import ui.util.controls.ButtonDelete;
 import ui.util.controls.ButtonEdit;
 import ui.util.controls.CheckBoxActive;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -38,20 +41,15 @@ public class ExpenseListController implements Initializable, DataChangeListener 
 
     @FXML
     private TableView<Expense> tableViewExpenses;
-    @FXML
     private TableColumn<Expense, Integer> tableColumnDebit;
-    @FXML
     private TableColumn<Expense, String> tableColumnDescription;
-    @FXML
     private TableColumn<Expense, String> tableColumnType;
-    @FXML
-    TableColumn<Expense, Expense> tableColumnEdit;
-    @FXML
-    TableColumn<Expense, Expense> tableColumnDelete;
+    private TableColumn<Expense, Expense> tableColumnEdit;
+    private TableColumn<Expense, Expense> tableColumnDelete;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        initColumns();
     }
 
     @FXML
@@ -76,27 +74,42 @@ public class ExpenseListController implements Initializable, DataChangeListener 
             List<Expense> expenseList = persistenceService.findAll();
             filterTable(expenseList);
         } catch (DatabaseConnectionException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-            alert.setHeaderText("Erro de conexão com o banco de daddos.");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.showAndWait();
+            Alerts.showAlert("Erro de conexão", "Não foi possível se conectar ao banco de dados",
+                    ex.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
+    private void initColumns() {
+        tableColumnDebit = new TableColumn<>("Débito");
+        tableColumnDescription = new TableColumn<>("Descrição");
+        tableColumnType = new TableColumn<>("Tipo");
+        tableColumnEdit = new TableColumn<>();
+        tableColumnDelete = new TableColumn<>();
+
+        // minimum value
+        tableColumnEdit.setMinWidth(60);
+        tableColumnDelete.setMinWidth(60);
+        // maximum value
+        tableColumnEdit.setMaxWidth(60);
+        tableColumnDelete.setMaxWidth(60);
+    }
+
     public void filterTable(List<Expense> expenseList) {
-        tableViewExpenses.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        tableViewExpenses.getItems().clear();
         tableColumnDebit.setCellValueFactory(new PropertyValueFactory("debit"));
         tableColumnDescription.setCellValueFactory(new PropertyValueFactory("description"));
         tableColumnType.setCellValueFactory(new PropertyValueFactory("type"));
 
-        initDeleteButtons();
-        initEditButtons();
-
-        if (expenseList != null && expenseList.size() != 0) {
-            tableViewExpenses.setItems(FXCollections.observableArrayList(expenseList));
-            tableViewExpenses.getSelectionModel().select(0);
+        if (expenseList != null && expenseList.size() > 0) {
+            List<TableColumn> columnList = new ArrayList<>();
+            columnList.add(tableColumnDebit);
+            columnList.add(tableColumnDescription);
+            columnList.add(tableColumnType);
+            columnList.add(tableColumnEdit);
+            columnList.add(tableColumnDelete);
+            TableViewUtilities.loadColumns(tableViewExpenses, columnList, expenseList);
         }
+        initEditButtons();
+        initDeleteButtons();
     }
 
     private void initEditButtons() {
@@ -152,13 +165,19 @@ public class ExpenseListController implements Initializable, DataChangeListener 
     }
 
     private void deleteExpense(Expense expense) {
-        Alerts.showConfirmation("Exclusão de despesa",
-                "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
-            if (type == ButtonType.OK) {
-                persistenceService.delete(expense.getDebit());
-                updateTable();
-            }
-        });
+        try {
+            Alerts.showConfirmation("Exclusão de despesa",
+                    "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
+                if (type == ButtonType.OK) {
+                    persistenceService.delete(expense.getDebit());
+                    updateTable();
+                }
+            });
+        } catch (DatabaseIntegrityException ex) {
+            Alerts.showAlert("Erro ao excluir despesa",
+                    "Não é possível excluir esta despesa, pois está associada à um grupo de produto",
+                    "É necessário desassociar a despesa de qualquer grupo para que posso excluí-la", Alert.AlertType.ERROR);
+        }
     }
 
     @Override

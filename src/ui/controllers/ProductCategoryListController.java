@@ -17,6 +17,7 @@ import model.services.persistence.abstracts.ProductCategoryPersistenceService;
 import model.services.persistence.exceptions.DatabaseConnectionException;
 import model.services.persistence.exceptions.DatabaseIntegrityException;
 import ui.WindowLoader;
+import ui.util.Alerts;
 import ui.util.StageUtilities;
 
 import java.net.URL;
@@ -35,7 +36,6 @@ public class ProductCategoryListController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
     }
 
     public void setPersistenceService(ProductCategoryPersistenceService persistenceService) {
@@ -51,53 +51,22 @@ public class ProductCategoryListController implements Initializable {
     @FXML
     void onButtonDeleteAction(ActionEvent event) {
         ProductCategory category = listViewCategories.getSelectionModel().getSelectedItem();
-        if (category == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "É necessário selecionar uma categoria da lista", ButtonType.CLOSE);
-            alert.setHeaderText("Categoria não selecionada");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.show();
-        } else {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Deseja excluir o grupo de usuários "
-                    + category.getDescription() + "?", ButtonType.YES, ButtonType.NO);
-            alert.setHeaderText("Exclusão de categoria");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.showAndWait().ifPresent(type -> {
-                if (type == ButtonType.YES) {
-                    try {
-                        persistenceService.delete(category.getId());
-                        updateList();
-                    } catch (DatabaseIntegrityException ex) {
-                        Alert alertError = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-                        alertError.setHeaderText("Não é possível excluir esta categoria, pois está associada à um ou mais produtos.");
-                        alertError.initStyle(StageStyle.UNDECORATED);
-                        alertError.show();
-                    }
-                }
-            });
-        }
+        if (category != null)
+            deleteCategory(category);
+        else
+            Alerts.showAlert("Erro ao excluir categoria",
+                    "ategoria não selecionada", "É necessário selecionar uma categoria da lista", Alert.AlertType.ERROR);
     }
 
     @FXML
     void onButtonEditAction(ActionEvent event) {
         ProductCategory category = listViewCategories.getSelectionModel().getSelectedItem();
-        if (category == null) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, "É necessário selecionar uma categoria da lista", ButtonType.CLOSE);
-            alert.setHeaderText("Categoria não selecionada");
-            alert.initStyle(StageStyle.UNDECORATED);
-            alert.show();
-        } else {
-            TextInputDialog inputDialog = new TextInputDialog(category.getDescription());
-            inputDialog.setHeaderText("Editar categoria");
-            inputDialog.initStyle(StageStyle.UNDECORATED);
-            inputDialog.showAndWait();
+        if (category != null)
+            editCategory(category);
+        else
+            Alerts.showAlert("Erro ao editar categoria",
+                    "Categoria não selecionada", "É necessário selecionar uma categoria da lista", Alert.AlertType.ERROR);
 
-            String newDescription = inputDialog.getResult();
-            if (newDescription != null) {
-                category.setDescription(newDescription);
-                persistenceService.update(category);
-                updateList();
-            }
-        }
     }
 
     @FXML
@@ -134,5 +103,35 @@ public class ProductCategoryListController implements Initializable {
             alert.initStyle(StageStyle.UNDECORATED);
             alert.showAndWait();
         }
+    }
+
+    private void editCategory(ProductCategory category) {
+        TextInputDialog inputDialog = new TextInputDialog(category.getDescription());
+        inputDialog.setHeaderText("Editar categoria");
+        inputDialog.initStyle(StageStyle.UNDECORATED);
+        inputDialog.showAndWait();
+
+        String newDescription = inputDialog.getResult();
+        if (newDescription != null) {
+            category.setDescription(newDescription);
+            persistenceService.update(category);
+            updateList();
+        }
+    }
+
+    private void deleteCategory(ProductCategory category) {
+        Alerts.showConfirmation("Exclusão de categoria",
+                "Esta operação é irreverssível. Confirma?").ifPresent(type -> {
+            if (type == ButtonType.OK) {
+                try {
+                    persistenceService.delete(category.getId());
+                    updateList();
+                } catch (DatabaseIntegrityException ex) {
+                    Alerts.showAlert("Erro ao excluir categoria",
+                            "Não é possível excluir esta categoria, pois está associada à um ou mais produtos",
+                            "É necessário desassociar a categoria de qualquer produto para que possa excluí-la", Alert.AlertType.ERROR);
+                }
+            }
+        });
     }
 }

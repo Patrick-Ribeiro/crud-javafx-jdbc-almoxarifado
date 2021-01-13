@@ -1,19 +1,10 @@
 package ui.util;
 
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import model.entities.User;
-import ui.util.controls.ButtonEdit;
 
-
-import java.net.URL;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class TableViewUtilities {
 

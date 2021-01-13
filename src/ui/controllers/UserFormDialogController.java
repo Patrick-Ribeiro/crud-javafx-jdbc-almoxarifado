@@ -117,9 +117,8 @@ public class UserFormDialogController implements Initializable {
     }
 
     private void notifyChanges() {
-        for (DataChangeListener listener : listeners) {
+        for (DataChangeListener listener : listeners)
             listener.onChangedData();
-        }
     }
 
     public void updateFormData() {

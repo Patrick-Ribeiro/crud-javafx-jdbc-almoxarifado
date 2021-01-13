@@ -97,7 +97,7 @@ public class ProductFormDialogController implements Initializable, Notifier {
     void onButtonConfirmAction(ActionEvent event) {
         Product product = getFormData();
         try {
-            if(product.getInternalCode() == null)
+            if(persistenceService.find(product.getInternalCode()) == null)
                 persistenceService.insert(product);
             else
                 persistenceService.update(product);
