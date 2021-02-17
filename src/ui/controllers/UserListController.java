@@ -1,7 +1,6 @@
 package ui.controllers;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
-import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -11,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.entities.User;
 import model.entities.UserGroup;
 import model.services.persistence.PersistenceServiceFactory;
@@ -22,15 +20,14 @@ import ui.WindowLoader;
 import ui.listeners.DataChangeListener;
 import ui.util.Alerts;
 import ui.util.FXMLLocation;
+import ui.util.StageUtilities;
 import ui.util.TableViewUtilities;
 import ui.util.controls.ButtonDelete;
 import ui.util.controls.ButtonEdit;
-import ui.util.StageUtilities;
 import ui.util.controls.CheckBoxActive;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
