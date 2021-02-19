@@ -230,6 +230,52 @@ CREATE TABLE IF NOT EXISTS `almox`.`product_inventory` (
 ENGINE = InnoDB;
 
 
+-- -----------------------------------------------------
+-- Table `almox`.`orders`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`orders` ;
+
+CREATE TABLE IF NOT EXISTS `almox`.`orders` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `date` DATE NOT NULL,
+  `user_requester` INT NOT NULL,
+  `status` ENUM('PENDING', 'INCLUDED', 'IN_PROGRESS', 'COMPLETED', 'CANCELED') NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_orders_users1_idx` (`user_requester` ASC) VISIBLE,
+  CONSTRAINT `fk_orders_users1`
+    FOREIGN KEY (`user_requester`)
+    REFERENCES `almox`.`users` (`code_erp`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `almox`.`order_products`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `almox`.`order_products` ;
+
+CREATE TABLE IF NOT EXISTS `almox`.`order_products` (
+  `order_id` INT NOT NULL,
+  `product_id` INT NOT NULL,
+  `product_quantity` DOUBLE NOT NULL,
+  `product_included` TINYINT NOT NULL,
+  PRIMARY KEY (`order_id`, `product_id`),
+  INDEX `fk_orders_has_products_products1_idx` (`product_id` ASC) VISIBLE,
+  INDEX `fk_orders_has_products_orders1_idx` (`order_id` ASC) VISIBLE,
+  CONSTRAINT `fk_orders_has_products_orders1`
+    FOREIGN KEY (`order_id`)
+    REFERENCES `almox`.`orders` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_orders_has_products_products1`
+    FOREIGN KEY (`product_id`)
+    REFERENCES `almox`.`products` (`internal_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

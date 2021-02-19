@@ -1,12 +1,14 @@
 package model.entities;
 
+import model.entities.enums.OrderStatus;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Order {
 
-    private long id;
+    private int id;
     private Date date;
     private User requester;
     private Map<OrderItem, Boolean> itemMap = new HashMap<>(); //Boolean represents the included or not included item
@@ -22,11 +24,11 @@ public class Order {
         itemMap.remove(new OrderItem(product));
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -64,58 +66,3 @@ public class Order {
 
 }
 
-enum OrderStatus {
-    PENDING,
-    INCLUDED,
-    IN_PROGRESS,
-    COMPLETED,
-    CANCELED;
-}
-
-class OrderItem {
-
-    private Product product;
-    private double quantity;
-
-    public OrderItem() {
-    }
-
-    public OrderItem(Product product) {
-        this.product = product;
-    }
-
-    public OrderItem(Product product, double quantity) {
-        this.product = product;
-        this.quantity = quantity;
-    }
-
-    public Product getProduct() {
-        return product;
-    }
-
-    public void setProduct(Product product) {
-        this.product = product;
-    }
-
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        OrderItem orderItem = (OrderItem) o;
-        return product != null ? product.equals(orderItem.product) : orderItem.product == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return product != null ? product.hashCode() : 0;
-    }
-}

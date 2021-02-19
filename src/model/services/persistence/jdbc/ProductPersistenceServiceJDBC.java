@@ -145,7 +145,52 @@ public class ProductPersistenceServiceJDBC implements ProductPersistenceService 
 
     @Override
     public Product find(int id) {
-        return null;
+        String sql = "SELECT * FROM products WHERE internal_code = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection(); PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            Logs.informationQuery(stmt);
+            ResultSet resultSet = stmt.executeQuery();
+
+            Product product = null;
+            Map<Integer, ProductCategory> mapCategory = new HashMap<>();
+            Map<Integer, ProductGroup> mapGroup = new HashMap<>();
+            Map<Integer, Packing> mapPacking = new HashMap<>();
+            Map<Integer, User> mapBuyer = new HashMap<>();
+            while (resultSet.next()) {
+                Integer categoryID = resultSet.getInt("category_id");
+                Integer groupID = resultSet.getInt("group_id");
+                Integer packingID = resultSet.getInt("packing_id");
+                Integer buyerID = resultSet.getInt("buyer_user_id");
+
+                ProductCategory category = mapCategory.get(categoryID);
+                ProductGroup group = mapGroup.get(groupID);
+                Packing packing = mapPacking.get(packingID);
+                User buyer = mapBuyer.get(buyerID);
+
+                if (category == null) {
+                    category = instantiateCategory(categoryID);
+                    mapCategory.put(category.getId(), category);
+                }
+                if (group == null) {
+                    group = instantiateGroup(groupID);
+                    mapGroup.put(group.getId(), group);
+                }
+                if (packing == null) {
+                    packing = instantiatePacking(packingID);
+                    mapPacking.put(packing.getId(), packing);
+                }
+                if (buyer == null) {
+                    buyer = instantiateBuyer(buyerID);
+                    mapBuyer.put(buyer.getCode(), buyer);
+                }
+                product = instantiateEntity(resultSet, category, group, packing, buyer);
+            }
+            DatabaseConnection.closeConnection(connection, stmt, resultSet);
+            return product;
+        } catch (SQLException e) {
+            throw new PersistenceException(e.getMessage());
+        }
     }
 
     @Override
