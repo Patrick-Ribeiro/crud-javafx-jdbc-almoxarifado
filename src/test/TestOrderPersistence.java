@@ -1,7 +1,6 @@
 package test;
 
 import model.entities.Order;
-import model.entities.OrderItem;
 import model.entities.Product;
 import model.entities.User;
 import model.services.persistence.PersistenceServiceFactory;
@@ -12,7 +11,7 @@ import model.services.persistence.jdbc.OrderPersistenceServiceJDBC;
 public class TestOrderPersistence {
 
     public static void main(String[] args) {
-        User user = PersistenceServiceFactory.createUserService().find(63);
+        User user = PersistenceServiceFactory.createUserService().find(17);
         Order order = new Order();
 
         ProductPersistenceService productService = PersistenceServiceFactory.createProductService();
@@ -23,7 +22,8 @@ public class TestOrderPersistence {
         order.addItem(product2, 10);
         order.setRequester(user);
 
-        OrderPersistenceService orderPersistenceService = new OrderPersistenceServiceJDBC();
-        orderPersistenceService.insert(order);
+        System.out.println(order);
+        //OrderPersistenceService orderPersistenceService = new OrderPersistenceServiceJDBC();
+        //orderPersistenceService.insert(order);
     }
 }

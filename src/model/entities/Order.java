@@ -53,16 +53,18 @@ public class Order {
     }
 
     public OrderStatus getStatus() {
-        if (status == OrderStatus.PENDING) {
-            for (int i = 0; i < itemMap.size(); i++) {
-                boolean orderIncluded = true;
-                if (itemMap.get(i) == Boolean.FALSE)
-                    orderIncluded = false;
-                if (orderIncluded) status = OrderStatus.INCLUDED;
-            }
-        }
         return status;
     }
 
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", date=" + date +
+                ", requester=" + requester +
+                ", itemMap=" + itemMap +
+                ", status=" + getStatus() +
+                '}';
+    }
 }
 

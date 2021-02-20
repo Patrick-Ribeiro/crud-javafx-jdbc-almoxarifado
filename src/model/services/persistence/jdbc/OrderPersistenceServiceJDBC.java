@@ -16,22 +16,22 @@ public class OrderPersistenceServiceJDBC implements OrderPersistenceService {
     public void insert(Order order) {
         String sql = "INSERT INTO orders "
                 + "(date, user_requester, status)"
-                + " VALUE (?,?,?)";
+                + " VALUES (?,?,?)";
 
         String sql2 = "INSERT INTO order_products"
                 + " (order_id, product_id, product_quantity, product_included)"
-                + " VALUE (?,?,?,?)";
+                + " VALUES (?,?,?,?)";
 
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement preparedStmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement preparedStmt2 = connection.prepareStatement(sql2)) {
-
+            connection.setAutoCommit(false);
             preparedStmt.setTimestamp(1, new Timestamp(new java.util.Date().getTime()));
             preparedStmt.setInt(2, order.getRequester().getCode());
             preparedStmt.setString(3, order.getStatus().name());
+
             Logs.informationQuery(preparedStmt);
             int rowsAffected = preparedStmt.executeUpdate();
-
             if (rowsAffected > 0) {
                 ResultSet resultSet = preparedStmt.getGeneratedKeys();
                 while (resultSet.next())
@@ -45,8 +45,11 @@ public class OrderPersistenceServiceJDBC implements OrderPersistenceService {
                     preparedStmt2.setBoolean(4, order.getItemMap().get(item));
                     preparedStmt2.executeUpdate();
                 }
+                connection.commit();
+            } else {
+                connection.rollback();
+                throw new PersistenceException("Transação revertida por um erro ao gravar o pedido.");
             }
-
             DatabaseConnection.closeConnection(connection, preparedStmt);
         } catch (SQLException ex) {
             throw new PersistenceException(ex.getMessage());
