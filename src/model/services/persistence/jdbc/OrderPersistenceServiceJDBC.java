@@ -61,7 +61,20 @@ public class OrderPersistenceServiceJDBC implements OrderPersistenceService {
 
     @Override
     public void cancel(int id) {
+        String sql = "UPDATE orders" +
+                " status = ?" +
+                " WHERE id = ?";
 
+        try (Connection connection = DatabaseConnection.getConnection();
+             PreparedStatement preparedStmt = connection.prepareStatement(sql)) {
+            preparedStmt.setString(1, OrderStatus.CANCELED.name());
+            preparedStmt.setInt(2, id);
+
+            preparedStmt.executeUpdate();
+            DatabaseConnection.closeConnection(connection, preparedStmt);
+        } catch (SQLException ex) {
+            throw new PersistenceException(ex.getMessage());
+        }
     }
 
     @Override
@@ -77,6 +90,8 @@ public class OrderPersistenceServiceJDBC implements OrderPersistenceService {
             preparedStmt.setString(3, order.getStatus().name());
             preparedStmt.setInt(4, order.getId());
 
+            preparedStmt.executeUpdate();
+            DatabaseConnection.closeConnection(connection, preparedStmt);
         } catch (SQLException ex) {
             throw new PersistenceException(ex.getMessage());
         }
