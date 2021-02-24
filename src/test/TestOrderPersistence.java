@@ -11,7 +11,7 @@ import model.services.persistence.jdbc.OrderPersistenceServiceJDBC;
 public class TestOrderPersistence {
 
     public static void main(String[] args) {
-        User user = PersistenceServiceFactory.createUserService().find(17);
+        /*User user = PersistenceServiceFactory.createUserService().find(63);
         Order order = new Order();
 
         ProductPersistenceService productService = PersistenceServiceFactory.createProductService();
@@ -22,8 +22,8 @@ public class TestOrderPersistence {
         order.addItem(product2, 10);
         order.setRequester(user);
 
-        System.out.println(order);
-        //OrderPersistenceService orderPersistenceService = new OrderPersistenceServiceJDBC();
-        //orderPersistenceService.insert(order);
+        System.out.println(order);*/
+        OrderPersistenceService orderPersistenceService = new OrderPersistenceServiceJDBC();
+        System.out.println(orderPersistenceService.find(1));
     }
 }

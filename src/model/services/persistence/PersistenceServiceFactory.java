@@ -33,4 +33,8 @@ public class PersistenceServiceFactory {
         return new ExpensePersistenceServiceJDBC();
     }
 
+    public static OrderPersistenceService createOrderService() {
+        return new OrderPersistenceServiceJDBC();
+    }
+
 }

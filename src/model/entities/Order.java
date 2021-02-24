@@ -20,6 +20,10 @@ public class Order {
         itemMap.put(new OrderItem(product, quantity), Boolean.FALSE);
     }
 
+    public void addItem(OrderItem item, boolean included) {
+        itemMap.put(item, included);
+    }
+
     public void removeItem(Product product) {
         itemMap.remove(new OrderItem(product));
     }
@@ -54,6 +58,10 @@ public class Order {
 
     public OrderStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(OrderStatus status) {
+        this.status = status;
     }
 
     @Override
