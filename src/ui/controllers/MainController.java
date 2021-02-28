@@ -43,7 +43,10 @@ public class MainController extends AbstractMainController {
 
     @FXML
     public void onButtonOrdersAction(ActionEvent event) {
-
+        loadScreen(FXMLLocation.ORDER_LIST, (OrderListController controller) -> {
+            controller.setPersistenceService(PersistenceServiceFactory.createOrderService());
+            controller.updateTable();
+        });
     }
 
     @FXML

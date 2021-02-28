@@ -20,4 +20,6 @@ public class FXMLLocation {
     public static final URL EXPENSE_LIST = FXMLLocation.class.getResource("/ui/fxml/expenseList.fxml");
     public static final URL EXPENSE_FORM = FXMLLocation.class.getResource("/ui/fxml/expenseFormDialog.fxml");
 
+    public static final URL ORDER_LIST = FXMLLocation.class.getResource("/ui/fxml/orderList.fxml");
+
 }
